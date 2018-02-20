@@ -1,0 +1,611 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6D84C7BA38B0843E9E2DAA86 /* Pods_NebulaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38297F3961B85CC465EF30E2 /* Pods_NebulaTests.framework */; };
+		BD822D4B14FCC414EDF50976 /* Pods_Nebula.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AAD875A6549B90445643849 /* Pods_Nebula.framework */; };
+		DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442114203BD56F00BDD103 /* AppDelegate.swift */; };
+		DA442117203BD56F00BDD103 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA442116203BD56F00BDD103 /* art.scnassets */; };
+		DA442119203BD56F00BDD103 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ViewController.swift */; };
+		DA44211C203BD56F00BDD103 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211A203BD56F00BDD103 /* Main.storyboard */; };
+		DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA44211D203BD56F00BDD103 /* Assets.xcassets */; };
+		DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */; };
+		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
+		DACBADC7203BD61200FCA744 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC6203BD61200FCA744 /* Util.swift */; };
+		DACBADC9203BD7AC00FCA744 /* Nebula.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC8203BD7AC00FCA744 /* Nebula.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DA442128203BD56F00BDD103 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA442109203BD56F00BDD103 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA442110203BD56F00BDD103;
+			remoteInfo = Nebula;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		38297F3961B85CC465EF30E2 /* Pods_NebulaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NebulaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CE6EC80278324AE331551D4 /* Pods-Nebula.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nebula.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nebula/Pods-Nebula.debug.xcconfig"; sourceTree = "<group>"; };
+		85E688521DEAD43135D11098 /* Pods-NebulaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NebulaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NebulaTests/Pods-NebulaTests.release.xcconfig"; sourceTree = "<group>"; };
+		97E8C0DB2DFF0A3F9857B1ED /* Pods-NebulaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NebulaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NebulaTests/Pods-NebulaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nebula.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nebula/Pods-Nebula.release.xcconfig"; sourceTree = "<group>"; };
+		9AAD875A6549B90445643849 /* Pods_Nebula.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nebula.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA442111203BD56F00BDD103 /* Nebula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nebula.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA442114203BD56F00BDD103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DA442116203BD56F00BDD103 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		DA442118203BD56F00BDD103 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DA44211B203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DA44211D203BD56F00BDD103 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DA442120203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DA442122203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA442127203BD56F00BDD103 /* NebulaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NebulaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA44212B203BD56F00BDD103 /* NebulaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaTests.swift; sourceTree = "<group>"; };
+		DA44212D203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DACBADC6203BD61200FCA744 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		DACBADC8203BD7AC00FCA744 /* Nebula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nebula.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DA44210E203BD56F00BDD103 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD822D4B14FCC414EDF50976 /* Pods_Nebula.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA442124203BD56F00BDD103 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D84C7BA38B0843E9E2DAA86 /* Pods_NebulaTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3500895049800C0FCF4B5457 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7CE6EC80278324AE331551D4 /* Pods-Nebula.debug.xcconfig */,
+				9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */,
+				97E8C0DB2DFF0A3F9857B1ED /* Pods-NebulaTests.debug.xcconfig */,
+				85E688521DEAD43135D11098 /* Pods-NebulaTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A642735E47154C3A050E2DA3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9AAD875A6549B90445643849 /* Pods_Nebula.framework */,
+				38297F3961B85CC465EF30E2 /* Pods_NebulaTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA442108203BD56F00BDD103 = {
+			isa = PBXGroup;
+			children = (
+				DA442113203BD56F00BDD103 /* Nebula */,
+				DA44212A203BD56F00BDD103 /* NebulaTests */,
+				DA442112203BD56F00BDD103 /* Products */,
+				3500895049800C0FCF4B5457 /* Pods */,
+				A642735E47154C3A050E2DA3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		DA442112203BD56F00BDD103 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA442111203BD56F00BDD103 /* Nebula.app */,
+				DA442127203BD56F00BDD103 /* NebulaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA442113203BD56F00BDD103 /* Nebula */ = {
+			isa = PBXGroup;
+			children = (
+				DA442114203BD56F00BDD103 /* AppDelegate.swift */,
+				DA442116203BD56F00BDD103 /* art.scnassets */,
+				DA442118203BD56F00BDD103 /* ViewController.swift */,
+				DACBADC8203BD7AC00FCA744 /* Nebula.swift */,
+				DACBADC6203BD61200FCA744 /* Util.swift */,
+				DA44211A203BD56F00BDD103 /* Main.storyboard */,
+				DA44211D203BD56F00BDD103 /* Assets.xcassets */,
+				DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */,
+				DA442122203BD56F00BDD103 /* Info.plist */,
+			);
+			path = Nebula;
+			sourceTree = "<group>";
+		};
+		DA44212A203BD56F00BDD103 /* NebulaTests */ = {
+			isa = PBXGroup;
+			children = (
+				DA44212B203BD56F00BDD103 /* NebulaTests.swift */,
+				DA44212D203BD56F00BDD103 /* Info.plist */,
+			);
+			path = NebulaTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DA442110203BD56F00BDD103 /* Nebula */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA442130203BD56F00BDD103 /* Build configuration list for PBXNativeTarget "Nebula" */;
+			buildPhases = (
+				4F16D1F45644043C8ABE0B2E /* [CP] Check Pods Manifest.lock */,
+				DA44210D203BD56F00BDD103 /* Sources */,
+				DA44210E203BD56F00BDD103 /* Frameworks */,
+				DA44210F203BD56F00BDD103 /* Resources */,
+				86966465AAB60AAB6F998ECB /* [CP] Embed Pods Frameworks */,
+				CE300D2B622EBFEB2225820A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Nebula;
+			productName = Nebula;
+			productReference = DA442111203BD56F00BDD103 /* Nebula.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA442126203BD56F00BDD103 /* NebulaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA442133203BD56F00BDD103 /* Build configuration list for PBXNativeTarget "NebulaTests" */;
+			buildPhases = (
+				CC90ED4243F15AC804BF1098 /* [CP] Check Pods Manifest.lock */,
+				DA442123203BD56F00BDD103 /* Sources */,
+				DA442124203BD56F00BDD103 /* Frameworks */,
+				DA442125203BD56F00BDD103 /* Resources */,
+				DA6E526ED028C08C4FD752C6 /* [CP] Embed Pods Frameworks */,
+				FFB4850EAD20807CA6A8D779 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA442129203BD56F00BDD103 /* PBXTargetDependency */,
+			);
+			name = NebulaTests;
+			productName = NebulaTests;
+			productReference = DA442127203BD56F00BDD103 /* NebulaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DA442109203BD56F00BDD103 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Atlas Innovation";
+				TargetAttributes = {
+					DA442110203BD56F00BDD103 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					DA442126203BD56F00BDD103 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = DA442110203BD56F00BDD103;
+					};
+				};
+			};
+			buildConfigurationList = DA44210C203BD56F00BDD103 /* Build configuration list for PBXProject "Nebula" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DA442108203BD56F00BDD103;
+			productRefGroup = DA442112203BD56F00BDD103 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DA442110203BD56F00BDD103 /* Nebula */,
+				DA442126203BD56F00BDD103 /* NebulaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DA44210F203BD56F00BDD103 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA442117203BD56F00BDD103 /* art.scnassets in Resources */,
+				DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */,
+				DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */,
+				DA44211C203BD56F00BDD103 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA442125203BD56F00BDD103 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4F16D1F45644043C8ABE0B2E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Nebula-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86966465AAB60AAB6F998ECB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Nebula/Pods-Nebula-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Nebula/Pods-Nebula-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC90ED4243F15AC804BF1098 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NebulaTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE300D2B622EBFEB2225820A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Nebula/Pods-Nebula-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA6E526ED028C08C4FD752C6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NebulaTests/Pods-NebulaTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FFB4850EAD20807CA6A8D779 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NebulaTests/Pods-NebulaTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DA44210D203BD56F00BDD103 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA442119203BD56F00BDD103 /* ViewController.swift in Sources */,
+				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
+				DACBADC9203BD7AC00FCA744 /* Nebula.swift in Sources */,
+				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA442123203BD56F00BDD103 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA442129203BD56F00BDD103 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA442110203BD56F00BDD103 /* Nebula */;
+			targetProxy = DA442128203BD56F00BDD103 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DA44211A203BD56F00BDD103 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA44211B203BD56F00BDD103 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA442120203BD56F00BDD103 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DA44212E203BD56F00BDD103 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DA44212F203BD56F00BDD103 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DA442131203BD56F00BDD103 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7CE6EC80278324AE331551D4 /* Pods-Nebula.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X74VR9B6M2;
+				INFOPLIST_FILE = Nebula/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Atlas.Nebula;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DA442132203BD56F00BDD103 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X74VR9B6M2;
+				INFOPLIST_FILE = Nebula/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Atlas.Nebula;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DA442134203BD56F00BDD103 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97E8C0DB2DFF0A3F9857B1ED /* Pods-NebulaTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X74VR9B6M2;
+				INFOPLIST_FILE = NebulaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Atlas.NebulaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nebula.app/Nebula";
+			};
+			name = Debug;
+		};
+		DA442135203BD56F00BDD103 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 85E688521DEAD43135D11098 /* Pods-NebulaTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X74VR9B6M2;
+				INFOPLIST_FILE = NebulaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Atlas.NebulaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nebula.app/Nebula";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DA44210C203BD56F00BDD103 /* Build configuration list for PBXProject "Nebula" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA44212E203BD56F00BDD103 /* Debug */,
+				DA44212F203BD56F00BDD103 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA442130203BD56F00BDD103 /* Build configuration list for PBXNativeTarget "Nebula" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA442131203BD56F00BDD103 /* Debug */,
+				DA442132203BD56F00BDD103 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA442133203BD56F00BDD103 /* Build configuration list for PBXNativeTarget "NebulaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA442134203BD56F00BDD103 /* Debug */,
+				DA442135203BD56F00BDD103 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DA442109203BD56F00BDD103 /* Project object */;
+}
