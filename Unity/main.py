@@ -121,52 +121,26 @@ if __name__ == '__main__':
     datafile.write("{\n\t\"data\": [\n")
 
     num_images = len(images)
+    for idx, (fname, image) in enumerate(images):
 
-    for i in range(10):
-        for idx, (fname, image) in enumerate(images):
+        frame = data[fname]
+        cameraPoints = np.asarray(frame["pointcloud"]["points"])
 
-            frame = data[fname]
-            cameraPoints = np.asarray(frame["pointcloud"]["points"])
+        # if cameraPoints.shape[0] > 0:
 
-            if cameraPoints.shape[0] > 0:
+        filenamesfile.write(fname[:-4] + "\n")
 
-                filenamesfile.write(fname[:-4] + "\n")
+        datafile.write("\t{\n")
+        datafile.write("\t\t\"timestamp\": \"" + str(frame["timestamp"])+ "\",\n")
+        datafile.write("\t\t\"position\": { \"x\": " + str(frame["position"]['x']) + ", \"y\": " + str(frame["position"]['y']) + ", \"z\": " + str(frame["position"]['z']) + "},\n")
+        datafile.write("\t\t\"rotation\": { \"x\": " + str(frame["rotation"]['x']) + ", \"y\": " + str(frame["rotation"]['y']) + ", \"z\": " + str(frame["rotation"]['z']) + "},\n")
 
-                # extrinsic = np.linalg.inv(np.asarray(frame["cameraTransform"]))
+        datafile.write( matrix_to_jsonstring("projection", np.asarray(frame["projection"])))
 
-                datafile.write("\t{\n")
-                datafile.write("\t\t\"timestamp\": \"" + str(frame["timestamp"])+ "\",\n")
-                datafile.write("\t\t\"position\": { \"x\": " + str(frame["position"]['x']) + ", \"y\": " + str(frame["position"]['y']) + ", \"z\": " + str(frame["position"]['z']) + "},\n")
-                datafile.write("\t\t\"rotation\": { \"x\": " + str(frame["rotation"]['x']) + ", \"y\": " + str(frame["rotation"]['y']) + ", \"z\": " + str(frame["rotation"]['z']) + "},\n")
-
-                datafile.write( matrix_to_jsonstring("projection", np.asarray(frame["projection"])))
-
-                if idx < num_images-1:
-                    datafile.write("\t},\n")
-                else:
-                    datafile.write("\t}\n")
-
-                # cameraPoints = np.asarray(frame["ARPointCloud"]["points"])
-                #
-                # if cameraPoints.shape[0] > 0:
-                #
-                #     cameraPoints = homogeneous(cameraPoints)
-                #
-                #     cameraTranslation = array_from_dict(frame["cameraPos"])
-                #     cameraEuler = array_from_dict(frame["cameraEulerAngle"])
-                #
-                #     cameraIntrinsics = np.asarray(frame["cameraIntrinsics"])
-                #     cameraTransform = np.asarray(frame["cameraTransform"])
-                #
-                #     points = project(root, cameraIntrinsics, cameraTranslation, cameraEuler, cameraTransform)
-                #     # points = project(box.vertices, cameraIntrinsics, cameraTranslation, cameraEuler, cameraTransform)
-                #     # points = project(cameraPoints, cameraIntrinsics, cameraTranslation, cameraEuler, cameraTransform)
-                #     # image = draw_points(image, points)
-                #     image = draw_origin(image, points)
-                #     # image = box.render(image, points)
-                #
-                #     cv2.imshow("", process(image))
-                #     cv2.waitKey(40)
+        if idx < num_images-1:
+            datafile.write("\t},\n")
+        else:
+            datafile.write("\t}\n")
 
     filenamesfile.close()
     datafile.write("\t]\n}")
