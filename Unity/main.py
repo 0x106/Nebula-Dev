@@ -141,10 +141,10 @@ if __name__ == '__main__':
 
                 datafile.write( matrix_to_jsonstring("projection", np.asarray(frame["projection"])))
 
-                if idx < num_images:
-                    datafile.write("\t},")
+                if idx < num_images-1:
+                    datafile.write("\t},\n")
                 else:
-                    datafile.write("\t}")
+                    datafile.write("\t}\n")
 
                 # cameraPoints = np.asarray(frame["ARPointCloud"]["points"])
                 #
