@@ -110,11 +110,7 @@ if __name__ == '__main__':
 
     print(path)
 
-    output_data_fname = "data.json"
-    output_filenames_fname = "filenames.json"
-
-    datafile = open(path+"/"+output_data_fname, 'w+')
-    filenamesfile = open(path+"/"+output_filenames_fname, 'w+')
+    datafile = open(path+"/data.json", 'w+')
 
     images, data = load(path)
 
@@ -125,10 +121,6 @@ if __name__ == '__main__':
 
         frame = data[fname]
         cameraPoints = np.asarray(frame["pointcloud"]["points"])
-
-        # if cameraPoints.shape[0] > 0:
-
-        filenamesfile.write(fname[:-4] + "\n")
 
         datafile.write("\t{\n")
         datafile.write("\t\t\"timestamp\": \"" + str(frame["timestamp"])+ "\",\n")
@@ -142,9 +134,7 @@ if __name__ == '__main__':
         else:
             datafile.write("\t}\n")
 
-    filenamesfile.close()
     datafile.write("\t]\n}")
-
     datafile.close()
 
 
