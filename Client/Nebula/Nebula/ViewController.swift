@@ -31,7 +31,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var frameCounter: Int = 0
     
     var atlasSession: ARSession = ARSession()
-    var nebula: Nebula = Nebula()
+//    var nebula: Nebula = Nebula()
+    
+    var counter: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,19 +65,19 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             "imagename": imageName,
             "timestamp": currentFrame.timestamp,
             "position": dictFromVector3(positionFromTransform(currentFrame.camera.transform)),
-            "rotation": dictFromVector3(currentFrame.camera.eulerAngles)
-//            "cameraTransform": arrayFromTransform(currentFrame.camera.transform),
-//            "cameraIntrinsics": arrayFromTransform(currentFrame.camera.intrinsics),
-//            "cameraProjection": arrayFromTransform(currentFrame.camera.projectionMatrix),
-//            "imageResolution": [
-//                "width": currentFrame.camera.imageResolution.width,
-//                "height": currentFrame.camera.imageResolution.height
-//            ],
-//            "lightEstimate": currentFrame.lightEstimate?.ambientIntensity,
-//            "ARPointCloud": [
-//                "count": currentFrame.rawFeaturePoints?.points.count,
-//                "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
-//            ]
+            "rotation": dictFromVector3(currentFrame.camera.eulerAngles),
+            "transform": arrayFromTransform(currentFrame.camera.transform),
+            "intrinsics": arrayFromTransform(currentFrame.camera.intrinsics),
+            "projection": arrayFromTransform(currentFrame.camera.projectionMatrix),
+            "resolution": [
+                "width": currentFrame.camera.imageResolution.width,
+                "height": currentFrame.camera.imageResolution.height
+            ],
+            "light": currentFrame.lightEstimate?.ambientIntensity,
+            "pointcloud": [
+                "count": currentFrame.rawFeaturePoints?.points.count,
+                "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
+            ]
         ]
         
         return jsonObject
@@ -115,9 +117,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     let json = JSON(self.jsonObject)
                     let representation = json.rawString([.castNilToNSNull: true])
                     
-                    if let data = representation?.description {
-                        self.nebula.sendData(data)
-                    }
+//                    if let data = representation?.description {
+//                        self.nebula.sendData(data)
+//                    }
                     
                     let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: getCurrentTime()+".json")
                     do {
@@ -132,6 +134,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 self.recordStartTime = nil
                 
                 print("All data written and objects cleared.")
+                exit(EXIT_SUCCESS)
             }
         }
     }
@@ -172,11 +175,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 DispatchQueue.global(qos: .utility).async {
                     let jsonNode = self.currentFrameInfoToDic(currentFrame: frame)
                     self.jsonObject[jsonNode["imagename"] as! String] = jsonNode
-                    let jpgImage = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 1.0)
+                    
+                    let json = JSON(jsonNode)
+                    let representation = json.rawString([.castNilToNSNull: true])
+//                    if let data = representation?.description {
+//                        self.nebula.sendData(data)
+//                    }
+                    
+                    let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.75)!
+                    
+//                    var imageData: [String: String] = [:]
+//                    imageData["imagename"] = jsonNode["imagename"] as! String
+//                    imageData["image"] = image.base64EncodedString(options: .lineLength64Characters)
+//
+//                    print(imageData["image"])
+//                    print("Sending: \(self.counter) images")
+//                    self.counter += 1
+//                    self.nebula.sendImage( imageData )
                     
                     let filePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonNode["imagename"] as! String)
-                    
-                    try? jpgImage?.write(to: URL(fileURLWithPath: filePath))
+                    try? image.write(to: URL(fileURLWithPath: filePath))
                     self.frameCounter -= 1  // removing a frame from the stack
                     
                     self.writeData()

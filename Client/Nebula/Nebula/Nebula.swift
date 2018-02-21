@@ -15,7 +15,8 @@ class Nebula {
     var manager: SocketManager
     var socket: SocketIOClient
     
-    var server: String = "http://2a11f6ee.ngrok.io"
+    var server: String = "http://ea1f0423.ngrok.io"
+    var socketID: String = ""
 
     init() {
         
@@ -24,23 +25,27 @@ class Nebula {
         
         socket.on(clientEvent: .connect) {data, ack in
             print("socket connected")
+            self.socket.emit("ios-client", "nebula-ios-client")
         }
         
+        // connection information from the server
         socket.on("nebula") {[unowned self] response, ack in
-//            guard let data = response[0] as? String else { return }
-//            ack.with("config recvd", "")
-            print(response)
+            guard let data = response[0] as? String else { return }
+            self.socketID = data
+            print("socketID: \(self.socketID)")
         }
         
         socket.connect()
+    
     }
     
     func sendData(_ data: String) {
-        print("Sending message: \(data)")
+//        print("Sending message: \(data)")
         socket.emit("data", data)
     }
     
-    func sendImage(_ image: Data) {
+    func sendImage(_ image: [String: String]) {
+//        print("Sending image: \(image["imagename"])")
         socket.emit("image", image)
     }
     

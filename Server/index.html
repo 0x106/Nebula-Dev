@@ -1,0 +1,101 @@
+
+
+<html>
+	<head>
+		<title>Mosaic</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+
+	</head>
+	<body>
+
+    <p id="p1">Welcome to Nebula</p>
+
+    <script src="js/three.js"></script>
+    <script src="js/socket-io.js"></script>
+		<script>
+
+        var socket = io('http://2a11f6ee.ngrok.io');
+        var socketID = "";
+        var data = {};
+        var sorted = [];
+        var images = {};
+
+        var scene = new THREE.Scene();
+  			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+  			var renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        // var geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+        var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        var cube = new THREE.Mesh( geometry, material );
+        scene.add( cube );
+
+        camera.position.z = 5;
+
+        var counter = 0
+        var animate = function () {
+  				requestAnimationFrame( animate );
+          if (data[ sorted[counter] ]) {
+            cube.rotation.x = data[sorted[counter]]["rotation"]["x"]
+            cube.rotation.y = data[sorted[counter]]["rotation"]["y"]
+            cube.rotation.z = data[sorted[counter]]["rotation"]["z"]
+
+            cube.position.x = data[sorted[counter]]["position"]["x"]
+            cube.position.y = data[sorted[counter]]["position"]["y"]
+            cube.position.z = data[sorted[counter]]["position"]["z"]
+            renderer.render(scene, camera);
+          }
+
+          counter += 1
+  				if (counter >= sorted.length) {
+  					counter = 0
+  				}
+  			};
+
+        console.log("creating socket");
+        socket.on('connect', function(){
+          console.log("Socket client connected");
+          socket.emit("web-client", "nebula-web-client")
+        });
+        socket.on('event', function(data){});
+        socket.on('disconnect', function(){});
+        socket.on('nebula', function(data){
+          socketID = data
+          console.log(`Nebula client id: ${socketID}`);
+        });
+        socket.on('data', function(cameraData){
+          data = JSON.parse(cameraData["data"]);
+          console.log(data);
+          for(var key in data) {
+              sorted[sorted.length] = key;
+          }
+          sorted.sort();
+          animate();
+        });
+
+        socket.on('image', function(imageData){
+          images[imageData["imagename"]] = imageData["image"]
+        }
+
+        socket.on('complete', function() {
+          for(var key in data) {
+              sorted[sorted.length] = key;
+          }
+          sorted.sort();
+
+          animate();
+        });
+
+  			// animate();
+
+        renderer.render(scene, camera);
+
+		</script>
+
+	</body>
+</html>
