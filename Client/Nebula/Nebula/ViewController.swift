@@ -31,9 +31,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var frameCounter: Int = 0
     
     var atlasSession: ARSession = ARSession()
-//    var nebula: Nebula = Nebula()
     
-    var counter: Int = 0
+    var sessionframeCounter: Int = 0
+    
+    let grid: WorldGrid = WorldGrid()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,12 +52,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Set the scene to the view
         sceneView.scene = scene
         
-        //        atlasSession = ARSession()
-        let cube = SCNBox(width: CGFloat(0.1), height: CGFloat(0.5), length: CGFloat(0.1), chamferRadius: CGFloat(0.001))
-        cube.firstMaterial?.diffuse.contents = UIColor.magenta.withAlphaComponent(CGFloat(0.5))
-        let node = SCNNode(geometry: cube)
-        node.position = SCNVector3Make(0.05,0.25,0.05)
-        self.sceneView.scene.rootNode.addChildNode(node)
         self.addButton()
     }
     
@@ -92,26 +87,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // we only want to write data when we have turned tracking off, and when there are no frames left to be written
         if self.frameCounter == 0 && self.trackingON == false {
             
-            // extract the position and rotation of the camera
-            
-//            var data: [String : [String: Float]] = [String: [String: Float]]()
-//            DispatchQueue.global(qos: .utility).async {
-//                for (key, _value) in self.jsonObject {
-//                    if let value = _value as? [String: Any] {
-//                        let temp = [:]
-//                        if let _currentPosition = value["cameraPos"] as? [String: Float],
-//                           let _currentRotation = value["cameraEulerAngle"] as? [String: Float] {
-////                            temp["position"]
-//                        }
-//                    }
-//                }
-            
-//                data[key]["rotation"] = _currentRotation
-//                data[key]["position"] = _currentPosition
-                
-//                print(data)
-//            }
-            
             DispatchQueue.global(qos: .utility).async {
                 
                 print("Writing data:", self.frameCounter)
@@ -120,10 +95,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 if valid {
                     let json = JSON(self.jsonObject)
                     let representation = json.rawString([.castNilToNSNull: true])
-                    
-//                    if let data = representation?.description {
-//                        self.nebula.sendData(data)
-//                    }
                     
                     let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: getCurrentTime()+".json")
                     do {
@@ -145,12 +116,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         
-        // check whether we can track anything
-        //        if self.track
         if let state = self.sceneView.session.currentFrame?.camera.trackingState {
             switch(state) {
             case .normal:
                 self.trackingReady = true
+                sceneView.scene.rootNode.addChildNode(grid.origin.rootNode)
             case .notAvailable:
                 break
             case .limited(let _):
@@ -160,6 +130,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // if we're ready to track
         if self.trackingReady {
+            
+            self.sessionframeCounter += 1
+            let frequency = 10 // every ten frames add a position marker
+            if self.sessionframeCounter % frequency == 0 {
+                
+                guard let transform = self.sceneView.session.currentFrame?.camera.transform else {return}
+                let position = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+                
+                self.grid.add("", position, isTrail: true)
+            }
             
             // show the button
             if self.button.isHidden {
@@ -182,20 +162,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     
                     let json = JSON(jsonNode)
                     let representation = json.rawString([.castNilToNSNull: true])
-//                    if let data = representation?.description {
-//                        self.nebula.sendData(data)
-//                    }
                     
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
-                    
-//                    var imageData: [String: String] = [:]
-//                    imageData["imagename"] = jsonNode["imagename"] as! String
-//                    imageData["image"] = image.base64EncodedString(options: .lineLength64Characters)
-//
-//                    print(imageData["image"])
-//                    print("Sending: \(self.counter) images")
-//                    self.counter += 1
-//                    self.nebula.sendImage( imageData )
                     
                     let filePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonNode["imagename"] as! String)
                     try? image.write(to: URL(fileURLWithPath: filePath))
@@ -216,39 +184,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
         
-        self.sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+//        self.sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         self.sceneView.automaticallyUpdatesLighting = true
         sceneView.showsStatistics = true
         
         // Run the view's session
         sceneView.session.run(configuration)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
-    }
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
-    }
-    
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
     }
 }
 
@@ -276,4 +217,143 @@ extension ViewController {
         
     }
 }
+
+
+class WorldGrid {
+    
+    var markers: [Marker] = [Marker]()
+    var trailMarkers: [Marker] = [Marker]()
+    var origin: Marker = Marker("*")
+    var scale: Float = 0.1
+    
+    var edges: [SCNNode] = [SCNNode]()
+    var trailEdges: [SCNNode] = [SCNNode]()
+    
+    init() {
+        markers.append(Marker("+X"))
+        markers.append(Marker("+Y"))
+        markers.append(Marker("-Z"))
+        
+        markers[0].rootNode.position = SCNVector3Make(1*scale, 0, 0)
+        markers[1].rootNode.position = SCNVector3Make(0, 1*scale, 0)
+        markers[2].rootNode.position = SCNVector3Make(0, 0, -(1*scale))
+        
+        for m in markers {
+            origin.rootNode.addChildNode(m.rootNode)
+            edges.append(SCNNode().buildLineInTwoPointsWithRotation(from: origin.rootNode.position, to: m.rootNode.position,
+                                                                    radius: CGFloat(0.0005), lengthOffset: CGFloat(0.005), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
+            origin.rootNode.addChildNode(edges[edges.count - 1])
+        }
+    }
+    
+    func add(_ _label: String, _ _position: SCNVector3, isTrail _isTrail: Bool) {
+        if !_isTrail {
+            let marker = Marker(_label)
+            marker.rootNode.position = _position
+            markers.append(marker)
+            self.origin.rootNode.addChildNode(marker.rootNode)
+        } else {
+            let marker = Marker()
+            marker.rootNode.position = _position
+            trailMarkers.append(marker)
+            self.origin.rootNode.addChildNode(marker.rootNode)
+            
+            if self.trailMarkers.count > 2 {
+                trailEdges.append(SCNNode().buildLineInTwoPointsWithRotation(from: self.trailMarkers[self.trailMarkers.count-2].rootNode.position,
+                                                                             to:   self.trailMarkers[self.trailMarkers.count-1].rootNode.position,
+                                                                             radius: CGFloat(0.0005), lengthOffset: CGFloat(0.0), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
+                self.origin.rootNode.addChildNode(trailEdges[trailEdges.count - 1])
+            }
+        }
+    }
+    
+    
+}
+
+class Marker {
+    var rootNode: SCNNode = SCNNode()
+    var label: String = ""
+    
+    init(_ _label: String) {
+        
+        self.label = _label
+        
+        let depth: Float = 0.005
+        
+        // TEXT BILLBOARD CONSTRAINT
+        //        let billboardConstraint = SCNBillboardConstraint()
+        //        billboardConstraint.freeAxes = SCNBillboardAxis.Y
+        
+        // TEXT
+        let text = SCNText(string: self.label, extrusionDepth: CGFloat(depth))
+        let font = UIFont(name: "Arial", size: 0.2)
+        text.font = font
+        text.alignmentMode = kCAAlignmentCenter
+        text.firstMaterial?.diffuse.contents = UIColor.magenta.withAlphaComponent(CGFloat(0.6))
+        text.firstMaterial?.specular.contents = UIColor.white
+        text.firstMaterial?.isDoubleSided = true
+        text.chamferRadius = CGFloat(depth)
+        
+        // TEXT NODE
+        let (minBound, maxBound) = text.boundingBox
+        let textNode = SCNNode(geometry: text)
+        textNode.name = "text"
+        // Centre Node - to Centre-Bottom point
+        textNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y - 0.05, depth/2)
+        // Reduce default text size
+        textNode.scale = SCNVector3Make(0.05, 0.05, 0.05)
+        
+        // CENTRE POINT NODE
+        let sphere = SCNSphere(radius: 0.002)
+        sphere.firstMaterial?.diffuse.contents = UIColor.white
+        let sphereNode = SCNNode(geometry: sphere)
+        sphereNode.name = "sphere"
+        
+        //        let sphereTranslation = SCNMatrix4MakeTranslation(0, -0.01, 0)
+        //        sphereNode.transform = sphereTranslation
+        
+        // TEXT PARENT NODE
+        let textNodeParent = SCNNode()
+        textNodeParent.name = self.label
+        textNodeParent.addChildNode(textNode)
+        textNodeParent.addChildNode(sphereNode)
+        //        textNodeParent.constraints = [billboardConstraint]
+        
+        self.rootNode = textNodeParent
+    }
+    
+    init() {
+        
+        let depth: Float = 0.005
+        
+        // CENTRE POINT NODE
+        let sphere = SCNSphere(radius: 0.002)
+        sphere.firstMaterial?.diffuse.contents = UIColor.white
+        let sphereNode = SCNNode(geometry: sphere)
+        sphereNode.name = "sphere"
+        
+        // TEXT PARENT NODE
+        let textNodeParent = SCNNode()
+        textNodeParent.name = self.label
+        textNodeParent.addChildNode(sphereNode)
+        
+        self.rootNode = textNodeParent
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// end
 
