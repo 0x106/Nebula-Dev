@@ -1,20 +1,26 @@
 #! /bin/bash
 
-SRC_DIR="/Users/jordancampbell/helix/Atlas/Nebula/data/08"
-DST_DIR="/Users/jordancampbell/helix/Atlas/Nebula/Unity/Nebula/Assets/Resources"
+# data is expected to be in a dir ~/helix/Atlas/Nebula/data/$ID
+id="09"
 
-python 
+src="/Users/jordancampbell/helix/Atlas/Nebula/data/$id"
+dst="/Users/jordancampbell/helix/Atlas/Nebula/Unity/Nebula/Assets/Resources"
 
-echo '[Nebula] Cleaning resources dir '
-rm $DST_DIR/NebulaTextures/*.jpg
-rm $DST_DIR/NebulaTextures/*.meta
-rm $DST_DIR/data.json
+echo $src
 
-echo '[Nebula] Loading assets... '
-cp $SRC_DIR/data.json $DST_DIR/
-cp $SRC_DIR/*.jpg $DST_DIR/NebulaTextures/
+# this will rewrite the data from <filename.json to data.json
+#python Unity/main.py write draw
 
-echo '[Nebula] Complete.'
+#echo '[Nebula] Cleaning resources dir '
+#rm $DST_DIR/NebulaTextures/*.jpg
+#rm $DST_DIR/NebulaTextures/*.meta
+#rm $DST_DIR/data.json
+
+#echo '[Nebula] Loading assets... '
+#cp $SRC_DIR/data.json $DST_DIR/
+#cp $SRC_DIR/*.jpg $DST_DIR/NebulaTextures/
+
+#echo '[Nebula] Complete.'
 
 
 

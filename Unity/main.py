@@ -116,6 +116,7 @@ def matrix_to_jsonstring(name, data):
     output = ""
     output += "\t\t\"" + name + "\": {"
     idx = 0
+
     if data.shape[0] == 4:
         for i in range(data.shape[0]):
             for k in range(data.shape[1]):
@@ -131,6 +132,7 @@ def matrix_to_jsonstring(name, data):
                     output +=  "\"" + m33[idx] + "\": "  + str(data[i,k]) + "}"
                 else:
                     output +=  "\"" + m33[idx] + "\": "  + str(data[i,k]) + ', '
+
                 idx += 1
     else:
         pass

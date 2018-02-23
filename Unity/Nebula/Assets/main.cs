@@ -98,82 +98,22 @@ public class main : MonoBehaviour {
 		cameraData = JsonUtility.FromJson<CameraData> (_data);
 	}
 
-
-	Matrix4x4 matrix_fromNebula(NebulaMatrix matrix) {
-		Matrix4x4 m = new Matrix4x4 ();
-
-		Vector4 r0 = new Vector4 (matrix.m00,matrix.m01,matrix.m02,matrix.m03);
-		Vector4 r1 = new Vector4 (matrix.m10,matrix.m11,matrix.m12,matrix.m13);
-		Vector4 r2 = new Vector4 (matrix.m20,matrix.m21,matrix.m22,matrix.m23);
-		Vector4 r3 = new Vector4 (matrix.m30,matrix.m31,matrix.m32,matrix.m33);
-
-		m.SetRow (0, r0);
-		m.SetRow (1, r1);
-		m.SetRow (2, r2);
-		m.SetRow (3, r3);
-
-		return m;
-	}
-
-	Matrix4x4 matrix_fromNebula33(NebulaMatrix33 matrix) {
-		Matrix4x4 m = new Matrix4x4 ();
-
-		Vector4 r0 = new Vector4 (matrix.m00,matrix.m01,matrix.m02,0.0F);
-		Vector4 r1 = new Vector4 (matrix.m10,matrix.m11,matrix.m12,0.0F);
-		Vector4 r2 = new Vector4 (matrix.m20,matrix.m21,matrix.m22,0.0F);
-		Vector4 r3 = new Vector4 (0.0F, 0.0F, 0.0F, 0.0F);
-
-		m.SetRow (0, r0);
-		m.SetRow (1, r1);
-		m.SetRow (2, r2);
-		m.SetRow (3, r3);
-
-		return m;
-	}
-		
 }
 
 [System.Serializable]
 public class Frame {
 	public string key;
-	public NebulaVector position;
-	public NebulaVector rotation;
-	public NebulaMatrix projection;
-	public NebulaMatrix33 intrinsics;
+	public Vector3 position;
+	public Vector3 rotation;
+	public Matrix4x4 projection;
+
+//	use a custom matrix to account for col-major vs row-major differences.
+//	Probably not the most effective method but robust for now.
+	public NebulaMatrix3x3 intrinsics;
 }
 
 [System.Serializable]
-public class NebulaVector {
-	public float x;
-	public float y;
-	public float z;
-}
-
-[System.Serializable]
-public class NebulaMatrix {
-	public float m00;
-	public float m01;
-	public float m02;
-	public float m03;
-
-	public float m10;
-	public float m11;
-	public float m12;
-	public float m13;
-
-	public float m20;
-	public float m21;
-	public float m22;
-	public float m23;
-
-	public float m30;
-	public float m31;
-	public float m32;
-	public float m33;
-}
-
-[System.Serializable]
-public class NebulaMatrix33 {
+public class NebulaMatrix3x3 {
 	public float m00;
 	public float m01;
 	public float m02;
