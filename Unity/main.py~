@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
     data_path = "/Users/jordancampbell/helix/Atlas/Nebula/data"
     paths = [fname for fname in os.listdir(data_path) if fname != 'main.py']
-    path = data_path+"/"+paths[-1]
+    path = data_path+"/"+paths[-2]
 
     print(path)
 

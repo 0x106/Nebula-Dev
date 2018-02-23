@@ -18,22 +18,17 @@ import SwiftyJSON
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
-    let button = UIButton()
-    
+    let recordbutton = UIButton()
+    let starpathbutton = UIButton()
     var trackingReady: Bool = false
     var trackingON: Bool = false
     var dataWriteStarted: Bool = false
     var dataWriteComplete: Bool = false
-    
     var jsonObject = [String:Any]()
     var recordStartTime: String?
-    
     var frameCounter: Int = 0
-    
     var atlasSession: ARSession = ARSession()
-    
     var sessionframeCounter: Int = 0
-    
     let grid: WorldGrid = WorldGrid()
     
     override func viewDidLoad() {
@@ -138,15 +133,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 guard let transform = self.sceneView.session.currentFrame?.camera.transform else {return}
                 let position = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
                 
-                self.grid.add("", position, isTrail: true)
+                self.grid.add("", position, isstarpath: true)
+                
+//                var i = 0
+//                for n in self.grid.starpathEdges {
+//                    if i < self.grid.starpathEdges.count - 5 {
+//                        n.isHidden = false
+//                    } else {
+//                        n.isHidden = true
+//                    }
+//                    i += 1
+//                }
+//
+//                i = 0
+//                for n in self.grid.markers {
+//                    if i < self.grid.markers.count - 5 {
+//                        n.rootNode.isHidden = false
+//                    } else {
+//                        n.rootNode.isHidden = true
+//                    }
+//                    i += 1
+//                }
             }
             
             // show the button
-            if self.button.isHidden {
-                self.button.isHidden = false
+            if self.recordbutton.isHidden {
+                self.recordbutton.isHidden = false
+                self.starpathbutton.isHidden = false
             }
             
-            if self.button.isHighlighted {
+            if self.recordbutton.isHighlighted {
                 
                 self.trackingON = true
                 
@@ -196,25 +212,46 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 extension ViewController {
     func addButton() {
         
-        let buttonring = UIImage(named: "buttonring")
+        let recordbuttonimg = UIImage(named: "buttonring")
+        
         let size: Int = 64
-        let bx = self.sceneView.bounds.midX - CGFloat( size / 2 )
-        let by = self.sceneView.bounds.maxY - CGFloat( (buttonring?.cgImage?.height)! / 2 ) - CGFloat(size/2)
+//        let bx1 = self.sceneView.bounds.midX - CGFloat( size / 2 )
+//        let by1 = self.sceneView.bounds.maxY - CGFloat( (recordbuttonimg?.cgImage?.height)! / 2 ) - CGFloat(size/2)
+        let bx1 = CGFloat((self.sceneView.bounds.maxX/2) - 24)
+        let by1 = CGFloat(self.sceneView.bounds.maxY - 80)
         
-        button.frame = CGRect(x: bx, y: by, width: CGFloat(size), height: CGFloat(size))
-        button.backgroundColor = .clear
+        recordbutton.frame = CGRect(x: bx1, y: by1, width: CGFloat(size), height: CGFloat(size))
+        recordbutton.backgroundColor = .clear
+        recordbutton.setImage(recordbuttonimg, for: .normal)
+//        recordbutton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
+        recordbutton.clipsToBounds = true
+        self.sceneView.addSubview(recordbutton)
+        self.recordbutton.isHidden = true
         
-        button.setImage(buttonring, for: .normal)
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        button.layer.cornerRadius = 0.5 * button.bounds.size.width
-        button.clipsToBounds = true
-        self.sceneView.addSubview(button)
+//        let bx2 = self.sceneView.bounds.midX - CGFloat( size / 2 )
+//        let by2 = self.sceneView.bounds.maxY - CGFloat( (recordbuttonimg?.cgImage?.height)! / 2 ) - CGFloat(size/2)
+        let bx2 = CGFloat((self.sceneView.bounds.midX/2) - 24)
+        let by2 = CGFloat(self.sceneView.bounds.maxY - 80)
         
-        self.button.isHidden = true
+        let starpathbuttonimg = UIImage(named: "starpath")
+        starpathbutton.frame = CGRect(x: bx2, y: by2, width: CGFloat(size), height: CGFloat(size))
+        starpathbutton.backgroundColor = .clear
+        starpathbutton.setImage(starpathbuttonimg, for: .normal)
+        starpathbutton.addTarget(self, action: #selector(starpathButtonPressed), for: .touchUpInside)
+        starpathbutton.layer.cornerRadius = 0.5 * starpathbutton.bounds.size.width
+        starpathbutton.clipsToBounds = true
+        self.sceneView.addSubview(starpathbutton)
+        self.starpathbutton.isHidden = true
     }
     
-    @objc func buttonPressed() {
-        
+    @objc func starpathButtonPressed() {
+        if self.grid.canAdd {
+//            self.grid.starpath.isHidden = false
+            self.grid.canAdd = false
+        } else {
+            self.grid.canAdd = true
+        }
     }
 }
 
@@ -222,12 +259,16 @@ extension ViewController {
 class WorldGrid {
     
     var markers: [Marker] = [Marker]()
-    var trailMarkers: [Marker] = [Marker]()
+    var starpathMarkers: [Marker] = [Marker]()
     var origin: Marker = Marker("*")
     var scale: Float = 0.1
     
+    var starpath = SCNNode()
+    
     var edges: [SCNNode] = [SCNNode]()
-    var trailEdges: [SCNNode] = [SCNNode]()
+    var starpathEdges: [SCNNode] = [SCNNode]()
+    
+    var canAdd: Bool = true
     
     init() {
         markers.append(Marker("+X"))
@@ -241,28 +282,34 @@ class WorldGrid {
         for m in markers {
             origin.rootNode.addChildNode(m.rootNode)
             edges.append(SCNNode().buildLineInTwoPointsWithRotation(from: origin.rootNode.position, to: m.rootNode.position,
-                                                                    radius: CGFloat(0.0005), lengthOffset: CGFloat(0.005), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
+                                                                    radius: CGFloat(0.0015), lengthOffset: CGFloat(0.0), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
             origin.rootNode.addChildNode(edges[edges.count - 1])
         }
+        
+        self.origin.rootNode.addChildNode(self.starpath)
+//        self.starpath.isHidden = true
     }
     
-    func add(_ _label: String, _ _position: SCNVector3, isTrail _isTrail: Bool) {
-        if !_isTrail {
+    func add(_ _label: String, _ _position: SCNVector3, isstarpath _isstarpath: Bool) {
+        if !_isstarpath {
             let marker = Marker(_label)
             marker.rootNode.position = _position
             markers.append(marker)
             self.origin.rootNode.addChildNode(marker.rootNode)
         } else {
-            let marker = Marker()
-            marker.rootNode.position = _position
-            trailMarkers.append(marker)
-            self.origin.rootNode.addChildNode(marker.rootNode)
             
-            if self.trailMarkers.count > 2 {
-                trailEdges.append(SCNNode().buildLineInTwoPointsWithRotation(from: self.trailMarkers[self.trailMarkers.count-2].rootNode.position,
-                                                                             to:   self.trailMarkers[self.trailMarkers.count-1].rootNode.position,
-                                                                             radius: CGFloat(0.0005), lengthOffset: CGFloat(0.0), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
-                self.origin.rootNode.addChildNode(trailEdges[trailEdges.count - 1])
+            if self.canAdd {
+                let marker = Marker()
+                marker.rootNode.position = _position
+                starpathMarkers.append(marker)
+                self.starpath.addChildNode(marker.rootNode)
+                
+                if self.starpathMarkers.count > 2 {
+                    starpathEdges.append(SCNNode().buildLineInTwoPointsWithRotation(from: self.starpathMarkers[self.starpathMarkers.count-2].rootNode.position,
+                                                                                 to:   self.starpathMarkers[self.starpathMarkers.count-1].rootNode.position,
+                                                                                 radius: CGFloat(0.0005), lengthOffset: CGFloat(0.0), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
+                    self.starpath.addChildNode(starpathEdges[starpathEdges.count - 1])
+                }
             }
         }
     }
@@ -304,7 +351,7 @@ class Marker {
         textNode.scale = SCNVector3Make(0.05, 0.05, 0.05)
         
         // CENTRE POINT NODE
-        let sphere = SCNSphere(radius: 0.002)
+        let sphere = SCNSphere(radius: 0.001)
         sphere.firstMaterial?.diffuse.contents = UIColor.white
         let sphereNode = SCNNode(geometry: sphere)
         sphereNode.name = "sphere"

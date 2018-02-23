@@ -60,7 +60,7 @@ public class main : MonoBehaviour {
 		Camera.main.transform.position = new Vector3 (
 			cameraData.data[counter].position.x,
 			cameraData.data[counter].position.y,
-		   -cameraData.data[counter].position.z
+			-cameraData.data[counter].position.z
 		);
 
 		float omega = 180.0F / Mathf.PI;
@@ -72,14 +72,18 @@ public class main : MonoBehaviour {
 
 		Matrix4x4 p = Camera.main.projectionMatrix;
 
+		float gamma = 0.38F;
+		float deltaX = -0.6F;
+		float deltaY = -0.4F;
+
 		float alpha = 0.001F;
-		p.m00 = cameraData.data[counter].intrinsics.m00 * alpha;
+		p.m00 = cameraData.data[counter].intrinsics.m00 * alpha + gamma;
 		p.m01 = cameraData.data[counter].intrinsics.m01 * alpha;
-		p.m02 = cameraData.data[counter].intrinsics.m02 * alpha;
+		p.m02 = cameraData.data[counter].intrinsics.m02 * alpha + deltaX;
 		
 		p.m10 = cameraData.data[counter].intrinsics.m10 * alpha;
-		p.m11 = cameraData.data[counter].intrinsics.m11 * alpha;
-		p.m12 = cameraData.data[counter].intrinsics.m12 * alpha;
+		p.m11 = cameraData.data[counter].intrinsics.m11 * alpha + gamma;
+		p.m12 = cameraData.data[counter].intrinsics.m12 * alpha + deltaY;
 		
 		p.m20 = cameraData.data[counter].intrinsics.m20 * alpha;
 		p.m21 = cameraData.data[counter].intrinsics.m21 * alpha;
