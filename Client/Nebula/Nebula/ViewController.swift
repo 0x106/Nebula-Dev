@@ -138,7 +138,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 guard let transform = self.sceneView.session.currentFrame?.camera.transform else {return}
                 let position = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
                 
-                self.grid.add(String(self.grid.markers.count - 3), position, isTrail: true)
+                self.grid.add("", position, isTrail: true)
             }
             
             // show the button
