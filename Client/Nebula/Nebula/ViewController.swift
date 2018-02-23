@@ -52,7 +52,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.scene = scene
         
         //        atlasSession = ARSession()
-        
+        let cube = SCNBox(width: CGFloat(0.1), height: CGFloat(0.5), length: CGFloat(0.1), chamferRadius: CGFloat(0.001))
+        cube.firstMaterial?.diffuse.contents = UIColor.magenta.withAlphaComponent(CGFloat(0.5))
+        let node = SCNNode(geometry: cube)
+        node.position = SCNVector3Make(0.05,0.25,0.05)
+        self.sceneView.scene.rootNode.addChildNode(node)
         self.addButton()
     }
     
@@ -182,7 +186,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 //                        self.nebula.sendData(data)
 //                    }
                     
-                    let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.75)!
+                    let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     
 //                    var imageData: [String: String] = [:]
 //                    imageData["imagename"] = jsonNode["imagename"] as! String
@@ -211,6 +215,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
+        
+        self.sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+        self.sceneView.automaticallyUpdatesLighting = true
+        sceneView.showsStatistics = true
         
         // Run the view's session
         sceneView.session.run(configuration)

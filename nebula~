@@ -1,0 +1,35 @@
+#! /bin/bash
+
+SRC_DIR="/Users/jordancampbell/helix/Atlas/Nebula/data/08"
+DST_DIR="/Users/jordancampbell/helix/Atlas/Nebula/Unity/Nebula/Assets/Resources"
+
+python 
+
+echo '[Nebula] Cleaning resources dir '
+rm $DST_DIR/NebulaTextures/*.jpg
+rm $DST_DIR/NebulaTextures/*.meta
+rm $DST_DIR/data.json
+
+echo '[Nebula] Loading assets... '
+cp $SRC_DIR/data.json $DST_DIR/
+cp $SRC_DIR/*.jpg $DST_DIR/NebulaTextures/
+
+echo '[Nebula] Complete.'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# END

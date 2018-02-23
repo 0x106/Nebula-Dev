@@ -2,6 +2,19 @@ import os, sys, math, time, cv2, json
 
 import numpy as np
 
+__render, __write = False, False
+if len(sys.argv )== 1:
+    __render, __write = False, True
+elif len(sys.argv) == 2:
+    if sys.argv[1] == 'write':
+        __write = True
+    if sys.argv[1] == 'draw':
+        __render = True
+elif len(sys.argv) == 3:
+    __render, __write = True, True
+else:
+    pass
+
 def process(image):
     cols, rows = image.shape[1], image.shape[0]
     M = cv2.getRotationMatrix2D((cols/2,rows/2),-90,1)
@@ -16,8 +29,10 @@ def load(path):
     print("jsonfile: " + path+jsonfile)
     data = json.loads(open(path+jsonfile,'r').read())
     index = 0
-    images = [(fname, (cv2.imread(path+fname))) for fname in files if fname[-4:] == '.jpg']
-    return images, data
+    if __render:
+        images = [(fname, (cv2.imread(path+fname))) for fname in files if fname[-4:] == '.jpg']
+        return images, data
+    return data
 
 def rotx(x):
     R = np.eye(3, 3)
@@ -89,53 +104,129 @@ def homogeneous(points):
     return output
 
 def matrix_to_jsonstring(name, data):
-    names = ["m00", "m01", "m02", "m03", "m10", "m11", "m12", "m13", "m20", "m21", "m22", "m23", "m30", "m31", "m32", "m33"]
+    m44 = ["m00", "m01", "m02", "m03",
+           "m10", "m11", "m12", "m13",
+           "m20", "m21", "m22", "m23",
+           "m30", "m31", "m32", "m33"]
+
+    m33 = ["m00", "m01", "m02",
+           "m10", "m11", "m12",
+           "m20", "m21", "m22"]
+
     output = ""
     output += "\t\t\"" + name + "\": {"
     idx = 0
-    for i in range(data.shape[0]):
-        for k in range(data.shape[1]):
-            if names[idx] == "m33":
-                output +=  "\"" + names[idx] + "\": "  + str(data[i,k]) + "}\n"
-            else:
-                output +=  "\"" + names[idx] + "\": "  + str(data[i,k]) + ', '
-            idx += 1
+    if data.shape[0] == 4:
+        for i in range(data.shape[0]):
+            for k in range(data.shape[1]):
+                if m44[idx] == "m33":
+                    output +=  "\"" + m44[idx] + "\": "  + str(data[i,k]) + "}"
+                else:
+                    output +=  "\"" + m44[idx] + "\": "  + str(data[i,k]) + ', '
+                idx += 1
+    elif data.shape[0] == 3:
+        for i in range(data.shape[0]):
+            for k in range(data.shape[1]):
+                if m33[idx] == "m22":
+                    output +=  "\"" + m33[idx] + "\": "  + str(data[i,k]) + "}"
+                else:
+                    output +=  "\"" + m33[idx] + "\": "  + str(data[i,k]) + ', '
+                idx += 1
+    else:
+        pass
     return output
+
+def render(intrinsics, transform, image):
+    root = np.zeros((4, 4))
+    root[:,3] = 1
+
+    root[1,:3] = np.asarray([0.1,0,0])
+    root[2,:3] = np.asarray([0,0.1,0])
+    root[3,:3] = np.asarray([0,0,0.1])
+
+    perspective = np.eye(3,4)
+
+    output = np.zeros((root.shape[0], 3))
+    for index, point in enumerate(root):
+        output[index] = np.dot(intrinsics, np.dot(perspective, np.dot(np.linalg.inv(transform), point)) )
+        output[index] /= output[index,2]
+
+    cv2.line(image, (image.shape[1]-int(output[0,0]), int(output[0,1])), (image.shape[1]-int(output[1,0]), int(output[1,1])), (255, 0,0), 2)
+    cv2.line(image, (image.shape[1]-int(output[0,0]), int(output[0,1])), (image.shape[1]-int(output[2,0]), int(output[2,1])), (255, 0,0), 2)
+    cv2.line(image, (image.shape[1]-int(output[0,0]), int(output[0,1])), (image.shape[1]-int(output[3,0]), int(output[3,1])), (255, 0,0), 2)
+
+    return image
 
 if __name__ == '__main__':
 
     data_path = "/Users/jordancampbell/helix/Atlas/Nebula/data"
     paths = [fname for fname in os.listdir(data_path) if fname != 'main.py']
-    path = data_path+"/"+paths[-1]
+    path = data_path+"/"+paths[-2]
 
     print(path)
 
-    datafile = open(path+"/data.json", 'w+')
+    if __write:
+        datafile = open(path+"/data.json", 'w+')
 
-    images, data = load(path)
+    if __render:
+        images, data = load(path)
+    else:
+        data = load(path)
 
-    datafile.write("{\n\t\"data\": [\n")
+    if __write:
+        datafile.write("{\n\t\"data\": [\n")
+    #
+    num_images = len(data)
+    keys = []
 
-    num_images = len(images)
-    for idx, (fname, image) in enumerate(images):
+    if __render:
+        # while(True):
+        for fname, image in images:
+            frame = data[fname]
+            cameraPoints = np.asarray(frame["pointcloud"]["points"])
 
-        frame = data[fname]
-        cameraPoints = np.asarray(frame["pointcloud"]["points"])
+            if cameraPoints.shape[0] > 0:
+                image  = render(np.asarray(frame["intrinsics"]), np.asarray(frame["transform"]), image)
 
-        datafile.write("\t{\n")
-        datafile.write("\t\t\"timestamp\": \"" + str(frame["timestamp"])+ "\",\n")
-        datafile.write("\t\t\"position\": { \"x\": " + str(frame["position"]['x']) + ", \"y\": " + str(frame["position"]['y']) + ", \"z\": " + str(frame["position"]['z']) + "},\n")
-        datafile.write("\t\t\"rotation\": { \"x\": " + str(frame["rotation"]['x']) + ", \"y\": " + str(frame["rotation"]['y']) + ", \"z\": " + str(frame["rotation"]['z']) + "},\n")
+                cv2.imwrite(path + "/" + fname, image)
+                print(path+"/"+fname)
+                cv2.imshow("Nebula", image)
+                cv2.waitKey(1)
 
-        datafile.write( matrix_to_jsonstring("projection", np.asarray(frame["projection"])))
+    if __write:
+        for idx, item in enumerate(data):
 
-        if idx < num_images-1:
-            datafile.write("\t},\n")
-        else:
-            datafile.write("\t}\n")
+            frame = data[item]
+            cameraPoints = np.asarray(frame["pointcloud"]["points"])
 
-    datafile.write("\t]\n}")
-    datafile.close()
+            if cameraPoints.shape[0] > 0:
+                keys.append(str(frame["imagename"][:-4]))
+
+                datafile.write("\t{\n")
+                datafile.write("\t\t\"key\": \"" + str(frame["imagename"][:-4])+ "\",\n")
+                datafile.write("\t\t\"position\": { \"x\": " + str(frame["position"]['x']) + ", \"y\": " + str(frame["position"]['y']) + ", \"z\": " + str(frame["position"]['z']) + "},\n")
+                datafile.write("\t\t\"rotation\": { \"x\": " + str(frame["rotation"]['x']) + ", \"y\": " + str(frame["rotation"]['y']) + ", \"z\": " + str(frame["rotation"]['z']) + "},\n")
+
+                datafile.write( matrix_to_jsonstring("projection", np.asarray(frame["projection"])) + ",\n")
+                datafile.write( matrix_to_jsonstring("intrinsics", np.asarray(frame["intrinsics"])) + "\n")
+
+                if idx < num_images-1:
+                    datafile.write("\t},\n")
+                else:
+                    datafile.write("\t}\n")
+
+    if __write:
+        datafile.write("\t],\n\"keys\":\t[\n")
+
+        sorted_keys = sorted(keys)
+        for idx, key in enumerate(sorted_keys):
+            if idx < len(sorted_keys)-1:
+                datafile.write("\"" + key + "\", ")
+            else:
+                datafile.write("\"" + key + "\"]\n")
+
+        datafile.write("\n}")
+        datafile.close()
 
 
 
