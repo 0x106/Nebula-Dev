@@ -17,7 +17,6 @@
 		DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */; };
 		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
 		DACBADC7203BD61200FCA744 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC6203BD61200FCA744 /* Util.swift */; };
-		DACBADC9203BD7AC00FCA744 /* Nebula.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC8203BD7AC00FCA744 /* Nebula.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +48,6 @@
 		DA44212B203BD56F00BDD103 /* NebulaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaTests.swift; sourceTree = "<group>"; };
 		DA44212D203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DACBADC6203BD61200FCA744 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		DACBADC8203BD7AC00FCA744 /* Nebula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nebula.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +116,6 @@
 				DA442114203BD56F00BDD103 /* AppDelegate.swift */,
 				DA442116203BD56F00BDD103 /* art.scnassets */,
 				DA442118203BD56F00BDD103 /* ViewController.swift */,
-				DACBADC8203BD7AC00FCA744 /* Nebula.swift */,
 				DACBADC6203BD61200FCA744 /* Util.swift */,
 				DA44211A203BD56F00BDD103 /* Main.storyboard */,
 				DA44211D203BD56F00BDD103 /* Assets.xcassets */,
@@ -355,7 +352,6 @@
 			files = (
 				DA442119203BD56F00BDD103 /* ViewController.swift in Sources */,
 				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
-				DACBADC9203BD7AC00FCA744 /* Nebula.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
