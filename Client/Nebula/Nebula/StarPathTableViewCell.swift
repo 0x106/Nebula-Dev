@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class StarPathTableViewCell: UITableViewCell {
     
@@ -14,9 +15,8 @@ class StarPathTableViewCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var photoImageView: UIImageView!
-    @IBOutlet weak var uploadButton: UIButton!
-//    @IBOutlet weak var textField: UITextField!
-    
+    @IBOutlet weak var uploadButton: NebulaButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -29,7 +29,52 @@ class StarPathTableViewCell: UITableViewCell {
     }
 
     @IBAction func uploadButtonTapped(_ sender: Any) {
-        print("pressed button")
+        print("pressed button: \(self.uploadButton.tag)")
+        
+        var data: JSON = JSON()
+        var images: [UIImage] = [UIImage]()
+        
+        // get the path to the data
+        let dirPath = getDocumentsDirectory()
+        let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(self.uploadButton.key)?.path
+        let fileManager = FileManager.default
+        do {
+            let files = try fileManager.contentsOfDirectory(atPath: filePath!)
+         
+            // read the data into local variable
+            for fname in files {
+                
+                let __file = [filePath!, fname].joined(separator: "/")
+                
+                if fname.hasSuffix("json") {
+                    
+                    do {
+                        let __data = try Data(contentsOf:  URL(fileURLWithPath: __file))
+                        data = try JSON(data: __data)
+                    } catch {
+                        print("couldn't read json data")
+                    }
+                    
+                } else {
+                    
+                    if let image = UIImage(contentsOfFile: __file) {
+                        images.append(image)
+                    }
+                }
+            }
+            
+        } catch {
+            print("no available files")
+        }
+        
+        // connect to database
+        
+        // send data
     }
 
+}
+
+
+class NebulaButton: UIButton {
+    var key: String = ""
 }

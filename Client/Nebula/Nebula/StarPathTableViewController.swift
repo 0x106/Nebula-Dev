@@ -27,17 +27,15 @@ class StarPathTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+//         self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textField.isHidden = true
         self.view.addSubview(textField)
         
-//        self.tableView.backgroundView = UIView()
         tap.addTarget(self, action: #selector(self.dismissKeyboard) )
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
-//        self.tableView.backgroundView?.addGestureRecognizer(recognizer)
         
         self.metadata = initMetadata()
         self.loadSampleStarPaths()
@@ -100,6 +98,9 @@ class StarPathTableViewController: UITableViewController {
         cell.nameLabel.text = starpath.displayname
         cell.uploadButton.setImage(UIImage(named: "upload"), for: .normal)
         cell.photoImageView?.image = starpath.image
+        
+        cell.uploadButton.tag = indexPath.row
+        cell.uploadButton.key = starpath.key
 
         return cell
     }
