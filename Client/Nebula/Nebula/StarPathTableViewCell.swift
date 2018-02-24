@@ -11,10 +11,11 @@ import UIKit
 class StarPathTableViewCell: UITableViewCell {
     
     //MARK: Properties
-
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var uploadButton: UIButton!
+//    @IBOutlet weak var textField: UITextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,6 +26,10 @@ class StarPathTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+
+    @IBAction func uploadButtonTapped(_ sender: Any) {
+        print("pressed button")
     }
 
 }

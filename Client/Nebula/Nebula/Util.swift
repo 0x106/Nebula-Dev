@@ -36,6 +36,23 @@ func initMetadata() -> JSON {
     return _metadata
 }
 
+func updateMetadata(_ _metadata: JSON) {
+    // get path
+    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
+    
+    print(_metadata)
+    
+    // write
+    do {
+        let data = try _metadata.rawData()
+        try data.write(to: metadataPath)
+        print("Wrote metadata to file.")
+    } catch {
+        print("Couldn't write to file: \(metadatafilename)")
+    }
+}
+
 extension SCNVector3
 {
     /**

@@ -28,7 +28,7 @@
         <scene sceneID="6OM-3z-goP">
             <objects>
                 <tableViewController title="Menu" id="Q8m-LT-NKU" customClass="StarPathTableViewController" customModule="Nebula" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="g6g-fB-k6z">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="g6g-fB-k6z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,27 +40,33 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="nebula" translatesAutoresizingMaskIntoConstraints="NO" id="mPa-0Q-EgY">
-                                            <rect key="frame" x="0.0" y="0.0" width="89" height="89"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEy-Lk-dN1">
-                                            <rect key="frame" x="323" y="43" width="36" height="36"/>
+                                            <rect key="frame" x="323" y="26" width="36" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="upload"/>
+                                            <connections>
+                                                <action selector="uploadButtonTapped:" destination="gje-RZ-hpl" eventType="touchUpInside" id="Zq0-G5-5nn"/>
+                                            </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2r-4U-m4B">
-                                            <rect key="frame" x="97" y="11" width="262" height="21"/>
+                                            <rect key="frame" x="104" y="34" width="211" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <accessibility key="accessibilityConfiguration">
+                                                <accessibilityTraits key="traits" staticText="YES" allowsDirectInteraction="YES"/>
+                                            </accessibility>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L2S-j2-rNU">
+                                            <rect key="frame" x="16" y="20" width="80" height="48"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLabel" destination="U2r-4U-m4B" id="NiY-Dd-R93"/>
-                                    <outlet property="photoImageView" destination="mPa-0Q-EgY" id="hbl-ui-QSd"/>
+                                    <outlet property="photoImageView" destination="L2S-j2-rNU" id="1Uk-Ov-TqV"/>
                                     <outlet property="uploadButton" destination="OEy-Lk-dN1" id="PMa-SL-m7R"/>
                                 </connections>
                             </tableViewCell>
@@ -77,7 +83,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="nebula" width="4155" height="2770"/>
         <image name="upload" width="50" height="50"/>
     </resources>
 </document>

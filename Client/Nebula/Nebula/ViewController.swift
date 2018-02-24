@@ -55,23 +55,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
        self.metadata = initMetadata()
     }
     
-    func updateMetadata(_ _metadata: JSON) {
-        // get path
-        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
-        
-        print(self.metadata)
-        
-        // write
-        do {
-            guard let __metadata = self.metadata else {return}
-            let data = try __metadata.rawData()
-            try data.write(to: metadataPath)
-            print("Wrote metadata to file.")
-        } catch {
-            print("Couldn't write to file: \(metadatafilename)")
-        }
-    }
+//    func updateMetadata(_ _metadata: JSON) {
+//        // get path
+//        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//        let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
+//
+//        print(self.metadata)
+//
+//        // write
+//        do {
+//            guard let __metadata = self.metadata else {return}
+//            let data = try __metadata.rawData()
+//            try data.write(to: metadataPath)
+//            print("Wrote metadata to file.")
+//        } catch {
+//            print("Couldn't write to file: \(metadatafilename)")
+//        }
+//    }
     
     func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
         
@@ -131,6 +131,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                                 // initially just the folder (key) name - can be changed by the user
                                 "filename": self.recordKey,
                                 "dataname": jsonFileName,
+                                "displayname": "Untitled",
                                 
                                 // has the data been uploaded to the cloud?
                                 "uploaded": "false",
@@ -138,7 +139,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                             ]
                             
                             self.metadata![self.recordKey] = datum
-                            self.updateMetadata(self.metadata!)
+                            updateMetadata(self.metadata!)
                         }
                     }catch {
                         print("write json failed...")
