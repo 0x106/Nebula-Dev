@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # data is expected to be in a dir ~/helix/Atlas/Nebula/data/$ID
-id="09"
+id="10"
 
 src="/Users/jordancampbell/helix/Atlas/Nebula/data/$id"
 dst="/Users/jordancampbell/helix/Atlas/Nebula/Unity/Nebula/Assets/Resources"

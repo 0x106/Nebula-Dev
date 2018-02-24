@@ -1,3 +1,7 @@
 Server/node_modules
 data
 Client/Nebula/Nebula/Atlas.Nebula*
+Unity/Nebula/Library
+Unity/Nebula/Assets
+Unity/Nebula/Temp
+Client/Nebula/Pods
