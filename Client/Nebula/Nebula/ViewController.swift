@@ -26,10 +26,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var dataWriteComplete: Bool = false
     var jsonObject = [String:Any]()
     var recordStartTime: String?
+    var recordKey: String = ""
     var frameCounter: Int = 0
     var atlasSession: ARSession = ARSession()
     var sessionframeCounter: Int = 0
     let grid: WorldGrid = WorldGrid()
+    
+    var metadata: JSON?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +51,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.scene = scene
         
         self.addButton()
+        
+       self.metadata = initMetadata()
+    }
+    
+    func updateMetadata(_ _metadata: JSON) {
+        // get path
+        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
+        
+        print(self.metadata)
+        
+        // write
+        do {
+            guard let __metadata = self.metadata else {return}
+            let data = try __metadata.rawData()
+            try data.write(to: metadataPath)
+            print("Wrote metadata to file.")
+        } catch {
+            print("Couldn't write to file: \(metadatafilename)")
+        }
     }
     
     func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
@@ -90,10 +113,33 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 if valid {
                     let json = JSON(self.jsonObject)
                     let representation = json.rawString([.castNilToNSNull: true])
-                    
-                    let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: getCurrentTime()+".json")
+                    let endtime = getCurrentTime()
+                    let jsonFileName = endtime+".json"
+//                    let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonFileName)
+                    let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
                     do {
                         try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
+                        if var _ = self.metadata {
+                            
+                            let datum: JSON = [
+                                
+                                // keep a record of this in case we want to display the total
+                                // recording time of this scene
+                                "starttime": self.recordStartTime!,
+                                "endtime": endtime,
+                                
+                                // initially just the folder (key) name - can be changed by the user
+                                "filename": self.recordKey,
+                                "dataname": jsonFileName,
+                                
+                                // has the data been uploaded to the cloud?
+                                "uploaded": "false",
+                                
+                            ]
+                            
+                            self.metadata![self.recordKey] = datum
+                            self.updateMetadata(self.metadata!)
+                        }
                     }catch {
                         print("write json failed...")
                     }
@@ -104,7 +150,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 self.recordStartTime = nil
                 
                 print("All data written and objects cleared.")
-                exit(EXIT_SUCCESS)
+//                exit(EXIT_SUCCESS)
             }
         }
     }
@@ -168,7 +214,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 
                 if self.recordStartTime == nil {
                     self.recordStartTime = getCurrentTime()
-                    print("Recording beginning at:", self.recordStartTime! as String)
+                    self.recordKey = uniqueKey()
+                    print("Recording beginning at: \(self.recordStartTime! as String) with key: \(self .recordKey)")
                 }
                 
                 self.frameCounter += 1      // we're adding a frame to the stack
@@ -181,7 +228,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     
-                    let filePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonNode["imagename"] as! String)
+//                    let filePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonNode["imagename"] as! String)
+                    let filePath = getFilePath(fileFolder: self.recordKey, fileName: jsonNode["imagename"] as! String)
                     try? image.write(to: URL(fileURLWithPath: filePath))
                     self.frameCounter -= 1  // removing a frame from the stack
                     
@@ -268,7 +316,7 @@ class WorldGrid {
     var edges: [SCNNode] = [SCNNode]()
     var starpathEdges: [SCNNode] = [SCNNode]()
     
-    var canAdd: Bool = true
+    var canAdd: Bool = false
     
     init() {
         markers.append(Marker("+X"))

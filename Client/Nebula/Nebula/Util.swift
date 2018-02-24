@@ -12,6 +12,29 @@
 import Foundation
 import SceneKit
 import ARKit
+import SwiftyJSON
+
+let metadatafilename: String = "metadata.json"
+func initMetadata() -> JSON {
+    
+    var _metadata = JSON()
+    
+    // get path
+    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
+    
+    // read
+    do {
+        let data = try Data(contentsOf: metadataPath)
+        let response = try JSON(data: data)
+        _metadata = response
+        print("Read from metadata:")
+        print(_metadata)
+    } catch {
+    }
+    
+    return _metadata
+}
 
 extension SCNVector3
 {
@@ -117,7 +140,7 @@ func getDocumentsDirectory() -> String {
     return dirPath
 }
 
-func getFilePath(fileFolder folderName:String, fileName fileName: String) -> String {
+func getFilePath(fileFolder folderName: String, fileName fileName: String) -> String {
     let dirPath = getDocumentsDirectory()
     let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(folderName)?.path
     let fileManager = FileManager.default
@@ -132,6 +155,7 @@ func getFilePath(fileFolder folderName:String, fileName fileName: String) -> Str
     let pathArray = [filePath!, fileName]
     return pathArray.joined(separator: "/")
 }
+
 
 // MARK: - Matrix Transform
 
@@ -283,4 +307,49 @@ extension SCNNode {
         return self
     }
 }
+//func randomStringWithLength(len: Int) -> NSString {
+//
+//    let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+//
+//    let randomString : NSMutableString = NSMutableString(capacity: len)
+//
+//    for _ in 1...len{
+//        let length = UInt32 (letters.length)
+//        let rand = arc4random_uniform(length)
+//        randomString.appendFormat("%C", letters.character(at: Int(rand)))
+//    }
+//
+//    return randomString
+//}
+
+
+
+func uniqueKey() -> String {
+    
+    let chars : String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let N: Int = 8
+    var output = ""
+    
+    for _ in 0..<N {
+        let index = Int(arc4random_uniform( UInt32(chars.count) ))
+        output += String(chars[chars.index(chars.startIndex, offsetBy: index)])
+    }
+    
+    return output
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// end
+
 
