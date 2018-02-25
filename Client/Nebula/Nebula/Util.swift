@@ -363,7 +363,32 @@ func uniqueKey() -> String {
 
 
 
-
+func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
+    
+    let currentTime:String = String(format:"%f", currentFrame.timestamp)
+    let imageName = currentTime + ".jpg"
+    
+    let jsonObject: [String: Any] = [
+        "imagename": imageName,
+        "timestamp": currentFrame.timestamp,
+        "position": dictFromVector3(positionFromTransform(currentFrame.camera.transform)),
+        "rotation": dictFromVector3(currentFrame.camera.eulerAngles),
+        "transform": arrayFromTransform(currentFrame.camera.transform),
+        "intrinsics": arrayFromTransform(currentFrame.camera.intrinsics),
+        "projection": arrayFromTransform(currentFrame.camera.projectionMatrix),
+        "resolution": [
+            "width": currentFrame.camera.imageResolution.width,
+            "height": currentFrame.camera.imageResolution.height
+        ],
+        "light": currentFrame.lightEstimate?.ambientIntensity,
+        "pointcloud": [
+            "count": currentFrame.rawFeaturePoints?.points.count,
+            "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
+        ]
+    ]
+    
+    return jsonObject
+}
 
 
 

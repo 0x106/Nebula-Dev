@@ -20,9 +20,19 @@ class StarPathTableViewController: UITableViewController {
     let recognizer = UILongPressGestureRecognizer()
     let tap: UITapGestureRecognizer = UITapGestureRecognizer()
     
+    var inRefresh: Bool = false
+    
+//    var refreshControl: UIRefreshControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        self.re
+        refreshControl = UIRefreshControl()
+//        refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl!.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
+//        tableView.addSubview(refreshControl!)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -37,8 +47,28 @@ class StarPathTableViewController: UITableViewController {
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
         
-        self.metadata = initMetadata()
-        self.loadSampleStarPaths()
+        self.refresh()
+    }
+    
+    @IBAction func unwindToSceneList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? ViewController {
+            
+            // if a new scene was saved then we will need to re-load it.
+            self.refresh()
+        }
+    }
+
+    @objc func refresh() {
+        // Code to refresh table view
+        
+//        self.refresh()
+        if !self.inRefresh {
+            self.inRefresh = true
+            self.metadata = initMetadata()
+            self.loadStarpaths()
+            self.inRefresh = false
+            self.refreshControl?.endRefreshing()
+        }
     }
     
     //Calls this function when the tap is recognized.
@@ -58,20 +88,21 @@ class StarPathTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("\(self.data.count) rows in table")
         return self.data.count
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.labelToEdit = indexPath
-        
-        // if we tap on a cell, then stop editing anything
-        if self.textField.isFirstResponder {
-            self.clearTextInput()
-        } else {
-            print("Label was pressed")
-            self.textField.becomeFirstResponder()
-        }
+//        self.labelToEdit = indexPath
+//
+//        // if we tap on a cell, then stop editing anything
+//        if self.textField.isFirstResponder {
+//            self.clearTextInput()
+//        } else {
+//            print("Label was pressed")
+//            self.textField.becomeFirstResponder()
+//        }
     }
     
     func clearTextInput() {
@@ -91,16 +122,25 @@ class StarPathTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "StarPathTableViewCell", for: indexPath) as? StarPathTableViewCell else {
             fatalError("The dequeued cell is not an instance of StarPathTableViewCell.")
         }
+        
+        print("creating cell for: \(indexPath.row)")
 
         // Configure the cell...
         let starpath = self.data[indexPath.row]
         
         cell.nameLabel.text = starpath.displayname
-        cell.uploadButton.setImage(UIImage(named: "upload"), for: .normal)
+        
+        if self.metadata![starpath.key]["uploaded"] == "true" {
+            cell.uploadButton.setImage(UIImage(named: "done"), for: .normal)
+        } else {
+            cell.uploadButton.setImage(UIImage(named: "upload"), for: .normal)
+        }
+        
         cell.photoImageView?.image = starpath.image
         
         cell.uploadButton.tag = indexPath.row
         cell.uploadButton.key = starpath.key
+        cell.uploadButton.uid = self.metadata!["metauser"]["uid"].stringValue
 
         return cell
     }
@@ -168,24 +208,36 @@ class StarPathTableViewController: UITableViewController {
     
     //MARK: Private Methods
     
-    private func loadSampleStarPaths() {
+    private func loadStarpaths() {
+        
+        print("Loading all starpaths")
+        
+        self.data = [StarPath]()
         
         let images = [UIImage(named: "moonbase"), UIImage(named: "nebula"), UIImage(named: "spacex")]
         
-        guard let _ = self.metadata else {
-            print("cannot load metadata")
-            return
-        }
+        guard let _ = self.metadata else { print("cannot load metadata"); return }
+        
+        print("\(self.metadata!.count) items found")
         
         var index = 0
         for datum in self.metadata! {
+            
             let key = datum.0
             let value = datum.1
-            if let starpath = StarPath(key, value["displayname"].stringValue, value["uploaded"].stringValue, images[index]!) {
-                self.data.append(starpath)
+            
+            if key != "metauser" {
+                if let starpath = StarPath(key, value["displayname"].stringValue, value["uploaded"].stringValue, images[index % images.count]!) {
+                    self.data.append(starpath)
+                }
+                index += 1
             }
-            index += 1
         }
+        
+        print("\(self.data.count) items to display")
+        print("================================")
+        
+        self.tableView.reloadData()
         
     }
 

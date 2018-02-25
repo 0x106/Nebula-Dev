@@ -11,11 +11,13 @@
 		BD822D4B14FCC414EDF50976 /* Pods_Nebula.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AAD875A6549B90445643849 /* Pods_Nebula.framework */; };
 		DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442114203BD56F00BDD103 /* AppDelegate.swift */; };
 		DA442117203BD56F00BDD103 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA442116203BD56F00BDD103 /* art.scnassets */; };
-		DA442119203BD56F00BDD103 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ViewController.swift */; };
+		DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ARViewController.swift */; };
 		DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA44211D203BD56F00BDD103 /* Assets.xcassets */; };
 		DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */; };
 		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
 		DA5D8C172041399B006AA505 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5D8C162041399A006AA505 /* GoogleService-Info.plist */; };
+		DAAD37A82042413C00156B08 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD37A72042413C00156B08 /* Login.swift */; };
+		DAC0C752204234C500913F4B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC0C751204234C500913F4B /* Network.swift */; };
 		DACBADC7203BD61200FCA744 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC6203BD61200FCA744 /* Util.swift */; };
 		DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */; };
 		DAEBC266204149660023F2F7 /* StarPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC265204149660023F2F7 /* StarPath.swift */; };
@@ -43,7 +45,7 @@
 		DA442111203BD56F00BDD103 /* Nebula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nebula.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA442114203BD56F00BDD103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA442116203BD56F00BDD103 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		DA442118203BD56F00BDD103 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DA442118203BD56F00BDD103 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		DA44211B203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DA44211D203BD56F00BDD103 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA442120203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,6 +54,8 @@
 		DA44212B203BD56F00BDD103 /* NebulaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaTests.swift; sourceTree = "<group>"; };
 		DA44212D203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA5D8C162041399A006AA505 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DAAD37A72042413C00156B08 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		DAC0C751204234C500913F4B /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		DACBADC6203BD61200FCA744 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewCell.swift; sourceTree = "<group>"; };
 		DAEBC265204149660023F2F7 /* StarPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPath.swift; sourceTree = "<group>"; };
@@ -123,12 +127,14 @@
 			children = (
 				DA442114203BD56F00BDD103 /* AppDelegate.swift */,
 				DA442116203BD56F00BDD103 /* art.scnassets */,
-				DA442118203BD56F00BDD103 /* ViewController.swift */,
+				DA442118203BD56F00BDD103 /* ARViewController.swift */,
 				DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */,
 				DA44211A203BD56F00BDD103 /* Main.storyboard */,
 				DAEBC265204149660023F2F7 /* StarPath.swift */,
 				DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */,
 				DACBADC6203BD61200FCA744 /* Util.swift */,
+				DAAD37A72042413C00156B08 /* Login.swift */,
+				DAC0C751204234C500913F4B /* Network.swift */,
 				DA44211D203BD56F00BDD103 /* Assets.xcassets */,
 				DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */,
 				DA442122203BD56F00BDD103 /* Info.plist */,
@@ -278,6 +284,8 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Nebula/Pods-Nebula-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -286,6 +294,8 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -321,9 +331,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Nebula/Pods-Nebula-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -369,10 +382,12 @@
 			files = (
 				DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */,
 				DAEBC266204149660023F2F7 /* StarPath.swift in Sources */,
-				DA442119203BD56F00BDD103 /* ViewController.swift in Sources */,
+				DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */,
 				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
 				DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */,
+				DAC0C752204234C500913F4B /* Network.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
+				DAAD37A82042413C00156B08 /* Login.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

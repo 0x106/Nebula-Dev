@@ -15,5 +15,8 @@ target 'Nebula' do
   pod 'Socket.IO-Client-Swift', '~> 13.1.0'  
   pod 'SwiftyJSON'
   pod 'Firebase/Core'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Auth'
+  pod 'GoogleSignIn'
 
 end

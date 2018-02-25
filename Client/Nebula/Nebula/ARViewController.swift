@@ -14,10 +14,13 @@ import UIKit
 import SceneKit
 import ARKit
 import SwiftyJSON
+import Firebase
 
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var sceneRecordCompletionButton: UIBarButtonItem!
+    
     let recordbutton = UIButton()
     let starpathbutton = UIButton()
     var trackingReady: Bool = false
@@ -33,6 +36,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     let grid: WorldGrid = WorldGrid()
     
     var metadata: JSON?
+    
+    var saveCurrentStarpath: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,52 +57,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         self.addButton()
         
-       self.metadata = initMetadata()
-    }
-    
-//    func updateMetadata(_ _metadata: JSON) {
-//        // get path
-//        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-//        let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
-//
-//        print(self.metadata)
-//
-//        // write
-//        do {
-//            guard let __metadata = self.metadata else {return}
-//            let data = try __metadata.rawData()
-//            try data.write(to: metadataPath)
-//            print("Wrote metadata to file.")
-//        } catch {
-//            print("Couldn't write to file: \(metadatafilename)")
-//        }
-//    }
-    
-    func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
+        self.sceneRecordCompletionButton.isEnabled = false
+//        self.sceneRecordCompletionButton.isEnabled = true
+//        self.sceneRecordCompletionButton.tintColor = UIColor.blue
+//        self.sceneRecordCompletionButton?.setTitleTextAttributes([NSAttributedStringKey.strokeColor : UIColor.blue], for: UIControlState.normal )
+//        self.sceneRecordCompletionButton?.set
         
-        let currentTime:String = String(format:"%f", currentFrame.timestamp)
-        let imageName = currentTime + ".jpg"
-        
-        let jsonObject: [String: Any] = [
-            "imagename": imageName,
-            "timestamp": currentFrame.timestamp,
-            "position": dictFromVector3(positionFromTransform(currentFrame.camera.transform)),
-            "rotation": dictFromVector3(currentFrame.camera.eulerAngles),
-            "transform": arrayFromTransform(currentFrame.camera.transform),
-            "intrinsics": arrayFromTransform(currentFrame.camera.intrinsics),
-            "projection": arrayFromTransform(currentFrame.camera.projectionMatrix),
-            "resolution": [
-                "width": currentFrame.camera.imageResolution.width,
-                "height": currentFrame.camera.imageResolution.height
-            ],
-            "light": currentFrame.lightEstimate?.ambientIntensity,
-            "pointcloud": [
-                "count": currentFrame.rawFeaturePoints?.points.count,
-                "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
-            ]
-        ]
-        
-        return jsonObject
+        self.metadata = initMetadata()
     }
     
     func writeData() {
@@ -147,12 +113,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 } else {
                     print("the json object to write is not valid")
                 }
-                self.jsonObject.removeAll()
-                self.recordStartTime = nil
                 
-                print("All data written and objects cleared.")
-//                exit(EXIT_SUCCESS)
+                DispatchQueue.main.async {
+                    self.jsonObject.removeAll()
+                    self.recordStartTime = nil
+                    
+                    self.sceneRecordCompletionButton.isEnabled = true
+                    print(self.sceneRecordCompletionButton?.isEnabled)
+                    
+                    print("All data written and objects cleared.")
+                }
             }
+        } else {
         }
     }
     
@@ -221,7 +193,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 
                 self.frameCounter += 1      // we're adding a frame to the stack
                 DispatchQueue.global(qos: .utility).async {
-                    let jsonNode = self.currentFrameInfoToDic(currentFrame: frame)
+                
+                    let jsonNode = currentFrameInfoToDic(currentFrame: frame)
                     self.jsonObject[jsonNode["imagename"] as! String] = jsonNode
                     
                     let json = JSON(jsonNode)
@@ -233,11 +206,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     let filePath = getFilePath(fileFolder: self.recordKey, fileName: jsonNode["imagename"] as! String)
                     try? image.write(to: URL(fileURLWithPath: filePath))
                     self.frameCounter -= 1  // removing a frame from the stack
-                    
                     self.writeData()
                 }
             } else if self.trackingON {
                 self.trackingON = false
+                
             }
         }
         
@@ -255,6 +228,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // Run the view's session
         sceneView.session.run(configuration)
+        
+//        sceneView.session.pause()
     }
 }
 
