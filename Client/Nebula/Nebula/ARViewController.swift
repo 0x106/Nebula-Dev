@@ -86,7 +86,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     do {
                         try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
                         
-                        saveData(json)
+                        saveData(json, self.metadata!["metauser"]["uid"].stringValue)
                         
                         if var _ = self.metadata {
                             

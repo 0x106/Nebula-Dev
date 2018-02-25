@@ -34,7 +34,7 @@
       metadataReference.on('value', function(snapshot) {
         if (snapshot) {
 
-          metadata = snapshot.val();
+          metadata = snapshot.val()["metadata"];
           var sceneWrapper = document.getElementById("dashboard-scenes");
 
           for (key in metadata) {
