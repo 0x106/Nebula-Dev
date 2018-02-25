@@ -14,45 +14,6 @@ import SceneKit
 import ARKit
 import SwiftyJSON
 
-let metadatafilename: String = "metadata.json"
-func initMetadata() -> JSON {
-    
-    var _metadata = JSON()
-    
-    // get path
-    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-    let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
-    
-    // read
-    do {
-        let data = try Data(contentsOf: metadataPath)
-        let response = try JSON(data: data)
-        _metadata = response
-        print("Read from metadata:")
-        print(_metadata)
-    } catch {
-    }
-    
-    return _metadata
-}
-
-func updateMetadata(_ _metadata: JSON) {
-    // get path
-    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-    let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
-    
-    print(_metadata)
-    
-    // write
-    do {
-        let data = try _metadata.rawData()
-        try data.write(to: metadataPath)
-        print("Wrote metadata to file.")
-    } catch {
-        print("Couldn't write to file: \(metadatafilename)")
-    }
-}
-
 extension SCNVector3
 {
     /**
@@ -380,11 +341,11 @@ func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
             "width": currentFrame.camera.imageResolution.width,
             "height": currentFrame.camera.imageResolution.height
         ],
-        "light": currentFrame.lightEstimate?.ambientIntensity,
-        "pointcloud": [
-            "count": currentFrame.rawFeaturePoints?.points.count,
-            "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
-        ]
+//        "light": currentFrame.lightEstimate?.ambientIntensity,
+//        "pointcloud": [
+//            "count": currentFrame.rawFeaturePoints?.points.count,
+//            "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
+//        ]
     ]
     
     return jsonObject

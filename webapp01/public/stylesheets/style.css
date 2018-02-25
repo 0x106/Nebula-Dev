@@ -32,7 +32,7 @@ button.button-index {
 }
 
 .button-style {
-  display: none;
+  /* display: none; */
   background-color: white;
   color: black;
   /* border: 2px solid #4CAF50; /* Green */ */
@@ -53,17 +53,6 @@ button {
     display: none;
 }
 
-
-ul.ul-dashboard {
-  text-decoration: none;
-  list-style-type: none;
-}
-
-li.li-dashboard {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .grid-item {
   text-align: center;
 }
@@ -79,3 +68,24 @@ li.li-dashboard {
   justify-items: center;
   align-items: center;
 }
+
+#dashboard-heading {
+  display: none;
+}
+#dashboard-scenes {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* end */

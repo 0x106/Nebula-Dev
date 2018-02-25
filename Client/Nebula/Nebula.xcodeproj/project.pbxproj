@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6D84C7BA38B0843E9E2DAA86 /* Pods_NebulaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38297F3961B85CC465EF30E2 /* Pods_NebulaTests.framework */; };
 		BD822D4B14FCC414EDF50976 /* Pods_Nebula.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AAD875A6549B90445643849 /* Pods_Nebula.framework */; };
+		DA1C58F6204351A500CE302D /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C58F5204351A500CE302D /* Metadata.swift */; };
 		DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442114203BD56F00BDD103 /* AppDelegate.swift */; };
 		DA442117203BD56F00BDD103 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA442116203BD56F00BDD103 /* art.scnassets */; };
 		DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ARViewController.swift */; };
@@ -42,6 +43,7 @@
 		97E8C0DB2DFF0A3F9857B1ED /* Pods-NebulaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NebulaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NebulaTests/Pods-NebulaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nebula.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nebula/Pods-Nebula.release.xcconfig"; sourceTree = "<group>"; };
 		9AAD875A6549B90445643849 /* Pods_Nebula.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nebula.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1C58F5204351A500CE302D /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		DA442111203BD56F00BDD103 /* Nebula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nebula.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA442114203BD56F00BDD103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA442116203BD56F00BDD103 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				DAEBC265204149660023F2F7 /* StarPath.swift */,
 				DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */,
 				DACBADC6203BD61200FCA744 /* Util.swift */,
+				DA1C58F5204351A500CE302D /* Metadata.swift */,
 				DAAD37A72042413C00156B08 /* Login.swift */,
 				DAC0C751204234C500913F4B /* Network.swift */,
 				DA44211D203BD56F00BDD103 /* Assets.xcassets */,
@@ -290,6 +293,7 @@
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -300,6 +304,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,6 +392,7 @@
 				DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */,
 				DAC0C752204234C500913F4B /* Network.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
+				DA1C58F6204351A500CE302D /* Metadata.swift in Sources */,
 				DAAD37A82042413C00156B08 /* Login.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

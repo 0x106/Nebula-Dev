@@ -1,65 +1,135 @@
 
 <head>
   <script type="text/javascript">
+
+    var metadata = {};
+
+    function hideIndex() {
+      document.getElementById('index-heading').style.display = 'none';
+      document.getElementById('signinbuttonlabel').style.display = 'none';
+    }
+    function showIndex() {
+      document.getElementById('index-heading').style.display = 'block';
+      document.getElementById('signinbuttonlabel').style.display = 'block';
+    }
+    function hideDashboard() {
+      document.getElementById('dashboard-heading').style.display = 'none';
+      document.getElementById('dashboard-scenes').style.display = 'none';
+    }
+    function showDashboard() {
+      document.getElementById('dashboard-heading').style.display = 'block';
+      document.getElementById('dashboard-scenes').style.display = 'grid';
+    }
+
+    function imageDownload(event) {
+      console.log(`Image ${event.target.id} was clicked`);
+
+    }
+
+    function getMetadata() {
+
+      var uid = "WTWSN9Uu8EapX1nqCln0gjlLvhI3";
+      var metadataReference = firebase.database().ref('users/' + uid);
+
+      metadataReference.on('value', function(snapshot) {
+        if (snapshot) {
+
+          metadata = snapshot.val();
+          var sceneWrapper = document.getElementById("dashboard-scenes");
+
+          for (key in metadata) {
+            if (key !== "metauser") {
+              console.log(metadata[key]["displayname"]);
+
+              var div = document.createElement("div");
+              div.className = "grid-item";
+
+              var title = document.createElement("p");
+              title.className = "sceneTitle";
+              title.innerHTML = metadata[key]["displayname"];
+
+              // var image = document.createElement("img");
+              // image.src = "https://www.atlasreality.xyz/boltFill.svg";
+              // image.height = "48";
+              // image.width = "48";
+
+              var image = document.createElement("input");
+              image.type = "image"
+              image.src = "https://www.atlasreality.xyz/boltFill.svg";
+              image.height = "48";
+              image.width = "48";
+              image.id = key;
+              console.log(key);
+              // image.addEventListener('click', function(){imageDownload(key)}, false);
+              image.addEventListener('click', imageDownload, false);
+
+              // var href = document.createElement("a");
+
+              div.appendChild(image);
+              div.appendChild(title);
+              sceneWrapper.appendChild(div);
+            }
+
+          }
+        }
+      });
+    }
+
     /**
      * Function called when clicking the Login/Logout button.
      */
-    // [START buttoncallback]
     function toggleSignIn() {
-      if (!firebase.auth().currentUser) {
-        // [START createprovider]
-        var provider = new firebase.auth.GoogleAuthProvider();
-        // [END createprovider]
-        // [START addscopes]
-        // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-        // [END addscopes]
-        // [START signin]
-        firebase.auth().signInWithPopup(provider).then(function(result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = result.credential.accessToken;
-          // The signed-in user info.
-          var user = result.user;
-          console.log(user);
-          // [START_EXCLUDE]
-          // document.getElementById('quickstart-oauthtoken').textContent = token;
-          // [END_EXCLUDE]
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // [START_EXCLUDE]
-          if (errorCode === 'auth/account-exists-with-different-credential') {
-            alert('You have already signed up with a different auth provider for that email.');
-            // If you are using multiple auth providers on your app you should handle linking
-            // the user's accounts here.
-          } else {
-            console.error(error);
-          }
-          // [END_EXCLUDE]
-        });
-        // [END signin]
-      } else {
-        // [START signout]
-        firebase.auth().signOut();
-        // [END signout]
-      }
-      // [START_EXCLUDE]
+
+      hideIndex();
+
+      getMetadata();
+
+      showDashboard();
+
+
+
+      // if (!firebase.auth().currentUser) {
+      //   var provider = new firebase.auth.GoogleAuthProvider();
+      //   firebase.auth().signInWithPopup(provider).then(function(result) {
+      //     // This gives you a Google Access Token. You can use it to access the Google API.
+      //     var token = result.credential.accessToken;
+      //     // The signed-in user info.
+      //     var user = result.user;
+      //     console.log(user);
+      //     hideIndexPage();
+      //     showDashboard();
+      //     // document.getElementById('quickstart-oauthtoken').textContent = token;
+      //   }).catch(function(error) {
+      //     // Handle Errors here.
+      //     var errorCode = error.code;
+      //     var errorMessage = error.message;
+      //     // The email of the user's account used.
+      //     var email = error.email;
+      //     // The firebase.auth.AuthCredential type that was used.
+      //     var credential = error.credential;
+      //     if (errorCode === 'auth/account-exists-with-different-credential') {
+      //       alert('You have already signed up with a different auth provider for that email.');
+      //       // If you are using multiple auth providers on your app you should handle linking
+      //       // the user's accounts here.
+      //     } else {
+      //       console.error(error);
+      //     }
+      //   });
+      // } else {
+      //   firebase.auth().signOut();
+      // }
       // document.getElementById('quickstart-sign-in').disabled = true;
-      // [END_EXCLUDE]
     }
-    // [END buttoncallback]
     /**
      * initApp handles setting up UI event listeners and registering Firebase auth listeners:
      *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
      *    out, and that is where we update the UI.
      */
     function initApp() {
+
+      // hideDashboard();
+
       // Listening for auth state changes.
-      // [START authstatelistener]
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // User is signed in.
@@ -70,23 +140,19 @@
           var isAnonymous = user.isAnonymous;
           var uid = user.uid;
           var providerData = user.providerData;
-          // [START_EXCLUDE]
+          // user will likely be signed in at this point
+          console.log("user is signed in");
           // document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
           // document.getElementById('quickstart-sign-in').textContent = 'Sign out';
           // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
-          // [END_EXCLUDE]
         } else {
           // User is signed out.
-          // [START_EXCLUDE]
           // document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
           // document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
           // document.getElementById('quickstart-account-details').textContent = 'null';
           // document.getElementById('quickstart-oauthtoken').textContent = 'null';
-          // [END_EXCLUDE]
         }
-        // [START_EXCLUDE]
         // document.getElementById('quickstart-sign-in').disabled = false;
-        // [END_EXCLUDE]
       });
       // [END authstatelistener]
       document.getElementById('signinbuttonlabel').addEventListener('click', toggleSignIn, false);
@@ -98,8 +164,8 @@
 </head>
 
 
-<!-- <h1 class="h1-index">{{title}}</h1> -->
-<h1 class="h1-dashboard">{{title}}</h1>
+<h1 class="h1-index" id="index-heading">{{title}}</h1>
+<h1 class="h1-dashboard" id="dashboard-heading">{{title}}</h1>
 
 <div class="button-index">
   <label for="signinbutton" class="button-style" id="signinbuttonlabel">
@@ -108,33 +174,37 @@
   <button id="signinbutton"></button>
 </div>
 
-
-<div class="wrapper" >
-
-  <div class="grid-item">
-      <img src="https://www.atlasreality.xyz/boltFill.svg" alt={{this.aid}} height="48" width="48">
-      <p class="sceneTitle">Neuromancer</p>
-  </div>
-
-  <div class="grid-item">
-      <img src="https://www.atlasreality.xyz/boltFill.svg" alt={{this.aid}} height="48" width="48">
-      <p class="sceneTitle">Wintermute</p>
-  </div>
-
-  <div class="grid-item">
-      <img src="https://www.atlasreality.xyz/boltFill.svg" alt={{this.aid}} height="48" width="48">
-      <p class="sceneTitle">Hyperion</p>
-  </div>
-
+<div class="wrapper" id="dashboard-scenes">
 </div>
 
 
-<!-- <ul class="ul-dashboard">
-<li class="li-dashboard">Item One</li>
-<li class="li-dashboard">Item Two</li>
-<li class="li-dashboard">Item Three</li>
-</ul> -->
 
+
+<!--
+
+[DONE] 1. After signin go to the "dashboard page"
+    - hide all the index elements
+    - show all the dashboard elements
+
+[DONE] 2. Retrieve the list of folders from the storage uid
+
+[DONE] 3. Get the relevant information
+
+[DONE] 4. Create / display the list of scenes
+    - should be able to programmatically add
+    - https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+
+5. add download button
+
+6. allow download on click
+
+7. onHover show download image
+
+8. download when click image
+
+
+
+ -->
 
 
 
@@ -147,28 +217,3 @@
 
 
 <!-- end -->
-
-
-
-
-<!--
-
-1. After signin go to the "dashboard page"
-    - hide all the index elements
-    - show all the dashboard elements
-
-2. Retrieve the list of folders from the storage uid
-
-3. Get the relevant information
-
-4. Create / display the list of scenes
-    - should be able to programmatically add
-    - https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-
-5. add download button
-
-6. allow download on click
-
-
-
- -->

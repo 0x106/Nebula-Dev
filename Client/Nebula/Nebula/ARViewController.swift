@@ -85,6 +85,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
                     do {
                         try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
+                        
+                        saveData(json)
+                        
                         if var _ = self.metadata {
                             
                             let datum: JSON = [
