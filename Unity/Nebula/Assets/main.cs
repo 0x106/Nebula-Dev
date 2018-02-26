@@ -54,8 +54,6 @@ public class main : MonoBehaviour {
 
 		string texturePath = "NebulaTextures/" + currentKey;
 
-		print (currentKey);
-
 		nebulaTexture = Resources.Load( texturePath ) as Texture2D;
 		quad.GetComponent<Renderer>().material.mainTexture = nebulaTexture;
 
@@ -91,7 +89,7 @@ public class main : MonoBehaviour {
 		p.m21 = cameraData.data[counter].intrinsics.m21 * alpha;
 		p.m22 = cameraData.data[counter].intrinsics.m22 * alpha;
 
-//		Camera.main.projectionMatrix = p;
+		Camera.main.projectionMatrix = p;
 
 		counter += 1;
 		if (counter >= cameraData.data.Length) {
@@ -102,6 +100,7 @@ public class main : MonoBehaviour {
 	void readData() {
 		string _data = ((TextAsset)Resources.Load ("data")).text;
 		cameraData = JsonUtility.FromJson<CameraData> (_data);
+		print (cameraData.data[0].key);
 	}
 
 }

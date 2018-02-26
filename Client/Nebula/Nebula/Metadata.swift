@@ -66,7 +66,8 @@ func dataToDictionary(_ _data: JSON) -> String {//Dictionary<String, Dictionary<
     var outputString = "{ \"data\": ["
     var terminalString = "]}"
     
-    var key_list = "],\"keys\":["
+//    var key_list = "],\"keys\":["
+    var key_array = [String]()
     
     var num = 2
     var count = 0
@@ -171,12 +172,16 @@ func dataToDictionary(_ _data: JSON) -> String {//Dictionary<String, Dictionary<
         outputString += "\"rotation\":" + rotation.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
         outputString += "\"intrinsics\":" + intrinsics.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
         
+        key_array.append(key)
+        
+        let datum_key = removeFileExtension(value["imagename"].stringValue)
+        
         if count < totalNum-1 {
-            outputString += "\"key\": \"\(value["imagename"].stringValue)\"},"
-            key_list += "\"" + key + "\", "
+            outputString += "\"key\": \"\(datum_key)\"},"
+//            key_list += "\"" + key + "\", "
         } else {
-            outputString += "\"key\": \"\(value["imagename"].stringValue)\"}"
-            key_list += "\"" + key + "\""
+            outputString += "\"key\": \"\(datum_key)\"}"
+//            key_list += "\"" + key + "\""
         }
         
 //        + current.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}")
@@ -206,9 +211,29 @@ func dataToDictionary(_ _data: JSON) -> String {//Dictionary<String, Dictionary<
     
     }
     
+    key_array.sort()
+    var key_list = "],\"keys\":["
+    count = 0
+    for var k in key_array {
+        
+        k = removeFileExtension(k)
+        
+        if count < key_array.count - 1 {
+            key_list += "\"" + k + "\", "
+        } else {
+            key_list += "\"" + k + "\""
+        }
+        count += 1
+    }
+    
     outputString += key_list + terminalString
         
     return outputString
+}
+
+func removeFileExtension(_ _input: String) -> String {
+    let output: String = String(_input.prefix(upTo: _input.index(of: ".")!))
+    return output
 }
 
 func metadataToDictionary(_ _metadata: JSON) -> Dictionary<String, Dictionary<String, String>> {
