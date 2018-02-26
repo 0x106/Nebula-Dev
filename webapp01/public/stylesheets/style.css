@@ -97,17 +97,74 @@ button {
 
 .section02 {
   height: 100vh;
-  background-color: #247B7B;
+  /* background-color: #7BA6A9; */
 }
 
 
+.sceneTitle {
+	font-family: 'Inconsolata';
+}
 
+.signupline {
+  font-size: 1.5em;
+  font-weight: 300;
+  /* color: #E0E0E0; */
+  color: #42718A;
+}
+.email-button-style {
+    border: none; /*1px solid #ccc;*/
+    /*display: inline-block;*/
+    /*padding: 6px 12px;*/
+    cursor: pointer;
+}
 
+.loginformdiv {
+  line-height: 3.0;
+  position: fixed;
+  float: center;
+  top: 20%;
+  left: 20%;
+  font-size: 1.6em;
+  font-weight: 300;
+}
 
+#loginCTA {
+  font-weight: 300;
+  line-height: 2.0;
+  position: relative;
+  margin-top: 40px;
+}
 
+form input {
+  outline: 0;
+  border-width: 0 0 2px 0;
+  border-color: #3D405B;
+  font-size: 0.8em;
+  font-weight: 300;
+  padding-bottom: 10px;
+}
 
+.signup {
+	font-family: 'Inconsolata';
+  /*background-color: #E07D78;*/
+  /* border: 5px solid red; */
+  /* border-width: 0 0 2px 0; */
+  /* border-color: #81B29A; */
+  /* border-color: #FB887C; */
+  position: relative;
+  /* padding-bottom: 10px; */
+}
 
+#appleimagesignup {
+	display: none;
+}
 
+#appleimage {
+	cursor: pointer;
+}
 
+#thankyou {
+	display: none;
+}
 
 /* end */

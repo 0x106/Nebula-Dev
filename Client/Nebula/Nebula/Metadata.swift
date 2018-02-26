@@ -25,8 +25,6 @@ func initMetadata() -> JSON {
         let data = try Data(contentsOf: metadataPath)
         let response = try JSON(data: data)
         _metadata = response
-        print("Read from metadata:")
-        print(_metadata)
     } catch {
     }
     
@@ -44,7 +42,6 @@ func updateMetadata(_ _metadata: JSON) {
     do {
         let data = try _metadata.rawData()
         try data.write(to: metadataPath)
-        print("Wrote metadata to file.")
         
         var ref: DatabaseReference = Database.database().reference()
         let uid: String = _metadata["metauser"]["uid"].stringValue
@@ -53,7 +50,6 @@ func updateMetadata(_ _metadata: JSON) {
         ref.child("users").child(uid).child("metadata").setValue(metaDict)
         
     } catch {
-        print("Couldn't write to file: \(metadatafilename)")
     }
 }
 
@@ -67,14 +63,9 @@ func saveData(_ _data: JSON, _ _uid: String, _ _sceneKey: String) {
 func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Dictionary<String, String>>> {
     var output = Dictionary<String, Dictionary<String, Dictionary<String, String>>>()
     
-//    print("===============================")
     for datum in _data {
         var key = datum.0
         var value = datum.1
-        
-//        key = String(key.prefix(13)).replacingOccurrences(of: ".", with: "_")
-        
-//        print(value)
         
         let position: Dictionary<String, String> = [
             "x": value["position"]["x"].stringValue,
@@ -169,13 +160,8 @@ func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Di
         output[key]!["transform"] = transform
         output[key]!["intrinsics"] = intrinsics
     
-//        print(output)
-//        print("===============================")
-//        return
     }
-    
-    print(output)
-    
+        
     return output
 }
 

@@ -18,7 +18,6 @@
 		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
 		DA5D8C172041399B006AA505 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5D8C162041399A006AA505 /* GoogleService-Info.plist */; };
 		DAAD37A82042413C00156B08 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD37A72042413C00156B08 /* Login.swift */; };
-		DAC0C752204234C500913F4B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC0C751204234C500913F4B /* Network.swift */; };
 		DACBADC7203BD61200FCA744 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC6203BD61200FCA744 /* Util.swift */; };
 		DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */; };
 		DAEBC266204149660023F2F7 /* StarPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC265204149660023F2F7 /* StarPath.swift */; };
@@ -57,7 +56,6 @@
 		DA44212D203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA5D8C162041399A006AA505 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAAD37A72042413C00156B08 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
-		DAC0C751204234C500913F4B /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		DACBADC6203BD61200FCA744 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewCell.swift; sourceTree = "<group>"; };
 		DAEBC265204149660023F2F7 /* StarPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPath.swift; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 				DACBADC6203BD61200FCA744 /* Util.swift */,
 				DA1C58F5204351A500CE302D /* Metadata.swift */,
 				DAAD37A72042413C00156B08 /* Login.swift */,
-				DAC0C751204234C500913F4B /* Network.swift */,
 				DA44211D203BD56F00BDD103 /* Assets.xcassets */,
 				DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */,
 				DA442122203BD56F00BDD103 /* Info.plist */,
@@ -392,7 +389,6 @@
 				DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */,
 				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
 				DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */,
-				DAC0C752204234C500913F4B /* Network.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
 				DA1C58F6204351A500CE302D /* Metadata.swift in Sources */,
 				DAAD37A82042413C00156B08 /* Login.swift in Sources */,

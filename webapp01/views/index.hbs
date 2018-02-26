@@ -22,11 +22,29 @@
     <div class="grid-wrapper">
     <div class="second-wrapper">
 
-      <div class="grid-item">
-      </div>
+      <div class="grid-item"></div>
 
-      <div class="grid-item">
-        <img src="images/apple.png" width="100" height="100">
+      <div class="grid-item"  id="appleimagecontainer">
+        <img src="images/apple.png" width="100" height="100" id="appleimage">
+        <div id="appleimagesignup">
+          <p class="sceneTitle" style="font-size: 14px;">Please enter your email to receive a beta version of Nebula</p>
+          </br>
+          </br>
+          <div id="loginform">
+            <input type="text" name="email" placeholder="Email" size="60" id="emailinput"><br>
+            <div class="signupline">
+              <label for="loginbutton" class="email-button-style" id="loginbuttonlabel">
+                  <p id="loginCTA"> <span class="signup">Submit</span></p>
+              </label>
+              <button id="loginbutton"></button>
+            </div>
+          </div>
+        </div>
+
+        <div id="thankyou" class="sceneTitle">
+          <p>Thank you! We'll be in touch shortly.</p>
+        </div>
+
       </div>
 
       <div class="grid-item">

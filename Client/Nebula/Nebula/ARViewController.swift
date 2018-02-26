@@ -41,39 +41,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set the view's delegate
         sceneView.delegate = self
         self.sceneView.session.delegate = self
-        
-        // Show statistics such as fps and timing information
         sceneView.showsStatistics = false
-        
-        // Create a new scene
         let scene = SCNScene()
-        
-        // Set the scene to the view
         sceneView.scene = scene
         
         self.addButton()
         
         self.sceneRecordCompletionButton.isEnabled = false
-//        self.sceneRecordCompletionButton.isEnabled = true
-//        self.sceneRecordCompletionButton.tintColor = UIColor.blue
-//        self.sceneRecordCompletionButton?.setTitleTextAttributes([NSAttributedStringKey.strokeColor : UIColor.blue], for: UIControlState.normal )
-//        self.sceneRecordCompletionButton?.set
-        
         self.metadata = initMetadata()
     }
     
     func writeData() {
         
-        // we only want to write data when we have turned tracking off, and when there are no frames left to be written
         if self.frameCounter == 0 && self.trackingON == false {
             
             DispatchQueue.global(qos: .utility).async {
-                
-//                print("Writing data:", self.frameCounter)
                 
                 let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
                 if valid {
@@ -81,32 +65,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     
                     let dict = dataToDictionary(json)
                     
-//                    let representation = json.rawString([.castNilToNSNull: true])
                     let representation = dict.description
                     let endtime = getCurrentTime()
                     let jsonFileName = endtime+".json"
-//                    let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonFileName)
                     let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
                     do {
-//                        try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
                         try representation.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
-//                        saveData(json, self.metadata!["metauser"]["uid"].stringValue, self.recordKey)
                         
                         if var _ = self.metadata {
                             
                             let datum: JSON = [
-                                
-                                // keep a record of this in case we want to display the total
-                                // recording time of this scene
                                 "starttime": self.recordStartTime!,
                                 "endtime": endtime,
-                                
-                                // initially just the folder (key) name - can be changed by the user
                                 "filename": self.recordKey,
                                 "dataname": jsonFileName,
                                 "displayname": "Untitled",
-                                
-                                // has the data been uploaded to the cloud?
                                 "uploaded": "false",
                                 
                             ]
@@ -115,20 +88,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                             updateMetadata(self.metadata!)
                         }
                     }catch {
-//                        print("write json failed...")
                     }
                 } else {
-//                    print("the json object to write is not valid")
                 }
                 
                 DispatchQueue.main.async {
                     self.jsonObject.removeAll()
                     self.recordStartTime = nil
-                    
                     self.sceneRecordCompletionButton.isEnabled = true
-//                    print(self.sceneRecordCompletionButton?.isEnabled)
-                    
-//                    print("All data written and objects cleared.")
                 }
             }
         } else {
@@ -149,7 +116,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             }
         }
         
-        // if we're ready to track
         if self.trackingReady {
             
             self.sessionframeCounter += 1
@@ -160,26 +126,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 let position = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
                 
                 self.grid.add("", position, isstarpath: true)
-                
-//                var i = 0
-//                for n in self.grid.starpathEdges {
-//                    if i < self.grid.starpathEdges.count - 5 {
-//                        n.isHidden = false
-//                    } else {
-//                        n.isHidden = true
-//                    }
-//                    i += 1
-//                }
-//
-//                i = 0
-//                for n in self.grid.markers {
-//                    if i < self.grid.markers.count - 5 {
-//                        n.rootNode.isHidden = false
-//                    } else {
-//                        n.rootNode.isHidden = true
-//                    }
-//                    i += 1
-//                }
             }
             
             // show the button
@@ -195,7 +141,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 if self.recordStartTime == nil {
                     self.recordStartTime = getCurrentTime()
                     self.recordKey = uniqueKey()
-//                    print("Recording beginning at: \(self.recordStartTime! as String) with key: \(self .recordKey)")
                 }
                 
                 self.frameCounter += 1      // we're adding a frame to the stack
@@ -209,7 +154,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     
-//                    let filePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonNode["imagename"] as! String)
                     let filePath = getFilePath(fileFolder: self.recordKey, fileName: jsonNode["imagename"] as! String)
                     try? image.write(to: URL(fileURLWithPath: filePath))
                     self.frameCounter -= 1  // removing a frame from the stack
@@ -225,18 +169,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
-        
-//        self.sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         self.sceneView.automaticallyUpdatesLighting = true
-        sceneView.showsStatistics = true
-        
-        // Run the view's session
         sceneView.session.run(configuration)
-        
-//        sceneView.session.pause()
     }
 }
 
@@ -246,22 +181,17 @@ extension ViewController {
         let recordbuttonimg = UIImage(named: "buttonring")
         
         let size: Int = 64
-//        let bx1 = self.sceneView.bounds.midX - CGFloat( size / 2 )
-//        let by1 = self.sceneView.bounds.maxY - CGFloat( (recordbuttonimg?.cgImage?.height)! / 2 ) - CGFloat(size/2)
         let bx1 = CGFloat((self.sceneView.bounds.maxX/2) - 24)
         let by1 = CGFloat(self.sceneView.bounds.maxY - 80)
         
         recordbutton.frame = CGRect(x: bx1, y: by1, width: CGFloat(size), height: CGFloat(size))
         recordbutton.backgroundColor = .clear
         recordbutton.setImage(recordbuttonimg, for: .normal)
-//        recordbutton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
         recordbutton.clipsToBounds = true
         self.sceneView.addSubview(recordbutton)
         self.recordbutton.isHidden = true
         
-//        let bx2 = self.sceneView.bounds.midX - CGFloat( size / 2 )
-//        let by2 = self.sceneView.bounds.maxY - CGFloat( (recordbuttonimg?.cgImage?.height)! / 2 ) - CGFloat(size/2)
         let bx2 = CGFloat((self.sceneView.bounds.midX/2) - 24)
         let by2 = CGFloat(self.sceneView.bounds.maxY - 80)
         
@@ -278,7 +208,6 @@ extension ViewController {
     
     @objc func starpathButtonPressed() {
         if self.grid.canAdd {
-//            self.grid.starpath.isHidden = false
             self.grid.canAdd = false
         } else {
             self.grid.canAdd = true
@@ -318,7 +247,6 @@ class WorldGrid {
         }
         
         self.origin.rootNode.addChildNode(self.starpath)
-//        self.starpath.isHidden = true
     }
     
     func add(_ _label: String, _ _position: SCNVector3, isstarpath _isstarpath: Bool) {
@@ -357,11 +285,6 @@ class Marker {
         self.label = _label
         
         let depth: Float = 0.005
-        
-        // TEXT BILLBOARD CONSTRAINT
-        //        let billboardConstraint = SCNBillboardConstraint()
-        //        billboardConstraint.freeAxes = SCNBillboardAxis.Y
-        
         // TEXT
         let text = SCNText(string: self.label, extrusionDepth: CGFloat(depth))
         let font = UIFont(name: "Arial", size: 0.2)
@@ -386,9 +309,6 @@ class Marker {
         sphere.firstMaterial?.diffuse.contents = UIColor.white
         let sphereNode = SCNNode(geometry: sphere)
         sphereNode.name = "sphere"
-        
-        //        let sphereTranslation = SCNMatrix4MakeTranslation(0, -0.01, 0)
-        //        sphereNode.transform = sphereTranslation
         
         // TEXT PARENT NODE
         let textNodeParent = SCNNode()

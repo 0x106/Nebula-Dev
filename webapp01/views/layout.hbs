@@ -3,6 +3,7 @@
   <head>
     <title>{{title}}</title>
     <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase-auth.js"></script>
@@ -28,6 +29,20 @@
 
       var metadata = {};
       var uid = "";
+
+      function getUserEmail() {
+        document.getElementById('appleimage').style.display = 'none';
+        document.getElementById('appleimagesignup').style.display = 'block';
+      }
+
+      function submitEmail() {
+        var email = document.getElementById('emailinput').value
+        console.log(email);
+        firebase.database().ref('beta-iOS-emails/').push(email);
+        document.getElementById('thankyou').style.display = 'block';
+        document.getElementById('appleimagesignup').style.display = 'none';
+
+      }
 
       function hideIndex() {
         document.getElementById('index-heading').style.display = 'none';
@@ -200,6 +215,15 @@
         });
         // [END authstatelistener]
         document.getElementById('signinbuttonlabel').addEventListener('click', toggleSignIn, false);
+        document.getElementById('appleimage').addEventListener('click', getUserEmail, false);
+        document.getElementById('loginbuttonlabel').addEventListener('click', submitEmail, false);
+
+        // var form = document.getElementById('loginform');
+        // if (form.attachEvent) {
+        //     form.attachEvent("submit", submitEmail);
+        // } else {
+        //     form.addEventListener("submit", submitEmail);
+        // }
       }
       window.onload = function() {
         initApp();

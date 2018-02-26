@@ -24,11 +24,7 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
         
-        print("LoginController sign in")
-        
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            
-            print("user: \(user?.uid)")
             
             if var _ = self.metadata {
                 if self.metadata!["metauser"].stringValue == "" {
@@ -52,11 +48,6 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         Auth.auth().removeStateDidChangeListener(handle!)
-//        do {
-//            try Auth.auth().signOut()
-//        } catch {
-//
-//        }
     }
     
 }

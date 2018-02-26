@@ -27,17 +27,13 @@ class StarPathTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
     @IBAction func uploadButtonTapped(_ sender: Any) {
-        print("pressed button: \(self.uploadButton.tag)")
         
         self.metadata = initMetadata()
         
@@ -55,46 +51,9 @@ class StarPathTableViewCell: UITableViewCell {
             self.uploadButton.setImage(UIImage(named: "hourglass"), for: .normal)
             zipPath = try Zip.quickZipFiles([URL(fileURLWithPath: filePath!)], fileName: self.uploadButton.key) // Zip
             
-            print("successful zip")
-            
             uploadZip(zipPath.absoluteString, self.uploadButton.uid, self.uploadButton.key, self.uploadButton.key+".zip")
         } catch {
         }
-        
-//        let fileManager = FileManager.default
-//        do {
-//            let files = try fileManager.contentsOfDirectory(atPath: filePath!)
-//
-//            self.uploadButton.setImage(UIImage(named: "hourglass"), for: .normal)
-//
-//            self.numImagesToUpload = 1//files.count
-//
-//            // read the data into local variable
-//            for fname in files {
-//
-//                let __file = [filePath!, fname].joined(separator: "/")
-//
-//                if fname.hasSuffix("json") {
-//
-////                    do {
-////                        let __data = try Data(contentsOf:  URL(fileURLWithPath: __file))
-////                        data = try JSON(data: __data)
-////
-////                    } catch {
-////                        print("couldn't read json data")
-////                    }
-//
-//                } else {
-//                    if uploadCount < 1 {
-//                        uploadImage(__file, self.uploadButton.uid, self.uploadButton.key, fname)
-//                    }
-//                    uploadCount += 1
-//                }
-//            }
-//
-//        } catch {
-//            print("no available files")
-//        }
     }
     
     func uploadZip(_ _path_: String, _ _uid: String, _ _key: String, _ _filename: String) {
@@ -104,23 +63,18 @@ class StarPathTableViewCell: UITableViewCell {
         let localFile = URL(string: _path)!
         let uploadTask = storageRef.putFile(from: localFile)
         uploadTask.observe(.success) { snapshot in
-            print("zip upload complete to: \(storageRef.fullPath)")
             self.uploadButton.setImage(UIImage(named: "done"), for: .normal)
             
             // write to the metadata
             if let _ = self.metadata {
                 
                 self.metadata![self.uploadButton.key]["uploaded"].stringValue = "true"
-                print("======================")
-                print(self.metadata!)
-                print("======================")
                 updateMetadata(self.metadata!)
                 
             }
         }
         uploadTask.observe(.failure) { snapshot in
             if let error = snapshot.error as? NSError {
-                print("couldn't complete zip upload")
             }
         }
     }
@@ -129,55 +83,36 @@ class StarPathTableViewCell: UITableViewCell {
         
         let _path = "file://\(_path_)"
         
-//        print("==== uploading image ====")
-//        print("Path: \(_path)")
-//        print("uid: \(_uid)")
-//        print("key: \(_key)")
-//        print("fname: \(_filename)")
-        
         let storage = Storage.storage()
         
-        // Create a root reference
         let storageRef = storage.reference().child(_uid).child(_key).child(_filename)
     
-        //    // Local file you want to upload
         let localFile = URL(string: _path)!
         
-        // Upload file and metadata to the object 'images/mountains.jpg'
         let uploadTask = storageRef.putFile(from: localFile)//, metadata: metadata)
         
-        // Listen for state changes, errors, and completion of the upload.
         uploadTask.observe(.resume) { snapshot in
-            // Upload resumed, also fires when the upload starts
         }
         
         uploadTask.observe(.pause) { snapshot in
-            // Upload paused
         }
         
         uploadTask.observe(.progress) { snapshot in
-            // Upload reported progress
             let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount)
                 / Double(snapshot.progress!.totalUnitCount)
         }
         
         uploadTask.observe(.success) { snapshot in
-            // Upload completed successfully
-            print("File: \(_filename) uploaded successfully.")
             self.imageUploadCounter += 1
             self.imageUploadAttempts += 1
             
             if self.imageUploadAttempts == self.numImagesToUpload {
-                print("Successfully uploaded \(self.imageUploadCounter) of \(self.numImagesToUpload) images")
                 self.uploadButton.setImage(UIImage(named: "done"), for: .normal)
                 
                 // write to the metadata
                 if let _ = self.metadata {
                     
                     self.metadata![self.uploadButton.key]["uploaded"].stringValue = "true"
-                    print("======================")
-                    print(self.metadata!)
-                    print("======================")
                     updateMetadata(self.metadata!)
                     
                 }
@@ -188,10 +123,8 @@ class StarPathTableViewCell: UITableViewCell {
         uploadTask.observe(.failure) { snapshot in
             if let error = snapshot.error as? NSError {
                 
-                print("File: \(_filename) could not upload")
                 self.imageUploadAttempts += 1
                 if self.imageUploadAttempts == self.numImagesToUpload {
-                    print("Successfully uploaded \(self.imageUploadCounter) of \(self.numImagesToUpload) images")
                     self.uploadButton.setImage(UIImage(named: "done"), for: .normal)
                 }
                 

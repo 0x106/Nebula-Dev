@@ -31,8 +31,6 @@ class StarPath {
         }
         
         self.image = _image
-        
-//        return nil
     }
     
     func updateDisplayname(_ _text: String) {
