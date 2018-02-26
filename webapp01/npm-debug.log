@@ -9,8 +9,8 @@
 6 silly lifecycle webapp@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle webapp@0.0.0~start: webapp@0.0.0
 8 verbose lifecycle webapp@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle webapp@0.0.0~start: PATH: /Users/jordancampbell/.nvm/versions/node/v6.9.1/lib/node_modules/npm/bin/node-gyp-bin:/Users/jordancampbell/helix/Atlas/Nebula/webapp/node_modules/.bin:/Users/jordancampbell/.cargo/bin:/Users/jordancampbell/.nvm/versions/node/v6.9.1/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/Users/jordancampbell/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Postgres.app/Contents/Versions/latest/bin
-10 verbose lifecycle webapp@0.0.0~start: CWD: /Users/jordancampbell/helix/Atlas/Nebula/webapp
+9 verbose lifecycle webapp@0.0.0~start: PATH: /Users/jordancampbell/.nvm/versions/node/v6.9.1/lib/node_modules/npm/bin/node-gyp-bin:/Users/jordancampbell/helix/Atlas/Nebula/webapp01/node_modules/.bin:/Users/jordancampbell/.cargo/bin:/Users/jordancampbell/.nvm/versions/node/v6.9.1/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/Users/jordancampbell/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Postgres.app/Contents/Versions/latest/bin
+10 verbose lifecycle webapp@0.0.0~start: CWD: /Users/jordancampbell/helix/Atlas/Nebula/webapp01
 11 silly lifecycle webapp@0.0.0~start: Args: [ '-c', 'node ./bin/www' ]
 12 silly lifecycle webapp@0.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle webapp@0.0.0~start: Failed to exec start script
@@ -25,7 +25,7 @@
 14 verbose stack     at maybeClose (internal/child_process.js:877:16)
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid webapp@0.0.0
-16 verbose cwd /Users/jordancampbell/helix/Atlas/Nebula/webapp
+16 verbose cwd /Users/jordancampbell/helix/Atlas/Nebula/webapp01
 17 error Darwin 16.7.0
 18 error argv "/Users/jordancampbell/.nvm/versions/node/v6.9.1/bin/node" "/Users/jordancampbell/.nvm/versions/node/v6.9.1/bin/npm" "start"
 19 error node v6.9.1
