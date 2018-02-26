@@ -9,6 +9,7 @@
 import UIKit
 import ARKit
 import SwiftyJSON
+import Firebase
 
 class StarPathTableViewController: UITableViewController {
 
@@ -101,6 +102,7 @@ class StarPathTableViewController: UITableViewController {
         }
         
         cell.photoImageView?.image = starpath.image
+//        let img = UIImage(contentsOfFile: <#T##String#>))
         
         cell.uploadButton.tag = indexPath.row
         cell.uploadButton.key = starpath.key
@@ -121,7 +123,39 @@ class StarPathTableViewController: UITableViewController {
  
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+            print("deleting")
+            
+            let starpath = self.data[indexPath.row]
+            
+            let storage = Storage.storage()
+            let storageRef = storage.reference().child(self.metadata!["metauser"]["uid"].stringValue).child(starpath.key).child(starpath.key+".zip")
+            // Delete the file
+            storageRef.delete { error in
+                if let error = error {
+                    // Uh-oh, an error occurred!
+                    print("error deleting")
+                } else {
+                    // File deleted successfully
+                    print("successful delete")
+                }
+            }
+            
+            let fileManager = FileManager.default
+            let deletePath = getFilePath(fileFolder: starpath.key, fileName: "")
+            do {
+                try fileManager.removeItem(atPath: deletePath)
+                print("folder deleted")
+            }
+            catch let error as NSError {
+                print("Ooops! Something went wrong: \(error)")
+            }
+            
+            self.metadata!.dictionaryObject?.removeValue(forKey: starpath.key)
+            updateMetadata(self.metadata!)
+            self.refresh()
+            
+            
         } else if editingStyle == .insert {
         }
     }
@@ -132,7 +166,7 @@ class StarPathTableViewController: UITableViewController {
         
         self.data = [StarPath]()
         
-        let images = [UIImage(named: "moonbase"), UIImage(named: "nebula"), UIImage(named: "spacex")]
+//        let images = [UIImage(named: "moonbase"), UIImage(named: "nebula"), UIImage(named: "spacex")]
         
         guard let _ = self.metadata else { print("cannot load metadata"); return }
                 
@@ -143,13 +177,17 @@ class StarPathTableViewController: UITableViewController {
             let value = datum.1
             
             if key != "metauser" {
-                if let starpath = StarPath(key, value["displayname"].stringValue, value["uploaded"].stringValue, images[index % images.count]!) {
+                
+                let imagePath = getFilePath(fileFolder: key, fileName: value["displayimage"].stringValue)
+                print(imagePath)
+                let img = UIImage(contentsOfFile: imagePath)!
+                
+                if let starpath = StarPath(key, value["displayname"].stringValue, value["uploaded"].stringValue, img) {//images[index % images.count]!) {
                     self.data.append(starpath)
                 }
                 index += 1
             }
         }
-        
         self.tableView.reloadData()
         
     }

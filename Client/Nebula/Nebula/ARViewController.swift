@@ -34,7 +34,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var atlasSession: ARSession = ARSession()
     var sessionframeCounter: Int = 0
     let grid: WorldGrid = WorldGrid()
-    
+    var displayimage: String = ""
     var metadata: JSON?
     
     var saveCurrentStarpath: Bool = true
@@ -65,9 +65,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     
                     let dict = dataToDictionary(json)
                     
-                    let representation = dict.description
+                    var representation = dict//.description
+                    
+//                    representation = "{ \"data\": " + representation + "}"
+                    
                     let endtime = getCurrentTime()
-                    let jsonFileName = endtime+".json"
+//                    let jsonFileName = endtime+".json"
+                    let jsonFileName = "data.json"
                     let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
                     do {
                         try representation.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
@@ -81,7 +85,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                                 "dataname": jsonFileName,
                                 "displayname": "Untitled",
                                 "uploaded": "false",
-                                
+                                "displayimage": self.displayimage
                             ]
                             
                             self.metadata![self.recordKey] = datum
@@ -149,8 +153,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     let jsonNode = currentFrameInfoToDic(currentFrame: frame)
                     self.jsonObject[jsonNode["imagename"] as! String] = jsonNode
                     
-                    let json = JSON(jsonNode)
-                    let representation = json.rawString([.castNilToNSNull: true])
+                    if self.displayimage == "" {
+                        self.displayimage = jsonNode["imagename"] as! String
+                    }
+                    
+//                    let json = JSON(jsonNode)
+//                    let representation = json.rawString([.castNilToNSNull: true])
                     
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     

@@ -29,6 +29,7 @@
 
       var metadata = {};
       var uid = "";
+      var signedin = false;
 
       function getUserEmail() {
         document.getElementById('appleimage').style.display = 'none';
@@ -37,7 +38,6 @@
 
       function submitEmail() {
         var email = document.getElementById('emailinput').value
-        console.log(email);
         firebase.database().ref('beta-iOS-emails/').push(email);
         document.getElementById('thankyou').style.display = 'block';
         document.getElementById('appleimagesignup').style.display = 'none';
@@ -47,6 +47,7 @@
       function hideIndex() {
         document.getElementById('index-heading').style.display = 'none';
         document.getElementById('signinbuttonlabel').style.display = 'none';
+        document.getElementById('section02id').style.display = 'none';
       }
       function showIndex() {
         document.getElementById('index-heading').style.display = 'block';
@@ -62,16 +63,42 @@
       }
 
       function imageDownload(event) {
-        console.log(`Image ${event.target.id} was clicked`);
         var storageRef = firebase.storage().ref(`${uid}/${event.target.id}/${event.target.id}.zip`);
         storageRef.getDownloadURL().then(function(url) {
-          console.log(url);
+        });
+      }
+
+      function createGridItem(metadata, key, sceneWrapper) {
+        var storageRef = firebase.storage().ref(`${uid}/${key}/${key}.zip`);
+        storageRef.getDownloadURL().then(function(url) {
+
+          var div = document.createElement("div");
+          div.className = "grid-item";
+
+          var title = document.createElement("p");
+          title.className = "sceneTitle";
+          title.innerHTML = metadata[key]["displayname"];
+
+          var link = document.createElement("a");
+          link.href = url;
+
+          var input = document.createElement("input");
+          input.type = "image"
+          input.src = "https://www.atlasreality.xyz/boltFill.svg";
+          input.height = "48";
+          input.width = "48";
+          input.id = key;
+
+          link.appendChild(input);
+
+          div.appendChild(link);
+          div.appendChild(title);
+          sceneWrapper.appendChild(div);
         });
       }
 
       function getMetadata() {
-
-        uid = "WTWSN9Uu8EapX1nqCln0gjlLvhI3";
+        // uid = "WTWSN9Uu8EapX1nqCln0gjlLvhI3";
         var metadataReference = firebase.database().ref('users/' + uid);
 
         metadataReference.on('value', function(snapshot) {
@@ -85,48 +112,8 @@
             }
 
             for (key in metadata) {
-              if (key !== "metauser") {
-                var storageRef = firebase.storage().ref(`${uid}/${key}/${key}.zip`);
-                storageRef.getDownloadURL().then(function(url) {
-                  console.log(metadata[key]["displayname"], key);
-
-                  var div = document.createElement("div");
-                  div.className = "grid-item";
-
-                  var title = document.createElement("p");
-                  title.className = "sceneTitle";
-                  title.innerHTML = metadata[key]["displayname"];
-
-                  var link = document.createElement("a");
-                  link.href = url;
-
-                  var input = document.createElement("input");
-                  input.type = "image"
-                  input.src = "https://www.atlasreality.xyz/boltFill.svg";
-                  input.height = "48";
-                  input.width = "48";
-                  input.id = key;
-                  // input.onclick = `location.href='${url}';`
-
-                  link.appendChild(input);
-
-                  // console.log(input);
-
-                  div.appendChild(link);
-                  div.appendChild(title);
-                  sceneWrapper.appendChild(div);
-                });
-
-
-
-                // image.addEventListener('click', function(){imageDownload(key)}, false);
-                // image.addEventListener('click', imageDownload, false);
-
-                // var href = document.createElement("a");
-
-                // div.appendChild(image);
-                // div.appendChild(title);
-                // sceneWrapper.appendChild(div);
+              if (key !== "metauser" && metadata[key]["uploaded"] !== "false") {
+                createGridItem(metadata, key, sceneWrapper)
               }
 
             }
@@ -139,44 +126,45 @@
        */
       function toggleSignIn() {
 
-        hideIndex();
-
-        getMetadata();
-
-        showDashboard();
-
-
-
-        // if (!firebase.auth().currentUser) {
-        //   var provider = new firebase.auth.GoogleAuthProvider();
-        //   firebase.auth().signInWithPopup(provider).then(function(result) {
-        //     // This gives you a Google Access Token. You can use it to access the Google API.
-        //     var token = result.credential.accessToken;
-        //     // The signed-in user info.
-        //     var user = result.user;
-        //     console.log(user);
-        //     hideIndexPage();
-        //     showDashboard();
-        //     // document.getElementById('quickstart-oauthtoken').textContent = token;
-        //   }).catch(function(error) {
-        //     // Handle Errors here.
-        //     var errorCode = error.code;
-        //     var errorMessage = error.message;
-        //     // The email of the user's account used.
-        //     var email = error.email;
-        //     // The firebase.auth.AuthCredential type that was used.
-        //     var credential = error.credential;
-        //     if (errorCode === 'auth/account-exists-with-different-credential') {
-        //       alert('You have already signed up with a different auth provider for that email.');
-        //       // If you are using multiple auth providers on your app you should handle linking
-        //       // the user's accounts here.
-        //     } else {
-        //       console.error(error);
-        //     }
-        //   });
-        // } else {
-        //   firebase.auth().signOut();
-        // }
+        if (signedin) {
+          hideIndex();
+          getMetadata();
+          showDashboard();
+        } else {
+          if (!firebase.auth().currentUser) {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+              // This gives you a Google Access Token. You can use it to access the Google API.
+              var token = result.credential.accessToken;
+              // The signed-in user info.
+              var user = result.user;
+              uid = user.uid
+              // hideIndexPage();
+              // showDashboard();
+              hideIndex();
+              getMetadata();
+              showDashboard();
+              // document.getElementById('quickstart-oauthtoken').textContent = token;
+            }).catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              if (errorCode === 'auth/account-exists-with-different-credential') {
+                alert('You have already signed up with a different auth provider for that email.');
+                // If you are using multiple auth providers on your app you should handle linking
+                // the user's accounts here.
+              } else {
+                console.error(error);
+              }
+            });
+          } else {
+            firebase.auth().signOut();
+          }
+        }
         // document.getElementById('quickstart-sign-in').disabled = true;
       }
       /**
@@ -197,10 +185,11 @@
             var emailVerified = user.emailVerified;
             var photoURL = user.photoURL;
             var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
+            uid = user.uid;
             var providerData = user.providerData;
             // user will likely be signed in at this point
-            console.log("user is signed in");
+            // console.log("user is signed in");
+            signedin = true;
             // document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
             // document.getElementById('quickstart-sign-in').textContent = 'Sign out';
             // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');

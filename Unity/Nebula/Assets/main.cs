@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -46,13 +46,15 @@ public class main : MonoBehaviour {
 
 		cameraData.data = sortedData;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
 		string currentKey = cameraData.keys [counter];
 
 		string texturePath = "NebulaTextures/" + currentKey;
+
+		print (currentKey);
 
 		nebulaTexture = Resources.Load( texturePath ) as Texture2D;
 		quad.GetComponent<Renderer>().material.mainTexture = nebulaTexture;
@@ -67,7 +69,7 @@ public class main : MonoBehaviour {
 		Camera.main.transform.eulerAngles = new Vector3 (
 			-cameraData.data[counter].rotation.x * omega,
 			-cameraData.data[counter].rotation.y * omega,
-			 cameraData.data[counter].rotation.z * omega + 90.0F
+			cameraData.data[counter].rotation.z * omega + 90.0F
 		);
 
 		Matrix4x4 p = Camera.main.projectionMatrix;
@@ -80,16 +82,16 @@ public class main : MonoBehaviour {
 		p.m00 = cameraData.data[counter].intrinsics.m00 * alpha + gamma;
 		p.m01 = cameraData.data[counter].intrinsics.m01 * alpha;
 		p.m02 = cameraData.data[counter].intrinsics.m02 * alpha + deltaX;
-		
+
 		p.m10 = cameraData.data[counter].intrinsics.m10 * alpha;
 		p.m11 = cameraData.data[counter].intrinsics.m11 * alpha + gamma;
 		p.m12 = cameraData.data[counter].intrinsics.m12 * alpha + deltaY;
-		
+
 		p.m20 = cameraData.data[counter].intrinsics.m20 * alpha;
 		p.m21 = cameraData.data[counter].intrinsics.m21 * alpha;
 		p.m22 = cameraData.data[counter].intrinsics.m22 * alpha;
 
-		Camera.main.projectionMatrix = p;
+//		Camera.main.projectionMatrix = p;
 
 		counter += 1;
 		if (counter >= cameraData.data.Length) {
@@ -109,10 +111,10 @@ public class Frame {
 	public string key;
 	public Vector3 position;
 	public Vector3 rotation;
-	public Matrix4x4 projection;
+//	public Matrix4x4 projection;
 
-//	use a custom matrix to account for col-major vs row-major differences.
-//	Probably not the most effective method but robust for now.
+	//	use a custom matrix to account for col-major vs row-major differences.
+	//	Probably not the most effective method but robust for now.
 	public NebulaMatrix3x3 intrinsics;
 }
 
@@ -136,4 +138,3 @@ public class CameraData {
 	public Frame[] data;
 	public string[] keys;
 }
-	

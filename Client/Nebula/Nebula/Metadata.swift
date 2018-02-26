@@ -60,23 +60,33 @@ func saveData(_ _data: JSON, _ _uid: String, _ _sceneKey: String) {
     ref.child("users").child(_uid).child("data").child(_sceneKey).setValue(data)
 }
 
-func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Dictionary<String, String>>> {
+func dataToDictionary(_ _data: JSON) -> String {//Dictionary<String, Dictionary<String, Dictionary<String, String>>> {
     var output = Dictionary<String, Dictionary<String, Dictionary<String, String>>>()
+    
+    var outputString = "{ \"data\": ["
+    var terminalString = "]}"
+    
+    var key_list = "],\"keys\":["
+    
+    var num = 2
+    var count = 0
+    
+    var totalNum = _data.count
     
     for datum in _data {
         var key = datum.0
         var value = datum.1
         
-        let position: Dictionary<String, String> = [
-            "x": value["position"]["x"].stringValue,
-            "y": value["position"]["y"].stringValue,
-            "z": value["position"]["z"].stringValue
+        let position: Dictionary<String, Double> = [
+            "x": value["position"]["x"].doubleValue,
+            "y": value["position"]["y"].doubleValue,
+            "z": value["position"]["z"].doubleValue
         ]
         
-        let rotation: Dictionary<String, String> = [
-            "x": value["rotation"]["x"].stringValue,
-            "y": value["rotation"]["y"].stringValue,
-            "z": value["rotation"]["z"].stringValue
+        let rotation: Dictionary<String, Double> = [
+            "x": value["rotation"]["x"].doubleValue,
+            "y": value["rotation"]["y"].doubleValue,
+            "z": value["rotation"]["z"].doubleValue
         ]
         
         let resolution: Dictionary<String, String> = [
@@ -136,33 +146,69 @@ func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Di
             "m33": value["transform"][3][3].stringValue
         ]
         
-        let intrinsics: Dictionary<String, String> = [
-            "m00": value["intrinsics"][0][0].stringValue,
-            "m01": value["intrinsics"][0][1].stringValue,
-            "m02": value["intrinsics"][0][2].stringValue,
+        let intrinsics: Dictionary<String, Double> = [
+            "m00": value["intrinsics"][0][0].doubleValue,
+            "m01": value["intrinsics"][0][1].doubleValue,
+            "m02": value["intrinsics"][0][2].doubleValue,
             
-            "m10": value["intrinsics"][1][0].stringValue,
-            "m11": value["intrinsics"][1][1].stringValue,
-            "m12": value["intrinsics"][1][2].stringValue,
+            "m10": value["intrinsics"][1][0].doubleValue,
+            "m11": value["intrinsics"][1][1].doubleValue,
+            "m12": value["intrinsics"][1][2].doubleValue,
             
-            "m20": value["intrinsics"][2][0].stringValue,
-            "m21": value["intrinsics"][2][1].stringValue,
-            "m22": value["intrinsics"][2][2].stringValue
+            "m20": value["intrinsics"][2][0].doubleValue,
+            "m21": value["intrinsics"][2][1].doubleValue,
+            "m22": value["intrinsics"][2][2].doubleValue
         ]
         
-        output[key] = Dictionary<String, Dictionary<String, String>>()
-        output[key]!["position"] = position
-        output[key]!["rotation"] = rotation
-        output[key]!["resolution"] = resolution
-        output[key]!["imagename"] = imagename
-        output[key]!["timestamp"] = timestamp
-        output[key]!["projection"] = projection
-        output[key]!["transform"] = transform
-        output[key]!["intrinsics"] = intrinsics
+//        var current = Dictionary<String, Dictionary<String, String>>()
+//        current["position"] = position
+//        current["rotation"] = rotation
+////        current["key"] = imagename
+//        current["intrinsics"] = intrinsics
+        
+        outputString += "{"//\"\(key)\": {"
+        outputString += "\"position\":" + position.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
+        outputString += "\"rotation\":" + rotation.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
+        outputString += "\"intrinsics\":" + intrinsics.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
+        
+        if count < totalNum-1 {
+            outputString += "\"key\": \"\(value["imagename"].stringValue)\"},"
+            key_list += "\"" + key + "\", "
+        } else {
+            outputString += "\"key\": \"\(value["imagename"].stringValue)\"}"
+            key_list += "\"" + key + "\""
+        }
+        
+//        + current.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}")
+        
+//        "key": {"imagename": "627086221022.jpg"},
+        
+        
+//        if count == 1 {
+//            outputString += key_list + terminalString
+//
+//            print(outputString)
+//            exit(EXIT_SUCCESS)
+//        }
+        count += 1
+        
+        
+        //        output[key]!["position"] = position
+//        output[key]!["rotation"] = rotation
+////        output[key]!["resolution"] = resolution
+//        output[key]!["key"] = imagename
+////        output[key]!["timestamp"] = timestamp
+////        output[key]!["projection"] = projection
+////        output[key]!["transform"] = transform
+//        output[key]!["intrinsics"] = intrinsics
+        
+        
     
     }
+    
+    outputString += key_list + terminalString
         
-    return output
+    return outputString
 }
 
 func metadataToDictionary(_ _metadata: JSON) -> Dictionary<String, Dictionary<String, String>> {
