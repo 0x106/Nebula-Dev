@@ -73,7 +73,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             
             DispatchQueue.global(qos: .utility).async {
                 
-                print("Writing data:", self.frameCounter)
+//                print("Writing data:", self.frameCounter)
                 
                 let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
                 if valid {
@@ -115,10 +115,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                             updateMetadata(self.metadata!)
                         }
                     }catch {
-                        print("write json failed...")
+//                        print("write json failed...")
                     }
                 } else {
-                    print("the json object to write is not valid")
+//                    print("the json object to write is not valid")
                 }
                 
                 DispatchQueue.main.async {
@@ -126,9 +126,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     self.recordStartTime = nil
                     
                     self.sceneRecordCompletionButton.isEnabled = true
-                    print(self.sceneRecordCompletionButton?.isEnabled)
+//                    print(self.sceneRecordCompletionButton?.isEnabled)
                     
-                    print("All data written and objects cleared.")
+//                    print("All data written and objects cleared.")
                 }
             }
         } else {
@@ -195,7 +195,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 if self.recordStartTime == nil {
                     self.recordStartTime = getCurrentTime()
                     self.recordKey = uniqueKey()
-                    print("Recording beginning at: \(self.recordStartTime! as String) with key: \(self .recordKey)")
+//                    print("Recording beginning at: \(self.recordStartTime! as String) with key: \(self .recordKey)")
                 }
                 
                 self.frameCounter += 1      // we're adding a frame to the stack
