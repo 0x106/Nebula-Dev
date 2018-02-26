@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import Firebase
+import Zip
 
 class StarPathTableViewCell: UITableViewCell {
     
@@ -49,39 +50,78 @@ class StarPathTableViewCell: UITableViewCell {
         // get the path to the data
         let dirPath = getDocumentsDirectory()
         let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(self.uploadButton.key)?.path
-        let fileManager = FileManager.default
+        var zipPath: URL!
         do {
-            let files = try fileManager.contentsOfDirectory(atPath: filePath!)
-            
             self.uploadButton.setImage(UIImage(named: "hourglass"), for: .normal)
+            zipPath = try Zip.quickZipFiles([URL(fileURLWithPath: filePath!)], fileName: self.uploadButton.key) // Zip
             
-            self.numImagesToUpload = 1//files.count
-         
-            // read the data into local variable
-            for fname in files {
-                
-                let __file = [filePath!, fname].joined(separator: "/")
-                
-                if fname.hasSuffix("json") {
-                    
-                    do {
-                        let __data = try Data(contentsOf:  URL(fileURLWithPath: __file))
-                        data = try JSON(data: __data)
-                        
-                    } catch {
-                        print("couldn't read json data")
-                    }
-                    
-                } else {
-                    if uploadCount < 1 {
-                        uploadImage(__file, self.uploadButton.uid, self.uploadButton.key, fname)
-                    }
-                    uploadCount += 1
-                }
-            }
+            print("successful zip")
             
+            uploadZip(zipPath.absoluteString, self.uploadButton.uid, self.uploadButton.key, self.uploadButton.key+".zip")
         } catch {
-            print("no available files")
+        }
+        
+//        let fileManager = FileManager.default
+//        do {
+//            let files = try fileManager.contentsOfDirectory(atPath: filePath!)
+//
+//            self.uploadButton.setImage(UIImage(named: "hourglass"), for: .normal)
+//
+//            self.numImagesToUpload = 1//files.count
+//
+//            // read the data into local variable
+//            for fname in files {
+//
+//                let __file = [filePath!, fname].joined(separator: "/")
+//
+//                if fname.hasSuffix("json") {
+//
+////                    do {
+////                        let __data = try Data(contentsOf:  URL(fileURLWithPath: __file))
+////                        data = try JSON(data: __data)
+////
+////                    } catch {
+////                        print("couldn't read json data")
+////                    }
+//
+//                } else {
+//                    if uploadCount < 1 {
+//                        uploadImage(__file, self.uploadButton.uid, self.uploadButton.key, fname)
+//                    }
+//                    uploadCount += 1
+//                }
+//            }
+//
+//        } catch {
+//            print("no available files")
+//        }
+    }
+    
+    func uploadZip(_ _path_: String, _ _uid: String, _ _key: String, _ _filename: String) {
+        let _path = "file://\(_path_)"
+        let storage = Storage.storage()
+        let storageRef = storage.reference().child(_uid).child(_key).child(_filename)
+        let localFile = URL(string: _path)!
+        let uploadTask = storageRef.putFile(from: localFile)
+        uploadTask.observe(.success) { snapshot in
+            print("zip upload complete to: \(storageRef.fullPath)")
+            self.uploadButton.setImage(UIImage(named: "done"), for: .normal)
+            
+            // write to the metadata
+            if let _ = self.metadata {
+                
+                self.metadata![self.uploadButton.key]["uploaded"].stringValue = "true"
+                print("======================")
+                print(self.metadata!)
+                print("======================")
+                updateMetadata(self.metadata!)
+                
+            }
+        }
+        uploadTask.observe(.failure) { snapshot in
+            if let error = snapshot.error as? NSError {
+                print("couldn't complete zip upload")
+            }
         }
     }
 

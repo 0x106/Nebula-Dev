@@ -1,183 +1,229 @@
-
 <head>
-  <script type="text/javascript">
 
-    var metadata = {};
+    <script type="text/javascript">
 
-    function hideIndex() {
-      document.getElementById('index-heading').style.display = 'none';
-      document.getElementById('signinbuttonlabel').style.display = 'none';
-    }
-    function showIndex() {
-      document.getElementById('index-heading').style.display = 'block';
-      document.getElementById('signinbuttonlabel').style.display = 'block';
-    }
-    function hideDashboard() {
-      document.getElementById('dashboard-heading').style.display = 'none';
-      document.getElementById('dashboard-scenes').style.display = 'none';
-    }
-    function showDashboard() {
-      document.getElementById('dashboard-heading').style.display = 'block';
-      document.getElementById('dashboard-scenes').style.display = 'grid';
-    }
+      var metadata = {};
+      var uid = "";
 
-    function imageDownload(event) {
-      console.log(`Image ${event.target.id} was clicked`);
+      function hideIndex() {
+        document.getElementById('index-heading').style.display = 'none';
+        document.getElementById('signinbuttonlabel').style.display = 'none';
+      }
+      function showIndex() {
+        document.getElementById('index-heading').style.display = 'block';
+        document.getElementById('signinbuttonlabel').style.display = 'block';
+      }
+      function hideDashboard() {
+        document.getElementById('dashboard-heading').style.display = 'none';
+        document.getElementById('dashboard-scenes').style.display = 'none';
+      }
+      function showDashboard() {
+        document.getElementById('dashboard-heading').style.display = 'block';
+        document.getElementById('dashboard-scenes').style.display = 'grid';
+      }
 
-    }
+      function imageDownload(event) {
+        console.log(`Image ${event.target.id} was clicked`);
+        var storageRef = firebase.storage().ref(`${uid}/${event.target.id}/${event.target.id}.zip`);
+        storageRef.getDownloadURL().then(function(url) {
+          console.log(url);
+        });
+      }
 
-    function getMetadata() {
+      function getMetadata() {
 
-      var uid = "WTWSN9Uu8EapX1nqCln0gjlLvhI3";
-      var metadataReference = firebase.database().ref('users/' + uid);
+        uid = "WTWSN9Uu8EapX1nqCln0gjlLvhI3";
+        var metadataReference = firebase.database().ref('users/' + uid);
 
-      metadataReference.on('value', function(snapshot) {
-        if (snapshot) {
+        metadataReference.on('value', function(snapshot) {
+          if (snapshot) {
 
-          metadata = snapshot.val()["metadata"];
-          var sceneWrapper = document.getElementById("dashboard-scenes");
+            metadata = snapshot.val()["metadata"];
+            var sceneWrapper = document.getElementById("dashboard-scenes");
 
-          for (key in metadata) {
-            if (key !== "metauser") {
-              console.log(metadata[key]["displayname"]);
-
-              var div = document.createElement("div");
-              div.className = "grid-item";
-
-              var title = document.createElement("p");
-              title.className = "sceneTitle";
-              title.innerHTML = metadata[key]["displayname"];
-
-              // var image = document.createElement("img");
-              // image.src = "https://www.atlasreality.xyz/boltFill.svg";
-              // image.height = "48";
-              // image.width = "48";
-
-              var image = document.createElement("input");
-              image.type = "image"
-              image.src = "https://www.atlasreality.xyz/boltFill.svg";
-              image.height = "48";
-              image.width = "48";
-              image.id = key;
-              console.log(key);
-              // image.addEventListener('click', function(){imageDownload(key)}, false);
-              image.addEventListener('click', imageDownload, false);
-
-              // var href = document.createElement("a");
-
-              div.appendChild(image);
-              div.appendChild(title);
-              sceneWrapper.appendChild(div);
+            while (sceneWrapper.firstChild) {
+                sceneWrapper.removeChild(sceneWrapper.firstChild);
             }
 
+            for (key in metadata) {
+              if (key !== "metauser") {
+                var storageRef = firebase.storage().ref(`${uid}/${key}/${key}.zip`);
+                storageRef.getDownloadURL().then(function(url) {
+                  console.log(metadata[key]["displayname"], key);
+
+                  var div = document.createElement("div");
+                  div.className = "grid-item";
+
+                  var title = document.createElement("p");
+                  title.className = "sceneTitle";
+                  title.innerHTML = metadata[key]["displayname"];
+
+                  var link = document.createElement("a");
+                  link.href = url;
+
+                  var input = document.createElement("input");
+                  input.type = "image"
+                  input.src = "https://www.atlasreality.xyz/boltFill.svg";
+                  input.height = "48";
+                  input.width = "48";
+                  input.id = key;
+                  // input.onclick = `location.href='${url}';`
+
+                  link.appendChild(input);
+
+                  // console.log(input);
+
+                  div.appendChild(link);
+                  div.appendChild(title);
+                  sceneWrapper.appendChild(div);
+                });
+
+
+
+                // image.addEventListener('click', function(){imageDownload(key)}, false);
+                // image.addEventListener('click', imageDownload, false);
+
+                // var href = document.createElement("a");
+
+                // div.appendChild(image);
+                // div.appendChild(title);
+                // sceneWrapper.appendChild(div);
+              }
+
+            }
           }
-        }
-      });
-    }
+        });
+      }
 
-    /**
-     * Function called when clicking the Login/Logout button.
-     */
-    function toggleSignIn() {
+      /**
+       * Function called when clicking the Login/Logout button.
+       */
+      function toggleSignIn() {
 
-      hideIndex();
+        hideIndex();
 
-      getMetadata();
+        getMetadata();
 
-      showDashboard();
-
+        showDashboard();
 
 
-      // if (!firebase.auth().currentUser) {
-      //   var provider = new firebase.auth.GoogleAuthProvider();
-      //   firebase.auth().signInWithPopup(provider).then(function(result) {
-      //     // This gives you a Google Access Token. You can use it to access the Google API.
-      //     var token = result.credential.accessToken;
-      //     // The signed-in user info.
-      //     var user = result.user;
-      //     console.log(user);
-      //     hideIndexPage();
-      //     showDashboard();
-      //     // document.getElementById('quickstart-oauthtoken').textContent = token;
-      //   }).catch(function(error) {
-      //     // Handle Errors here.
-      //     var errorCode = error.code;
-      //     var errorMessage = error.message;
-      //     // The email of the user's account used.
-      //     var email = error.email;
-      //     // The firebase.auth.AuthCredential type that was used.
-      //     var credential = error.credential;
-      //     if (errorCode === 'auth/account-exists-with-different-credential') {
-      //       alert('You have already signed up with a different auth provider for that email.');
-      //       // If you are using multiple auth providers on your app you should handle linking
-      //       // the user's accounts here.
-      //     } else {
-      //       console.error(error);
-      //     }
-      //   });
-      // } else {
-      //   firebase.auth().signOut();
-      // }
-      // document.getElementById('quickstart-sign-in').disabled = true;
-    }
-    /**
-     * initApp handles setting up UI event listeners and registering Firebase auth listeners:
-     *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
-     *    out, and that is where we update the UI.
-     */
-    function initApp() {
 
-      // hideDashboard();
+        // if (!firebase.auth().currentUser) {
+        //   var provider = new firebase.auth.GoogleAuthProvider();
+        //   firebase.auth().signInWithPopup(provider).then(function(result) {
+        //     // This gives you a Google Access Token. You can use it to access the Google API.
+        //     var token = result.credential.accessToken;
+        //     // The signed-in user info.
+        //     var user = result.user;
+        //     console.log(user);
+        //     hideIndexPage();
+        //     showDashboard();
+        //     // document.getElementById('quickstart-oauthtoken').textContent = token;
+        //   }).catch(function(error) {
+        //     // Handle Errors here.
+        //     var errorCode = error.code;
+        //     var errorMessage = error.message;
+        //     // The email of the user's account used.
+        //     var email = error.email;
+        //     // The firebase.auth.AuthCredential type that was used.
+        //     var credential = error.credential;
+        //     if (errorCode === 'auth/account-exists-with-different-credential') {
+        //       alert('You have already signed up with a different auth provider for that email.');
+        //       // If you are using multiple auth providers on your app you should handle linking
+        //       // the user's accounts here.
+        //     } else {
+        //       console.error(error);
+        //     }
+        //   });
+        // } else {
+        //   firebase.auth().signOut();
+        // }
+        // document.getElementById('quickstart-sign-in').disabled = true;
+      }
+      /**
+       * initApp handles setting up UI event listeners and registering Firebase auth listeners:
+       *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
+       *    out, and that is where we update the UI.
+       */
+      function initApp() {
 
-      // Listening for auth state changes.
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          // User is signed in.
-          var displayName = user.displayName;
-          var email = user.email;
-          var emailVerified = user.emailVerified;
-          var photoURL = user.photoURL;
-          var isAnonymous = user.isAnonymous;
-          var uid = user.uid;
-          var providerData = user.providerData;
-          // user will likely be signed in at this point
-          console.log("user is signed in");
-          // document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-          // document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-          // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
-        } else {
-          // User is signed out.
-          // document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-          // document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
-          // document.getElementById('quickstart-account-details').textContent = 'null';
-          // document.getElementById('quickstart-oauthtoken').textContent = 'null';
-        }
-        // document.getElementById('quickstart-sign-in').disabled = false;
-      });
-      // [END authstatelistener]
-      document.getElementById('signinbuttonlabel').addEventListener('click', toggleSignIn, false);
-    }
-    window.onload = function() {
-      initApp();
-    };
-  </script>
-</head>
+        // hideDashboard();
 
+        // Listening for auth state changes.
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            // user will likely be signed in at this point
+            console.log("user is signed in");
+            // document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+            // document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+            // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+          } else {
+            // User is signed out.
+            // document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+            // document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
+            // document.getElementById('quickstart-account-details').textContent = 'null';
+            // document.getElementById('quickstart-oauthtoken').textContent = 'null';
+          }
+          // document.getElementById('quickstart-sign-in').disabled = false;
+        });
+        // [END authstatelistener]
+        document.getElementById('signinbuttonlabel').addEventListener('click', toggleSignIn, false);
+      }
+      window.onload = function() {
+        initApp();
+      };
+    </script>
+  </head>
+  <body>
+    <section class="section01">
+      <h1 class="h1-index" id="index-heading">Nebula</h1>
+      <h1 class="h1-dashboard" id="dashboard-heading">Nebula</h1>
 
-<h1 class="h1-index" id="index-heading">{{title}}</h1>
-<h1 class="h1-dashboard" id="dashboard-heading">{{title}}</h1>
+      <div class="button-index">
+        <label for="signinbutton" class="button-style" id="signinbuttonlabel">
+            <p>Sign Up</p>
+        </label>
+        <button id="signinbutton"></button>
+      </div>
+      <!-- <div class="index-arrow"> -->
+        <!-- <img src="images/arrow.svg"> -->
+      <!-- </div> -->
 
-<div class="button-index">
-  <label for="signinbutton" class="button-style" id="signinbuttonlabel">
-      <p>Sign Up</p>
-  </label>
-  <button id="signinbutton"></button>
-</div>
+      <div class="wrapper" id="dashboard-scenes">
+      </div>
+    </section>
 
-<div class="wrapper" id="dashboard-scenes">
-</div>
+    <section class="section02">
+    <div class="grid-wrapper">
+    <div class="second-wrapper">
+      <div class="grid-item">
+        <img src="https://www.atlasreality.xyz/boltFill.svg">
+      </div>
 
+      <div class="grid-item">
+        <img src="https://www.atlasreality.xyz/boltFill.svg">
+      </div>
 
+      <div class="grid-item">
+        <img src="https://www.atlasreality.xyz/boltFill.svg">
+      </div>
+
+    </div>
+    </div>
+      <!-- <h1>Wintermute</h1> -->
+      <!-- <h1>Neuromancer</h1> -->
+      <!-- <h1>Hyperion</h1> -->
+    </section>
+  </body>
+</html>
 
 
 <!--

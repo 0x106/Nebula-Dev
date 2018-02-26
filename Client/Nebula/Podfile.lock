@@ -64,6 +64,7 @@ PODS:
     - Starscream (~> 3.0.2)
   - Starscream (3.0.3)
   - SwiftyJSON (4.0.0)
+  - Zip (1.1.0)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -73,6 +74,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - Socket.IO-Client-Swift (~> 13.1.0)
   - SwiftyJSON
+  - Zip
 
 SPEC CHECKSUMS:
   Firebase: 710decbbc6d9d48530e9a5dba3209740c3532e05
@@ -91,7 +93,8 @@ SPEC CHECKSUMS:
   Socket.IO-Client-Swift: f22222913f29801e30ae0df712db663ec096edc2
   Starscream: dfb1b3f39506717ee52b67fb48de0c8269504cbc
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 4a50aa31a074f6da8f6b18a1f4c71033f44906d4
+PODFILE CHECKSUM: 96fa9efa59a678b8b57fc2c5514d32a3fda62387
 
 COCOAPODS: 1.3.1

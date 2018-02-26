@@ -78,15 +78,19 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
                 if valid {
                     let json = JSON(self.jsonObject)
-                    let representation = json.rawString([.castNilToNSNull: true])
+                    
+                    let dict = dataToDictionary(json)
+                    
+//                    let representation = json.rawString([.castNilToNSNull: true])
+                    let representation = dict.description
                     let endtime = getCurrentTime()
                     let jsonFileName = endtime+".json"
 //                    let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: jsonFileName)
                     let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
                     do {
-                        try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
-                        
-                        saveData(json, self.metadata!["metauser"]["uid"].stringValue)
+//                        try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
+                        try representation.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
+//                        saveData(json, self.metadata!["metauser"]["uid"].stringValue, self.recordKey)
                         
                         if var _ = self.metadata {
                             

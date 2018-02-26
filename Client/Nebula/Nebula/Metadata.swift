@@ -58,10 +58,10 @@ func updateMetadata(_ _metadata: JSON) {
 }
 
 
-func saveData(_ _data: JSON, _ _uid: String) {
+func saveData(_ _data: JSON, _ _uid: String, _ _sceneKey: String) {
     let data = dataToDictionary(_data)
     var ref: DatabaseReference = Database.database().reference()
-    ref.child("users").child(_uid).child("data").setValue(data)
+    ref.child("users").child(_uid).child("data").child(_sceneKey).setValue(data)
 }
 
 func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Dictionary<String, String>>> {
@@ -69,8 +69,10 @@ func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Di
     
 //    print("===============================")
     for datum in _data {
-        let key = datum.0
+        var key = datum.0
         var value = datum.1
+        
+//        key = String(key.prefix(13)).replacingOccurrences(of: ".", with: "_")
         
 //        print(value)
         
@@ -171,6 +173,8 @@ func dataToDictionary(_ _data: JSON) -> Dictionary<String, Dictionary<String, Di
 //        print("===============================")
 //        return
     }
+    
+    print(output)
     
     return output
 }

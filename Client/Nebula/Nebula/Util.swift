@@ -327,7 +327,7 @@ func uniqueKey() -> String {
 func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
     
     let currentTime:String = String(format:"%f", currentFrame.timestamp)
-    let imageName = currentTime + ".jpg"
+    let imageName = currentTime.replacingOccurrences(of: ".", with: "") + ".jpg"
     
     let jsonObject: [String: Any] = [
         "imagename": imageName,
