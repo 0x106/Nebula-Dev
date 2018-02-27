@@ -111,7 +111,6 @@ class StarPathTableViewController: UITableViewController {
         self.tableView.reloadRows(at: [self.labelToEdit], with: UITableViewRowAnimation.none)
     }
 
-    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -146,6 +145,22 @@ class StarPathTableViewController: UITableViewController {
             
         } else if editingStyle == .insert {
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+        }
+        
+        let rename = UITableViewRowAction(style: .normal, title: "Rename") { (action, indexPath) in
+            // rename item at indexPath
+            self.labelToEdit = indexPath
+            self.textField.becomeFirstResponder()
+        }
+
+        rename.backgroundColor = UIColor(red: 0x0D, green: 0x5C, blue: 0x63)
+        
+        return [delete, rename]
     }
     
     //MARK: Private Methods

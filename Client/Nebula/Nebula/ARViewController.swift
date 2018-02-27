@@ -202,9 +202,6 @@ extension ViewController {
         starpathbutton.backgroundColor = .clear
         starpathbutton.setImage(starpathbuttonimg, for: .normal)
         starpathbutton.addTarget(self, action: #selector(starpathButtonPressed), for: .touchUpInside)
-//        starpathbutton.layer.cornerRadius = 0.5 * starpathbutton.bounds.size.width
-//        starpathbutton.clipsToBounds = true
-//        starpathbutton.setImage(UIImage(named: "starpathclosed"), for: UIControlState.highlighted)
         self.sceneView.addSubview(starpathbutton)
         self.starpathbutton.isHidden = true
     }
