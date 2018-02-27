@@ -32,12 +32,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
                 <exit id="ndD-Ow-J5i" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2830" y="394"/>
+            <point key="canvasLocation" x="2444" y="336"/>
         </scene>
         <!--Login-->
         <scene sceneID="fmf-3U-Qcf">
             <objects>
-                <viewController id="vbs-Xb-Rqw" userLabel="Login" customClass="LoginController" customModule="Nebula" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Login" id="vbs-Xb-Rqw" userLabel="Login" customClass="LoginController" customModule="Nebula" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KEU-qP-KSt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -64,7 +64,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qHJ-4T-VWp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1054" y="-721"/>
+            <point key="canvasLocation" x="214" y="-358"/>
         </scene>
         <!--Menu-->
         <scene sceneID="6OM-3z-goP">
@@ -119,6 +119,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Scenes" id="dMX-WJ-S9n">
+                        <barButtonItem key="leftBarButtonItem" title="Profile" id="Y8i-cg-Vos">
+                            <connections>
+                                <segue destination="b3F-QR-CPq" kind="show" id="1aQ-Xj-yLD"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="wCN-QW-gEx">
                             <connections>
                                 <segue destination="Mnm-dU-GVR" kind="presentation" id="L7m-Kr-a8g"/>
@@ -128,7 +133,33 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JuG-wO-wy0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1392.8" y="26.53673163418291"/>
+            <point key="canvasLocation" x="975" y="336"/>
+        </scene>
+        <!--Logout Controller-->
+        <scene sceneID="c1M-8j-LfU">
+            <objects>
+                <viewController id="b3F-QR-CPq" customClass="LogoutController" customModule="Nebula" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bsf-zk-sac">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3SN-Gh-sFo">
+                                <rect key="frame" x="163" y="150" width="48" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logout:" destination="b3F-QR-CPq" eventType="touchUpInside" id="hcG-zA-eZK"/>
+                                    <segue destination="vbs-Xb-Rqw" kind="presentation" identifier="logout_segue" id="Ctw-JD-iO7"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="r2U-gD-8TG"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eXr-qO-2hA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="974" y="-358"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5wU-Dw-8NF">
@@ -146,7 +177,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4g-kz-LVh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="446" y="27"/>
+            <point key="canvasLocation" x="214" y="336"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jML-F9-TxY">
@@ -164,7 +195,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xY-KD-reJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2830" y="-309"/>
+            <point key="canvasLocation" x="1700" y="336"/>
         </scene>
     </scenes>
     <resources>
