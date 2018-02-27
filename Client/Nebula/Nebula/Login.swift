@@ -26,8 +26,6 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
         
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             
-            print(user)
-            
             if user != nil {
             
                 if var _ = self.metadata {
@@ -60,21 +58,13 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
 
 class LogoutController: UIViewController {
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        print("Loading logout controller")
-//    }
-    
     @IBAction func logout(_ sender: Any) {
-        print("logout")
         if let _ = Auth.auth().currentUser {
             do {
                 try? Auth.auth().signOut()
                 if let user = Auth.auth().currentUser {
-                    
                 } else {
-                    print("logged out")
                 }
-//                let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
             }
         }
     }
