@@ -41,7 +41,7 @@ class StarPathTableViewController: UITableViewController {
     }
     
     @IBAction func unwindToSceneList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? ViewController {
+        if let _ = sender.source as? ViewController {
             self.refresh()
         }
     }
@@ -76,9 +76,7 @@ class StarPathTableViewController: UITableViewController {
 
     func clearTextInput() {
         self.textField.text = ""
-        
         self.textField.resignFirstResponder()
-        
         if let index = self.labelToEdit {
             self.metadata![self.data[index.row].key]["displayname"].stringValue = self.data[index.row].displayname
             updateMetadata(self.metadata!)
@@ -90,7 +88,6 @@ class StarPathTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of StarPathTableViewCell.")
         }
         
-        // Configure the cell...
         let starpath = self.data[indexPath.row]
         
         cell.nameLabel.text = starpath.displayname
@@ -102,8 +99,6 @@ class StarPathTableViewController: UITableViewController {
         }
         
         cell.photoImageView?.image = starpath.image
-//        let img = UIImage(contentsOfFile: <#T##String#>))
-        
         cell.uploadButton.tag = indexPath.row
         cell.uploadButton.key = starpath.key
         cell.uploadButton.uid = self.metadata!["metauser"]["uid"].stringValue
@@ -124,7 +119,6 @@ class StarPathTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
 //            tableView.deleteRows(at: [indexPath], with: .fade)
-            print("deleting")
             
             let starpath = self.data[indexPath.row]
             
@@ -132,12 +126,8 @@ class StarPathTableViewController: UITableViewController {
             let storageRef = storage.reference().child(self.metadata!["metauser"]["uid"].stringValue).child(starpath.key).child(starpath.key+".zip")
             // Delete the file
             storageRef.delete { error in
-                if let error = error {
-                    // Uh-oh, an error occurred!
-                    print("error deleting")
+                if let _ = error {
                 } else {
-                    // File deleted successfully
-                    print("successful delete")
                 }
             }
             
@@ -145,10 +135,8 @@ class StarPathTableViewController: UITableViewController {
             let deletePath = getFilePath(fileFolder: starpath.key, fileName: "")
             do {
                 try fileManager.removeItem(atPath: deletePath)
-                print("folder deleted")
             }
-            catch let error as NSError {
-                print("Ooops! Something went wrong: \(error)")
+            catch _ as NSError {
             }
             
             self.metadata!.dictionaryObject?.removeValue(forKey: starpath.key)
@@ -165,10 +153,8 @@ class StarPathTableViewController: UITableViewController {
     private func loadStarpaths() {
         
         self.data = [StarPath]()
-        
-//        let images = [UIImage(named: "moonbase"), UIImage(named: "nebula"), UIImage(named: "spacex")]
-        
-        guard let _ = self.metadata else { print("cannot load metadata"); return }
+                
+        guard let _ = self.metadata else { return }
                 
         var index = 0
         for datum in self.metadata! {
@@ -179,7 +165,6 @@ class StarPathTableViewController: UITableViewController {
             if key != "metauser" {
                 
                 let imagePath = getFilePath(fileFolder: key, fileName: value["displayimage"].stringValue)
-                print(imagePath)
                 let img = UIImage(contentsOfFile: imagePath)!
                 
                 if let starpath = StarPath(key, value["displayname"].stringValue, value["uploaded"].stringValue, img) {//images[index % images.count]!) {

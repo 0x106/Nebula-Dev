@@ -37,12 +37,6 @@ class StarPathTableViewCell: UITableViewCell {
         
         self.metadata = initMetadata()
         
-        var data: JSON = JSON()
-        var images: [UIImage] = [UIImage]()
-        var uploadCount = 0
-        
-        var failure: Bool = false
-        
         // get the path to the data
         let dirPath = getDocumentsDirectory()
         let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(self.uploadButton.key)?.path
@@ -74,8 +68,8 @@ class StarPathTableViewCell: UITableViewCell {
             }
         }
         uploadTask.observe(.failure) { snapshot in
-            if let error = snapshot.error as? NSError {
-            }
+//            if let error = snapshot.error as? NSError {
+//            }
         }
     }
 
@@ -98,8 +92,8 @@ class StarPathTableViewCell: UITableViewCell {
         }
         
         uploadTask.observe(.progress) { snapshot in
-            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount)
-                / Double(snapshot.progress!.totalUnitCount)
+//            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount)
+//                / Double(snapshot.progress!.totalUnitCount)
         }
         
         uploadTask.observe(.success) { snapshot in
@@ -121,7 +115,7 @@ class StarPathTableViewCell: UITableViewCell {
         }
         
         uploadTask.observe(.failure) { snapshot in
-            if let error = snapshot.error as? NSError {
+            if let error = snapshot.error as NSError? {
                 
                 self.imageUploadAttempts += 1
                 if self.imageUploadAttempts == self.numImagesToUpload {

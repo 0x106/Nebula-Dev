@@ -20,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
-//        GIDSignIn.sharedInstance().uiDelegate = self
-        
         return true
     }
     
@@ -32,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
         
-        print("Nebula signin: AppDelegate")
-        
         // ...
         if let error = error {
             // ...
@@ -41,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
         
         guard let authentication = user.authentication else {
-            print("user auth doesn't exist at this point")
             return
             
         }
@@ -49,11 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
         
-        print(credential.provider)
-        
         Auth.auth().signIn(with: credential) { (user, error) in
             
-            print("Nebula signin: AppDelegate | \(user?.uid)")
             if let error = error {
                 // ...
                 return

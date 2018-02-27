@@ -118,7 +118,7 @@ func getDocumentsDirectory() -> String {
     return dirPath
 }
 
-func getFilePath(fileFolder folderName: String, fileName fileName: String) -> String {
+func getFilePath(fileFolder folderName: String, fileName fname: String) -> String {
     let dirPath = getDocumentsDirectory()
     let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(folderName)?.path
     let fileManager = FileManager.default
@@ -130,7 +130,7 @@ func getFilePath(fileFolder folderName: String, fileName fileName: String) -> St
         }
     }
     
-    let pathArray = [filePath!, fileName]
+    let pathArray = [filePath!, fname]
     return pathArray.joined(separator: "/")
 }
 

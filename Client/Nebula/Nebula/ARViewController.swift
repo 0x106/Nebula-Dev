@@ -65,14 +65,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     
                     let dict = dataToDictionary(json)
                     
-                    var representation = dict//.description
-                    
-//                    representation = "{ \"data\": " + representation + "}"
-                    
+                    var representation = dict
                     let endtime = getCurrentTime()
-//                    let jsonFileName = endtime+".json"
                     let jsonFileName = "data.json"
                     let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
+                    
                     do {
                         try representation.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
                         
@@ -156,10 +153,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     if self.displayimage == "" {
                         self.displayimage = jsonNode["imagename"] as! String
                     }
-                    
-//                    let json = JSON(jsonNode)
-//                    let representation = json.rawString([.castNilToNSNull: true])
-                    
+
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     
                     let filePath = getFilePath(fileFolder: self.recordKey, fileName: jsonNode["imagename"] as! String)
