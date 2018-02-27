@@ -63,9 +63,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 if valid {
                     let json = JSON(self.jsonObject)
                     
-                    let dict = dataToDictionary(json)
-                    
-                    var representation = dict
+                    let representation = dataToDictionary(json)
                     let endtime = getCurrentTime()
                     let jsonFileName = "data.json"
                     let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
@@ -180,30 +178,33 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 extension ViewController {
     func addButton() {
         
-        let recordbuttonimg = UIImage(named: "buttonring")
+        let recordbuttonimg = UIImage(named: "buttonopen")
         
-        let size: Int = 64
+        let size: Int = 48
         let bx1 = CGFloat((self.sceneView.bounds.maxX/2) - 24)
         let by1 = CGFloat(self.sceneView.bounds.maxY - 80)
         
         recordbutton.frame = CGRect(x: bx1, y: by1, width: CGFloat(size), height: CGFloat(size))
         recordbutton.backgroundColor = .clear
         recordbutton.setImage(recordbuttonimg, for: .normal)
-        recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
-        recordbutton.clipsToBounds = true
+//        recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
+//        recordbutton.clipsToBounds = true
         self.sceneView.addSubview(recordbutton)
         self.recordbutton.isHidden = true
+        
+        self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: UIControlState.highlighted)
         
         let bx2 = CGFloat((self.sceneView.bounds.midX/2) - 24)
         let by2 = CGFloat(self.sceneView.bounds.maxY - 80)
         
-        let starpathbuttonimg = UIImage(named: "starpath")
+        let starpathbuttonimg = UIImage(named: "starpathopen")
         starpathbutton.frame = CGRect(x: bx2, y: by2, width: CGFloat(size), height: CGFloat(size))
         starpathbutton.backgroundColor = .clear
         starpathbutton.setImage(starpathbuttonimg, for: .normal)
         starpathbutton.addTarget(self, action: #selector(starpathButtonPressed), for: .touchUpInside)
-        starpathbutton.layer.cornerRadius = 0.5 * starpathbutton.bounds.size.width
-        starpathbutton.clipsToBounds = true
+//        starpathbutton.layer.cornerRadius = 0.5 * starpathbutton.bounds.size.width
+//        starpathbutton.clipsToBounds = true
+//        starpathbutton.setImage(UIImage(named: "starpathclosed"), for: UIControlState.highlighted)
         self.sceneView.addSubview(starpathbutton)
         self.starpathbutton.isHidden = true
     }
@@ -211,8 +212,10 @@ extension ViewController {
     @objc func starpathButtonPressed() {
         if self.grid.canAdd {
             self.grid.canAdd = false
+            starpathbutton.setImage(UIImage(named: "starpathopen"), for: .normal)
         } else {
             self.grid.canAdd = true
+            starpathbutton.setImage(UIImage(named: "starpathclosed"), for: .normal)
         }
     }
 }
@@ -324,7 +327,7 @@ class Marker {
     
     init() {
         
-        let depth: Float = 0.005
+//        let depth: Float = 0.005
         
         // CENTRE POINT NODE
         let sphere = SCNSphere(radius: 0.002)

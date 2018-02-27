@@ -125,7 +125,7 @@ func getFilePath(fileFolder folderName: String, fileName fname: String) -> Strin
     if fileManager.fileExists(atPath: filePath!) == false{
         do {
             try  fileManager.createDirectory(atPath: filePath!, withIntermediateDirectories: false, attributes: nil)
-        } catch let error as NSError {
+        } catch let _ as NSError {
             
         }
     }
