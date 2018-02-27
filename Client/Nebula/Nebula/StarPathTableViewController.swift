@@ -119,6 +119,12 @@ class StarPathTableViewController: UITableViewController {
         if editingStyle == .delete {
 //            tableView.deleteRows(at: [indexPath], with: .fade)
             
+        } else if editingStyle == .insert {
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let starpath = self.data[indexPath.row]
             
             let storage = Storage.storage()
@@ -142,14 +148,6 @@ class StarPathTableViewController: UITableViewController {
             updateMetadata(self.metadata!)
             self.refresh()
             
-            
-        } else if editingStyle == .insert {
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            // delete item at indexPath
         }
         
         let rename = UITableViewRowAction(style: .normal, title: "Rename") { (action, indexPath) in

@@ -31,9 +31,8 @@
       "scale" : "3x"
     },
     {
-      "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Icon-60@2x.png",
+      "size" : "60x60",
       "scale" : "2x"
     },
     {
@@ -89,7 +88,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "iTunesArtwork@2x.png",
+      "filename" : "nebula.jpg",
       "scale" : "1x"
     }
   ],

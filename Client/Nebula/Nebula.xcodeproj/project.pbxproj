@@ -10,13 +10,13 @@
 		6D84C7BA38B0843E9E2DAA86 /* Pods_NebulaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38297F3961B85CC465EF30E2 /* Pods_NebulaTests.framework */; };
 		BD822D4B14FCC414EDF50976 /* Pods_Nebula.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AAD875A6549B90445643849 /* Pods_Nebula.framework */; };
 		DA1C58F6204351A500CE302D /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C58F5204351A500CE302D /* Metadata.swift */; };
+		DA29725E204528210067C1F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA29725D204528210067C1F8 /* GoogleService-Info.plist */; };
 		DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442114203BD56F00BDD103 /* AppDelegate.swift */; };
 		DA442117203BD56F00BDD103 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA442116203BD56F00BDD103 /* art.scnassets */; };
 		DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ARViewController.swift */; };
 		DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA44211D203BD56F00BDD103 /* Assets.xcassets */; };
 		DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */; };
 		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
-		DA5D8C172041399B006AA505 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5D8C162041399A006AA505 /* GoogleService-Info.plist */; };
 		DAAD37A82042413C00156B08 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD37A72042413C00156B08 /* Login.swift */; };
 		DACBADC7203BD61200FCA744 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACBADC6203BD61200FCA744 /* Util.swift */; };
 		DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */; };
@@ -43,6 +43,7 @@
 		9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nebula.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nebula/Pods-Nebula.release.xcconfig"; sourceTree = "<group>"; };
 		9AAD875A6549B90445643849 /* Pods_Nebula.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nebula.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1C58F5204351A500CE302D /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
+		DA29725D204528210067C1F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DA442111203BD56F00BDD103 /* Nebula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nebula.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA442114203BD56F00BDD103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA442116203BD56F00BDD103 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -54,7 +55,6 @@
 		DA442127203BD56F00BDD103 /* NebulaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NebulaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA44212B203BD56F00BDD103 /* NebulaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaTests.swift; sourceTree = "<group>"; };
 		DA44212D203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DA5D8C162041399A006AA505 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAAD37A72042413C00156B08 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		DACBADC6203BD61200FCA744 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewCell.swift; sourceTree = "<group>"; };
@@ -137,8 +137,8 @@
 				DAAD37A72042413C00156B08 /* Login.swift */,
 				DA44211D203BD56F00BDD103 /* Assets.xcassets */,
 				DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */,
+				DA29725D204528210067C1F8 /* GoogleService-Info.plist */,
 				DA442122203BD56F00BDD103 /* Info.plist */,
-				DA5D8C162041399A006AA505 /* GoogleService-Info.plist */,
 			);
 			path = Nebula;
 			sourceTree = "<group>";
@@ -243,8 +243,8 @@
 			files = (
 				DA442117203BD56F00BDD103 /* art.scnassets in Resources */,
 				DAEBC26A20416E660023F2F7 /* Main.storyboard in Resources */,
+				DA29725E204528210067C1F8 /* GoogleService-Info.plist in Resources */,
 				DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */,
-				DA5D8C172041399B006AA505 /* GoogleService-Info.plist in Resources */,
 				DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,15 +545,21 @@
 			baseConfigurationReference = 7CE6EC80278324AE331551D4 /* Pods-Nebula.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = X74VR9B6M2;
 				INFOPLIST_FILE = Nebula/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Atlas.Nebula;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = atlas.nebula;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
 		};
@@ -562,15 +568,21 @@
 			baseConfigurationReference = 9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = X74VR9B6M2;
 				INFOPLIST_FILE = Nebula/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Atlas.Nebula;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = atlas.nebula;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "";
 			};
 			name = Release;
 		};
