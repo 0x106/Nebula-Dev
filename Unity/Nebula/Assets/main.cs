@@ -10,8 +10,13 @@ public class main : MonoBehaviour {
 	Texture2D nebulaTexture;
 	string[] filenames;
 	string[] sorted_keys;
-	int counter = 1;
+
+	int counter = 0;
+	int clockCounter = 0;
+	int updateFrequency = 2;
+
 	CameraData cameraData;
+
 
 
 	// Use this for initialization
@@ -50,51 +55,56 @@ public class main : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		string currentKey = cameraData.keys [counter];
+		if (clockCounter % updateFrequency == 0) {
 
-		string texturePath = "NebulaTextures/" + currentKey;
+			string currentKey = cameraData.keys [counter];
 
-		nebulaTexture = Resources.Load( texturePath ) as Texture2D;
-		quad.GetComponent<Renderer>().material.mainTexture = nebulaTexture;
+			string texturePath = "NebulaTextures/" + currentKey;
 
-		Camera.main.transform.position = new Vector3 (
-			cameraData.data[counter].position.x,
-			cameraData.data[counter].position.y,
-			-cameraData.data[counter].position.z
-		);
+			nebulaTexture = Resources.Load( texturePath ) as Texture2D;
+			quad.GetComponent<Renderer>().material.mainTexture = nebulaTexture;
 
-		float omega = 180.0F / Mathf.PI;
-		Camera.main.transform.eulerAngles = new Vector3 (
-			-cameraData.data[counter].rotation.x * omega,
-			-cameraData.data[counter].rotation.y * omega,
-			cameraData.data[counter].rotation.z * omega + 90.0F
-		);
+			Camera.main.transform.position = new Vector3 (
+				cameraData.data[counter].position.x,
+				cameraData.data[counter].position.y,
+				-cameraData.data[counter].position.z
+			);
 
-		Matrix4x4 p = Camera.main.projectionMatrix;
+			float omega = 180.0F / Mathf.PI;
+			Camera.main.transform.eulerAngles = new Vector3 (
+				-cameraData.data[counter].rotation.x * omega,
+				-cameraData.data[counter].rotation.y * omega,
+				cameraData.data[counter].rotation.z * omega + 90.0F
+			);
 
-		float gamma = 0.38F;
-		float deltaX = -0.6F;
-		float deltaY = -0.4F;
+			Matrix4x4 p = Camera.main.projectionMatrix;
 
-		float alpha = 0.001F;
-		p.m00 = cameraData.data[counter].intrinsics.m00 * alpha + gamma;
-		p.m01 = cameraData.data[counter].intrinsics.m01 * alpha;
-		p.m02 = cameraData.data[counter].intrinsics.m02 * alpha + deltaX;
+			float gamma = 0.38F;
+			float deltaX = -0.6F;
+			float deltaY = -0.4F;
 
-		p.m10 = cameraData.data[counter].intrinsics.m10 * alpha;
-		p.m11 = cameraData.data[counter].intrinsics.m11 * alpha + gamma;
-		p.m12 = cameraData.data[counter].intrinsics.m12 * alpha + deltaY;
+			float alpha = 0.001F;
+			p.m00 = cameraData.data[counter].intrinsics.m00 * alpha + gamma;
+			p.m01 = cameraData.data[counter].intrinsics.m01 * alpha;
+			p.m02 = cameraData.data[counter].intrinsics.m02 * alpha + deltaX;
 
-		p.m20 = cameraData.data[counter].intrinsics.m20 * alpha;
-		p.m21 = cameraData.data[counter].intrinsics.m21 * alpha;
-		p.m22 = cameraData.data[counter].intrinsics.m22 * alpha;
+			p.m10 = cameraData.data[counter].intrinsics.m10 * alpha;
+			p.m11 = cameraData.data[counter].intrinsics.m11 * alpha + gamma;
+			p.m12 = cameraData.data[counter].intrinsics.m12 * alpha + deltaY;
 
-		Camera.main.projectionMatrix = p;
+			p.m20 = cameraData.data[counter].intrinsics.m20 * alpha;
+			p.m21 = cameraData.data[counter].intrinsics.m21 * alpha;
+			p.m22 = cameraData.data[counter].intrinsics.m22 * alpha;
 
-		counter += 1;
-		if (counter >= cameraData.data.Length) {
-			counter = 1;
+			Camera.main.projectionMatrix = p;
+			counter += 1;
+			if (counter >= cameraData.data.Length) {
+				counter = 0;
+			}
 		}
+
+		clockCounter += 1;
+
 	}
 
 	void readData() {
