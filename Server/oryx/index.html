@@ -1,0 +1,101 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+    <script src="data.js"></script>
+		<script>
+
+      var data = {};
+      for (var key in _data) {
+        data[ _data[key]["key"] ] = _data[key]
+      }
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+      var meshSize = 0.1
+			var geometry = new THREE.BoxGeometry( meshSize, meshSize, meshSize );
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			var cube = new THREE.Mesh( geometry, material );
+			scene.add( cube );
+
+			camera.position.z = 2.5;
+
+      var dataFrameIndex = 0
+
+      // instantiate a loader
+var loader = new THREE.ImageLoader();
+
+// load a image resource
+loader.load(
+	// resource URL
+	'http://25864187.ngrok.io/images/16198187201.jpg',
+
+	// onLoad callback
+	function ( image ) {
+		// use the image, e.g. draw part of it on a canvas
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+		context.drawImage( image, 100, 100 );
+	},
+
+	// onProgress callback currently not supported
+	undefined,
+
+	// onError callback
+	function () {
+		console.error( 'An error happened.' );
+	}
+);
+
+      // var texture = THREE.ImageLoader( 'images/16198187201.jpg' );
+      // var backgroundMesh = new THREE.Mesh(
+      //       new THREE.PlaneGeometry(2, 2, 0),
+      //       new THREE.MeshBasicMaterial({
+      //           map: texture
+      // }));
+      //
+      // backgroundMesh .material.depthTest = false;
+      // backgroundMesh .material.depthWrite = false;
+      //
+      // scene.add(backgroundMesh);
+      //
+			// var animate = function () {
+			// 	requestAnimationFrame( animate );
+      //
+      //   var currentIndex = keys[dataFrameIndex]
+      //
+			// 	camera.position.x = data[currentIndex]["position"]["y"]//*0.1;
+      //   camera.position.y = data[currentIndex]["position"]["x"]//*0.1;
+      //   camera.position.z = data[currentIndex]["position"]["z"] + 1//*0.1 + 1;
+      //   //
+      //   camera.rotation.x = -data[currentIndex]["rotation"]["x"];
+      //   camera.rotation.y = data[currentIndex]["rotation"]["y"];
+      //   camera.rotation.z = data[currentIndex]["rotation"]["z"];
+      //
+      //   console.log(camera.position);
+      //
+      //   // cube.rotation.x += 0.1
+      //
+			// 	renderer.render(scene, camera);
+      //
+      //   dataFrameIndex += 1
+      //   if (dataFrameIndex >= _data.length) {
+      //     dataFrameIndex = 0
+      //   }
+			// };
+
+			// animate();
+		</script>
+	</body>
+</html>
