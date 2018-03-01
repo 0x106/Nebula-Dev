@@ -16,6 +16,78 @@ import ARKit
 import SwiftyJSON
 import Firebase
 
+class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+
+    @IBOutlet var sceneView: ARSCNView!
+    
+    var embeddingComputeFrequency = 4
+    var frameCounter = 0
+    var vision = Vision()
+    var metadata: JSON?
+    var referenceEmbedding = [Double]()
+    var sphere = SCNSphere()
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        sceneView.delegate = self
+        self.sceneView.session.delegate = self
+        
+        sceneView.showsStatistics = false
+        
+        let scene = SCNScene()
+        sceneView.scene = scene
+        
+        self.metadata = initMetadata()
+        for item in self.metadata! {
+            let _embedding = stringToArray(item.1["embedding"].stringValue)
+            if _embedding.count > 0 {
+                self.referenceEmbedding = _embedding
+            }
+        }
+        
+        self.sphere = SCNSphere(radius: CGFloat(0.02))
+        sphere.firstMaterial?.diffuse.contents = UIColor.magenta.withAlphaComponent(CGFloat(0.5))
+    }
+    
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        self.frameCounter += 1
+        if self.frameCounter % self.embeddingComputeFrequency == 0 {
+            let image = pixelBufferToUIImage(pixelBuffer: frame.capturedImage)
+            self.vision.processFrame(image, self.receiveEmbedding)
+            
+        }
+    }
+    
+    func receiveEmbedding(_ _embedding: [Double]) {
+        if self.referenceEmbedding.count == _embedding.count {
+            let distance = vision.euclideanDistance(_embedding, self.referenceEmbedding)
+            print("Distance: \(distance)")
+            
+            if distance < 5.0 {
+                let center = self.sceneView.center
+                if let hit = self.sceneView.hitTest(center, types: ARHitTestResult.ResultType.featurePoint).first {
+                    let node = SCNNode(geometry: self.sphere)
+                    node.position = SCNVector3Make(hit.worldTransform.columns.3.x,
+                                                   hit.worldTransform.columns.3.y,
+                                                   hit.worldTransform.columns.3.z)
+                    self.sceneView.scene.rootNode.addChildNode(node)
+                }
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let configuration = ARWorldTrackingConfiguration()
+        self.sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+        self.sceneView.automaticallyUpdatesLighting = true
+        sceneView.session.run(configuration)
+    }
+    
+}
+
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @IBOutlet var sceneView: ARSCNView!

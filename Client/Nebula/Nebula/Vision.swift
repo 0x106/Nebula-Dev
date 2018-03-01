@@ -60,9 +60,7 @@ class Vision {
             
             do {
                 try imageRequestHandler.perform(self.visionRequests)
-                print("Vision request dispatched.")
             } catch {
-                print(error)
                 return
             }
         }
@@ -72,20 +70,16 @@ class Vision {
     func visionEstimationCompleteHandler(_ request: VNRequest, _ error: Error?) {
         
         if error != nil {
-            print("Error: " + (error?.localizedDescription)!)
             return
         }
         
         DispatchQueue.main.async {
             guard let observations = request.results as? [VNCoreMLFeatureValueObservation] else {
-                print("No results")
                 return
             }
             
             let raw_embedding = observations[0].featureValue.multiArrayValue!
             self.extractEmbedding(raw_embedding)
-            
-            print("Embedding: \(self.embedding)")
             
             if let handler = self.requestCompletionHandler {
                 handler(self.embedding)
