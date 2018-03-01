@@ -55,6 +55,7 @@
 		DA442127203BD56F00BDD103 /* NebulaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NebulaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA44212B203BD56F00BDD103 /* NebulaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaTests.swift; sourceTree = "<group>"; };
 		DA44212D203BD56F00BDD103 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DAA05CC12047610E00E49499 /* Nebula.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nebula.entitlements; sourceTree = "<group>"; };
 		DAAD37A72042413C00156B08 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		DACBADC6203BD61200FCA744 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewCell.swift; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 		DA442113203BD56F00BDD103 /* Nebula */ = {
 			isa = PBXGroup;
 			children = (
+				DAA05CC12047610E00E49499 /* Nebula.entitlements */,
 				DA442114203BD56F00BDD103 /* AppDelegate.swift */,
 				DA442116203BD56F00BDD103 /* art.scnassets */,
 				DA442118203BD56F00BDD103 /* ARViewController.swift */,
@@ -209,6 +211,11 @@
 					DA442110203BD56F00BDD103 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					DA442126203BD56F00BDD103 = {
 						CreatedOnToolsVersion = 9.2;
@@ -545,6 +552,7 @@
 			baseConfigurationReference = 7CE6EC80278324AE331551D4 /* Pods-Nebula.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Nebula/Nebula.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -568,6 +576,7 @@
 			baseConfigurationReference = 9A6472F8D4A82F2A8CF20F89 /* Pods-Nebula.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Nebula/Nebula.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
