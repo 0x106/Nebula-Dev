@@ -39,6 +39,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     var saveCurrentStarpath: Bool = true
     
+    var isRecording: Bool = false
+    
+    let tap: UITapGestureRecognizer = UITapGestureRecognizer()
+    
+    var keyFrame: String = ""
+    var screenTapped: Bool = false
+    
+    var vision = Vision()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
@@ -51,6 +60,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         self.sceneRecordCompletionButton.isEnabled = false
         self.metadata = initMetadata()
+        
+        tap.addTarget(self, action: #selector(screenTap) )
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    @objc func screenTap() {
+        self.screenTapped = true
+    }
+    
+    func receiveEmbedding(_ _embedding: [Double]) {
+        print(_embedding)
+        if var _ = self.metadata {
+            self.metadata![self.recordKey]["embedding"].stringValue = _embedding.description
+            updateMetadata(self.metadata!)
+        }
     }
     
     func writeData() {
@@ -73,6 +97,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                         
                         if var _ = self.metadata {
                             
+                            // compute embedding of keyframe and write it to metadata
+                            
+                            // load image
+                            let keyframepath = getFilePath(fileFolder: self.recordKey, fileName: self.keyFrame)
+                            if let keyframeimage = UIImage(contentsOfFile: keyframepath) {
+                                self.vision.processFrame(keyframeimage, self.receiveEmbedding)
+                            }
+                            
                             let datum: JSON = [
                                 "starttime": self.recordStartTime!,
                                 "endtime": endtime,
@@ -80,7 +112,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                                 "dataname": jsonFileName,
                                 "displayname": "Untitled",
                                 "uploaded": "false",
-                                "displayimage": self.displayimage
+                                "displayimage": self.displayimage,
+                                "embedding": ""
                             ]
                             
                             self.metadata![self.recordKey] = datum
@@ -133,7 +166,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 self.starpathbutton.isHidden = false
             }
             
-            if self.recordbutton.isHighlighted {
+//            if self.recordbutton.isHighlighted {
+            if self.isRecording {
                 
                 self.trackingON = true
                 
@@ -146,15 +180,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 DispatchQueue.global(qos: .utility).async {
                 
                     let jsonNode = currentFrameInfoToDic(currentFrame: frame)
-                    self.jsonObject[jsonNode["imagename"] as! String] = jsonNode
+                    var filename = jsonNode["imagename"] as! String
+                    
+                    if self.screenTapped {
+                        self.screenTapped = false
+                        self.keyFrame = filename
+                        print("\(self.keyFrame) selected as keyframe")
+                    }
+                    
+                    self.jsonObject[filename] = jsonNode
                     
                     if self.displayimage == "" {
-                        self.displayimage = jsonNode["imagename"] as! String
+                        self.displayimage = filename
                     }
 
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     
-                    let filePath = getFilePath(fileFolder: self.recordKey, fileName: jsonNode["imagename"] as! String)
+                    let filePath = getFilePath(fileFolder: self.recordKey, fileName: filename)
                     try? image.write(to: URL(fileURLWithPath: filePath))
                     self.frameCounter -= 1  // removing a frame from the stack
                     self.writeData()
@@ -187,12 +229,13 @@ extension ViewController {
         recordbutton.frame = CGRect(x: bx1, y: by1, width: CGFloat(size), height: CGFloat(size))
         recordbutton.backgroundColor = .clear
         recordbutton.setImage(recordbuttonimg, for: .normal)
+        recordbutton.addTarget(self, action: #selector(recordButtonPressed), for: .touchUpInside)
 //        recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
 //        recordbutton.clipsToBounds = true
         self.sceneView.addSubview(recordbutton)
         self.recordbutton.isHidden = true
         
-        self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: UIControlState.highlighted)
+//        self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: UIControlState.highlighted)
         
         let bx2 = CGFloat((self.sceneView.bounds.midX/2) - 24)
         let by2 = CGFloat(self.sceneView.bounds.maxY - 80)
@@ -204,6 +247,18 @@ extension ViewController {
         starpathbutton.addTarget(self, action: #selector(starpathButtonPressed), for: .touchUpInside)
         self.sceneView.addSubview(starpathbutton)
         self.starpathbutton.isHidden = true
+    }
+    
+    @objc func recordButtonPressed() {
+        if self.isRecording {
+            self.isRecording = false
+            self.recordbutton.setImage(UIImage(named: "buttonopen"), for: .normal)
+        } else {
+            self.isRecording = true
+            self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: .normal)
+        }
+        
+        print(self.isRecording)
     }
     
     @objc func starpathButtonPressed() {

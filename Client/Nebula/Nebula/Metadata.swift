@@ -141,10 +141,17 @@ func removeFileExtension(_ _input: String) -> String {
 
 func metadataToDictionary(_ _metadata: JSON) -> Dictionary<String, Dictionary<String, String>> {
     var output = Dictionary<String, Dictionary<String, String>>()
+//    var embedding = [Double]()
     for datum in _metadata {
+        
         let key = datum.0
-        let value = datum.1.dictionaryObject as! Dictionary<String, String>
-        output[key] = value
+        
+//        if key == "embedding" {
+//            embedding = datum.1.dictionaryObject as! [Double]
+//        } else {
+            let value = datum.1.dictionaryObject as! Dictionary<String, String>
+            output[key] = value
+//        }
     }
     return output
 }
