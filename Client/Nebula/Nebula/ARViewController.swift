@@ -208,6 +208,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         
+        
+        let tube = SCNTube()
+        
+//        tub
+        
         if let state = self.sceneView.session.currentFrame?.camera.trackingState {
             switch(state) {
             case .normal:
@@ -228,6 +233,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 
                 guard let transform = self.sceneView.session.currentFrame?.camera.transform else {return}
                 let position = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+                
+                let euler = frame.camera.eulerAngles
+                let proj = frame.camera.projection
                 
                 self.grid.add("", position, isstarpath: true)
             }
