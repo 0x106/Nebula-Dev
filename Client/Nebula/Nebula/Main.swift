@@ -153,10 +153,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         if self.frameCounter == 0 && self.trackingON == false {
             
-            DispatchQueue.global(qos: .utility).async {
+            DispatchQueue.global(qos: .userInteractive).async {
                 
                 let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
                 if valid {
+                    
                     let json = JSON(self.jsonObject)
                     
                     let representation = dataToDictionary(json)
@@ -211,8 +212,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         let tube = SCNTube()
         
-//        tub
-        
         if let state = self.sceneView.session.currentFrame?.camera.trackingState {
             switch(state) {
             case .normal:
@@ -235,7 +234,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 let position = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
                 
                 let euler = frame.camera.eulerAngles
-                let proj = frame.camera.projection
+                let proj = frame.camera.projectionMatrix
+//                let proj = frame.camera.
                 
                 self.grid.add("", position, isstarpath: true)
             }
@@ -257,7 +257,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 }
                 
                 self.frameCounter += 1      // we're adding a frame to the stack
-                DispatchQueue.global(qos: .utility).async {
+                DispatchQueue.global(qos: .userInteractive).async {
                 
                     let jsonNode = currentFrameInfoToDic(currentFrame: frame)
                     var filename = jsonNode["imagename"] as! String

@@ -13,7 +13,7 @@
 		DA29725E204528210067C1F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA29725D204528210067C1F8 /* GoogleService-Info.plist */; };
 		DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442114203BD56F00BDD103 /* AppDelegate.swift */; };
 		DA442117203BD56F00BDD103 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA442116203BD56F00BDD103 /* art.scnassets */; };
-		DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ARViewController.swift */; };
+		DA442119203BD56F00BDD103 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* Main.swift */; };
 		DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA44211D203BD56F00BDD103 /* Assets.xcassets */; };
 		DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */; };
 		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
@@ -49,7 +49,7 @@
 		DA442111203BD56F00BDD103 /* Nebula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nebula.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA442114203BD56F00BDD103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA442116203BD56F00BDD103 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		DA442118203BD56F00BDD103 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		DA442118203BD56F00BDD103 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		DA44211B203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DA44211D203BD56F00BDD103 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA442120203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 			children = (
 				DA442114203BD56F00BDD103 /* AppDelegate.swift */,
 				DA442116203BD56F00BDD103 /* art.scnassets */,
-				DA442118203BD56F00BDD103 /* ARViewController.swift */,
+				DA442118203BD56F00BDD103 /* Main.swift */,
 				DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */,
 				DA44211A203BD56F00BDD103 /* Main.storyboard */,
 				DA998C9A2047BAB800DAB3EA /* Vision.swift */,
@@ -393,7 +393,7 @@
 				DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */,
 				DA998C992047BA8500DAB3EA /* predict.mlmodel in Sources */,
 				DAEBC266204149660023F2F7 /* StarPath.swift in Sources */,
-				DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */,
+				DA442119203BD56F00BDD103 /* Main.swift in Sources */,
 				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
 				DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
