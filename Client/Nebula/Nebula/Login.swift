@@ -62,7 +62,7 @@ class LogoutController: UIViewController {
         if let _ = Auth.auth().currentUser {
             do {
                 try? Auth.auth().signOut()
-                if let user = Auth.auth().currentUser {
+                if let _ = Auth.auth().currentUser {
                 } else {
                 }
             }

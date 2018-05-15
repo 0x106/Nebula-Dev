@@ -13,7 +13,7 @@
 		DA29725E204528210067C1F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA29725D204528210067C1F8 /* GoogleService-Info.plist */; };
 		DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442114203BD56F00BDD103 /* AppDelegate.swift */; };
 		DA442117203BD56F00BDD103 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DA442116203BD56F00BDD103 /* art.scnassets */; };
-		DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* ARViewController.swift */; };
+		DA442119203BD56F00BDD103 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA442118203BD56F00BDD103 /* Main.swift */; };
 		DA44211E203BD56F00BDD103 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA44211D203BD56F00BDD103 /* Assets.xcassets */; };
 		DA442121203BD56F00BDD103 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211F203BD56F00BDD103 /* LaunchScreen.storyboard */; };
 		DA44212C203BD56F00BDD103 /* NebulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA44212B203BD56F00BDD103 /* NebulaTests.swift */; };
@@ -25,6 +25,8 @@
 		DAEBC266204149660023F2F7 /* StarPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC265204149660023F2F7 /* StarPath.swift */; };
 		DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */; };
 		DAEBC26A20416E660023F2F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211A203BD56F00BDD103 /* Main.storyboard */; };
+		DAFF569A20AA9CF10023DD91 /* ImageRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF569920AA9CF10023DD91 /* ImageRecognition.swift */; };
+		DAFF569C20AA9E490023DD91 /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF569B20AA9E490023DD91 /* UI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +51,7 @@
 		DA442111203BD56F00BDD103 /* Nebula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nebula.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA442114203BD56F00BDD103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA442116203BD56F00BDD103 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		DA442118203BD56F00BDD103 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		DA442118203BD56F00BDD103 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		DA44211B203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DA44211D203BD56F00BDD103 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA442120203BD56F00BDD103 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,6 +66,8 @@
 		DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewCell.swift; sourceTree = "<group>"; };
 		DAEBC265204149660023F2F7 /* StarPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPath.swift; sourceTree = "<group>"; };
 		DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewController.swift; sourceTree = "<group>"; };
+		DAFF569920AA9CF10023DD91 /* ImageRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRecognition.swift; sourceTree = "<group>"; };
+		DAFF569B20AA9E490023DD91 /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +135,9 @@
 			children = (
 				DA442114203BD56F00BDD103 /* AppDelegate.swift */,
 				DA442116203BD56F00BDD103 /* art.scnassets */,
-				DA442118203BD56F00BDD103 /* ARViewController.swift */,
+				DA442118203BD56F00BDD103 /* Main.swift */,
+				DAFF569B20AA9E490023DD91 /* UI.swift */,
+				DAFF569920AA9CF10023DD91 /* ImageRecognition.swift */,
 				DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */,
 				DA44211A203BD56F00BDD103 /* Main.storyboard */,
 				DA998C9A2047BAB800DAB3EA /* Vision.swift */,
@@ -209,7 +215,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Atlas Innovation";
 				TargetAttributes = {
 					DA442110203BD56F00BDD103 = {
@@ -390,10 +396,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAFF569A20AA9CF10023DD91 /* ImageRecognition.swift in Sources */,
 				DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */,
 				DA998C992047BA8500DAB3EA /* predict.mlmodel in Sources */,
 				DAEBC266204149660023F2F7 /* StarPath.swift in Sources */,
-				DA442119203BD56F00BDD103 /* ARViewController.swift in Sources */,
+				DA442119203BD56F00BDD103 /* Main.swift in Sources */,
+				DAFF569C20AA9E490023DD91 /* UI.swift in Sources */,
 				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
 				DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
@@ -455,6 +463,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -462,6 +471,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -489,7 +499,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -512,6 +522,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -519,6 +530,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -540,7 +552,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

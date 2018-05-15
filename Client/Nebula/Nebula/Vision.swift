@@ -14,8 +14,6 @@ import ARKit
 class Vision {
     
     var visionRequests = [VNRequest]()
-    let dispatchQueueML = DispatchQueue(label: "com.hw.dispatchqueueml") // A Serial Queue
-    
     var embedding = [Double]()
     let M = 128
     
@@ -32,10 +30,8 @@ class Vision {
         }
         
         let visionEstimationRequest = VNCoreMLRequest(model: predictor, completionHandler: self.visionEstimationCompleteHandler)
-        visionEstimationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop // Crop from centre of images and scale to appropriate size.
+        visionEstimationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop
         visionRequests = [visionEstimationRequest]
-        
-        print("Vision module initialised.")
     }
     
     func resizeImage(image: UIImage, newSize: CGSize) -> UIImage {
@@ -50,8 +46,6 @@ class Vision {
     func processFrame(_ _image: UIImage, _ _requestCompletion: @escaping ([Double]) -> ()) {
         
         self.requestCompletionHandler = _requestCompletion
-        
-//        dispatchQueueML.async {
         DispatchQueue.global(qos: .userInteractive).async {
         
             let image = self.resizeImage(image: _image, newSize: CGSize(width: CGFloat(256), height: CGFloat(256)))
