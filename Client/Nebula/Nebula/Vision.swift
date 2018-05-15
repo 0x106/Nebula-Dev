@@ -51,8 +51,9 @@ class Vision {
         
         self.requestCompletionHandler = _requestCompletion
         
-        dispatchQueueML.async {
-            
+//        dispatchQueueML.async {
+        DispatchQueue.global(qos: .userInteractive).async {
+        
             let image = self.resizeImage(image: _image, newSize: CGSize(width: CGFloat(256), height: CGFloat(256)))
             
             let ciImage = CIImage(cgImage: image.cgImage!)

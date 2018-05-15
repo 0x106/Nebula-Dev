@@ -17,14 +17,15 @@ import SwiftyJSON
 import Firebase
 
 class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     
-    var embeddingComputeFrequency = 4
+    var embeddingComputeFrequency = 10
     var frameCounter = 0
     var vision = Vision()
     var metadata: JSON?
     var referenceEmbedding = [Double]()
+    var embedList = [[Double]]()
     var sphere = SCNSphere()
     
     override func viewDidLoad() {
@@ -39,11 +40,15 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
         let scene = SCNScene()
         sceneView.scene = scene
         
+        print("DetectionViewController scene initialised")
+        
         self.metadata = initMetadata()
         for item in self.metadata! {
+            
             let _embedding = stringToArray(item.1["embedding"].stringValue)
             if _embedding.count > 0 {
                 self.referenceEmbedding = _embedding
+                self.embedList.append(_embedding)
             }
         }
         
@@ -56,23 +61,28 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
         if self.frameCounter % self.embeddingComputeFrequency == 0 {
             let image = pixelBufferToUIImage(pixelBuffer: frame.capturedImage)
             self.vision.processFrame(image, self.receiveEmbedding)
-            
+            print("Processed image")
         }
     }
     
     func receiveEmbedding(_ _embedding: [Double]) {
         if self.referenceEmbedding.count == _embedding.count {
-            let distance = vision.euclideanDistance(_embedding, self.referenceEmbedding)
-            print("Distance: \(distance)")
             
-            if distance < 5.0 {
-                let center = self.sceneView.center
-                if let hit = self.sceneView.hitTest(center, types: ARHitTestResult.ResultType.featurePoint).first {
-                    let node = SCNNode(geometry: self.sphere)
-                    node.position = SCNVector3Make(hit.worldTransform.columns.3.x,
-                                                   hit.worldTransform.columns.3.y,
-                                                   hit.worldTransform.columns.3.z)
-                    self.sceneView.scene.rootNode.addChildNode(node)
+            for query_embedding in self.embedList {
+                
+//                let distance = vision.euclideanDistance(_embedding, self.referenceEmbedding)
+                let distance = vision.euclideanDistance(_embedding, query_embedding)
+                print("Distance: \(distance)")
+                
+                if distance < 7.5 {
+                    let center = self.sceneView.center
+                    if let hit = self.sceneView.hitTest(center, types: ARHitTestResult.ResultType.featurePoint).first {
+                        let node = SCNNode(geometry: self.sphere)
+                        node.position = SCNVector3Make(hit.worldTransform.columns.3.x,
+                                                       hit.worldTransform.columns.3.y,
+                                                       hit.worldTransform.columns.3.z)
+                        self.sceneView.scene.rootNode.addChildNode(node)
+                    }
                 }
             }
         }
@@ -208,8 +218,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        
-        
         let tube = SCNTube()
         
         if let state = self.sceneView.session.currentFrame?.camera.trackingState {
@@ -235,7 +243,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 
                 let euler = frame.camera.eulerAngles
                 let proj = frame.camera.projectionMatrix
-//                let proj = frame.camera.
                 
                 self.grid.add("", position, isstarpath: true)
             }
@@ -246,7 +253,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 self.starpathbutton.isHidden = false
             }
             
-//            if self.recordbutton.isHighlighted {
+            //            if self.recordbutton.isHighlighted {
             if self.isRecording {
                 
                 self.trackingON = true
@@ -258,7 +265,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 
                 self.frameCounter += 1      // we're adding a frame to the stack
                 DispatchQueue.global(qos: .userInteractive).async {
-                
+                    
                     let jsonNode = currentFrameInfoToDic(currentFrame: frame)
                     var filename = jsonNode["imagename"] as! String
                     
@@ -273,7 +280,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                     if self.displayimage == "" {
                         self.displayimage = filename
                     }
-
+                    
                     let image = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 0.25)!
                     
                     let filePath = getFilePath(fileFolder: self.recordKey, fileName: filename)
@@ -310,12 +317,12 @@ extension ViewController {
         recordbutton.backgroundColor = .clear
         recordbutton.setImage(recordbuttonimg, for: .normal)
         recordbutton.addTarget(self, action: #selector(recordButtonPressed), for: .touchUpInside)
-//        recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
-//        recordbutton.clipsToBounds = true
+        //        recordbutton.layer.cornerRadius = 0.5 * recordbutton.bounds.size.width
+        //        recordbutton.clipsToBounds = true
         self.sceneView.addSubview(recordbutton)
         self.recordbutton.isHidden = true
         
-//        self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: UIControlState.highlighted)
+        //        self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: UIControlState.highlighted)
         
         let bx2 = CGFloat((self.sceneView.bounds.midX/2) - 24)
         let by2 = CGFloat(self.sceneView.bounds.maxY - 80)
@@ -402,8 +409,8 @@ class WorldGrid {
                 
                 if self.starpathMarkers.count > 2 {
                     starpathEdges.append(SCNNode().buildLineInTwoPointsWithRotation(from: self.starpathMarkers[self.starpathMarkers.count-2].rootNode.position,
-                                                                                 to:   self.starpathMarkers[self.starpathMarkers.count-1].rootNode.position,
-                                                                                 radius: CGFloat(0.0005), lengthOffset: CGFloat(0.0), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
+                                                                                    to:   self.starpathMarkers[self.starpathMarkers.count-1].rootNode.position,
+                                                                                    radius: CGFloat(0.0005), lengthOffset: CGFloat(0.0), color: UIColor.magenta.withAlphaComponent(CGFloat(0.35))))
                     self.starpath.addChildNode(starpathEdges[starpathEdges.count - 1])
                 }
             }
@@ -459,7 +466,7 @@ class Marker {
     
     init() {
         
-//        let depth: Float = 0.005
+        //        let depth: Float = 0.005
         
         // CENTRE POINT NODE
         let sphere = SCNSphere(radius: 0.002)
