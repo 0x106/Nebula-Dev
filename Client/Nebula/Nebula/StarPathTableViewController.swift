@@ -116,9 +116,7 @@ class StarPathTableViewController: UITableViewController {
     }
  
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-            
+        if editingStyle == .delete {            
         } else if editingStyle == .insert {
         }
     }

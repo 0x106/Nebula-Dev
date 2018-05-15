@@ -125,8 +125,8 @@ func getFilePath(fileFolder folderName: String, fileName fname: String) -> Strin
     if fileManager.fileExists(atPath: filePath!) == false{
         do {
             try  fileManager.createDirectory(atPath: filePath!, withIntermediateDirectories: false, attributes: nil)
-        } catch let _ as NSError {
-            
+        } catch let error as NSError {
+            print("Cannot get file: \(error)")
         }
     }
     
@@ -341,6 +341,25 @@ extension UIColor {
     }
 }
 
+func stringToArray(_ _input: String) -> [Double] {
+    
+    if _input.count > 1 {
+        
+        let startIndex = _input.index(after:  _input.index(of:"[") ?? _input.startIndex)
+        let endIndex   = _input.index(before: _input.index(of:"]") ?? _input.endIndex)
+        
+        let values = (_input[startIndex ... endIndex])
+            .replacingOccurrences(of: ",", with: " ")
+            .replacingOccurrences(of: " .[0-9]", with: "")
+            .replacingOccurrences(of: "[a-z]", with: "",  options: NSString.CompareOptions.regularExpression, range: nil)
+            .split(separator: " ")
+            .map {Double($0)!}
+        
+        return values
+    }
+ 
+    return []
+}
 
 // end
 

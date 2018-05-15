@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vbs-Xb-Rqw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vbs-Xb-Rqw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -124,16 +125,41 @@
                                 <segue destination="b3F-QR-CPq" kind="show" id="1aQ-Xj-yLD"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="wCN-QW-gEx">
-                            <connections>
-                                <segue destination="Mnm-dU-GVR" kind="presentation" id="L7m-Kr-a8g"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="wCN-QW-gEx">
+                                <connections>
+                                    <segue destination="Mnm-dU-GVR" kind="presentation" id="L7m-Kr-a8g"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="camera" id="qzk-y9-fo8">
+                                <connections>
+                                    <segue destination="fPr-e3-Ogp" kind="show" id="O2w-Ae-v7B"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JuG-wO-wy0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="975" y="336"/>
+        </scene>
+        <!--Detection View Controller-->
+        <scene sceneID="UCg-0N-E5v">
+            <objects>
+                <viewController id="fPr-e3-Ogp" customClass="DetectionViewController" customModule="Nebula" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="w9A-lt-yh2" customClass="ARSCNView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="LMM-m0-FQH"/>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="w9A-lt-yh2" id="k0i-er-E9K"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BAm-rY-iIu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="990" y="1047"/>
         </scene>
         <!--Logout Controller-->
         <scene sceneID="c1M-8j-LfU">

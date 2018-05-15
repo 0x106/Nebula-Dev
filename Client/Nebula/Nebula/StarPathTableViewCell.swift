@@ -68,22 +68,16 @@ class StarPathTableViewCell: UITableViewCell {
             }
         }
         uploadTask.observe(.failure) { snapshot in
-//            if let error = snapshot.error as? NSError {
-//            }
         }
     }
 
     func uploadImage(_ _path_: String, _ _uid: String, _ _key: String, _ _filename: String) {
         
         let _path = "file://\(_path_)"
-        
         let storage = Storage.storage()
-        
         let storageRef = storage.reference().child(_uid).child(_key).child(_filename)
-    
         let localFile = URL(string: _path)!
-        
-        let uploadTask = storageRef.putFile(from: localFile)//, metadata: metadata)
+        let uploadTask = storageRef.putFile(from: localFile)
         
         uploadTask.observe(.resume) { snapshot in
         }

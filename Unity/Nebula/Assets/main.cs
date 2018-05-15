@@ -17,8 +17,6 @@ public class main : MonoBehaviour {
 
 	CameraData cameraData;
 
-
-
 	// Use this for initialization
 	void Start () {
 		print ("Running Nebula script.");
