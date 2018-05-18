@@ -20,6 +20,7 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
         self.metadata = initMetadata()
+//        self.metadata = retrieveMetadata()
         
         GIDSignIn.sharedInstance().uiDelegate = self
 //        GIDSignIn.sharedInstance().signIn()
@@ -29,15 +30,17 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
             if user != nil {
             
                 if var _ = self.metadata {
-                    if self.metadata!["metauser"].stringValue == "" {
+                    if self.metadata!["metauser"]["uid"].stringValue == "" {
                         let metauser: JSON = [
                             "uid": user?.uid ?? "unknown"
                         ]
                         self.metadata!["metauser"] = metauser
                         updateMetadata(self.metadata!)
                     } else {
-                        if self.metadata!["metauser"].stringValue != user?.uid {
-                            fatalError("User ID doesn't match recorded value.")
+                        if let userID = user?.uid {
+                            if self.metadata!["metauser"]["uid"].stringValue != userID {
+                                fatalError("User ID doesn't match recorded value.")
+                            }
                         }
                     }
                 }

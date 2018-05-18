@@ -20,7 +20,7 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
     var referenceEmbedding = [Double]()
     var embedList = [[Double]]()
     var sphere = SCNSphere()
-    let distanceThreshold: Double = 7.5
+    let distanceThreshold: Double = 4.0//7.5
     
     override func viewDidLoad() {
         
@@ -34,17 +34,22 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
         let scene = SCNScene()
         sceneView.scene = scene
         
-        print("DetectionViewController scene initialised")
-        
+        retrieveMetadata()
+                
         self.metadata = initMetadata()
         for item in self.metadata! {
             
             let _embedding = stringToArray(item.1["embedding"].stringValue)
+            
             if _embedding.count > 0 {
                 self.referenceEmbedding = _embedding
                 self.embedList.append(_embedding)
+                let _position = stringToArray(item.1["keyPosition"].stringValue)
+                let _rotation = stringToArray(item.1["keyRotation"].stringValue)
             }
         }
+        
+        print(self.embedList.count)
         
         self.sphere = SCNSphere(radius: CGFloat(0.02))
         sphere.firstMaterial?.diffuse.contents = UIColor.magenta.withAlphaComponent(CGFloat(0.5))
@@ -64,6 +69,7 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
             for query_embedding in self.embedList {
                 
                 let distance = vision.euclideanDistance(_embedding, query_embedding)
+                print(distance)
                 if distance < self.distanceThreshold {
                     let center = self.sceneView.center
                     if let hit = self.sceneView.hitTest(center, types: ARHitTestResult.ResultType.featurePoint).first {

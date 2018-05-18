@@ -26,7 +26,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var vision = Vision()
     
     var trackingReady: Bool = false
-    var trackingON: Bool = false
     var dataWriteStarted: Bool = false
     var dataWriteComplete: Bool = false
     var allowDataWrite: Bool = false
@@ -36,7 +35,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     var frameCounter: Int = 0
     var sessionframeCounter: Int = 0
-    var computeFrequency = 4
+    var computeFrequency = 2
     let markerFrequency = 10
     
     let grid: WorldGrid = WorldGrid()
@@ -46,7 +45,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var jsonObject = [String:Any]()
     var recordStartTime: String?
     var recordKey: String = ""
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +61,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         tap.addTarget(self, action: #selector(screenTap) )
         self.view.addGestureRecognizer(tap)
+    
+        // do we capture the initial embedding in here or in ViewDidLoad
+//        if let buffer = self.sceneView.session.currentFrame?.capturedImage {
+//            let initialImage = pixelBufferToUIImage(pixelBuffer: buffer)
+//            self.vision.processFrame(initialImage, self.saveInitialEmbedding)
+//        }
     }
     
     @objc func screenTap() {
@@ -76,58 +80,81 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         }
     }
     
+    func saveInitialEmbedding(_ _embedding: [Double]) {
+        if var _ = self.metadata {
+            self.metadata![self.recordKey]["initialEmbedding"].stringValue = _embedding.description
+            updateMetadata(self.metadata!)
+        }
+    }
+    
+    func cleanup() {
+        DispatchQueue.main.async {
+            self.jsonObject.removeAll()
+            self.recordStartTime = nil
+            self.sceneRecordCompletionButton.isEnabled = true
+        }
+    }
+    
     func writeData() {
         
-        if self.frameCounter == 0 && self.trackingON == false {
+        DispatchQueue.global(qos: .userInitiated).async {
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
+            if valid {
                 
-                let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
-                if valid {
+                let json = JSON(self.jsonObject)
+                
+                let representation = dataToDictionary(json)
+                let endtime = getCurrentTime()
+                let jsonFileName = "data.json"
+                let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
+                
+                do {
+                    try representation.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
                     
-                    let json = JSON(self.jsonObject)
-                    
-                    let representation = dataToDictionary(json)
-                    let endtime = getCurrentTime()
-                    let jsonFileName = "data.json"
-                    let jsonFilePath = getFilePath(fileFolder: self.recordKey, fileName: jsonFileName)
-                    
-                    do {
-                        try representation.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
+                    if var _ = self.metadata {
                         
-                        if var _ = self.metadata {
+                        var keyPosition = "*" //json[self.keyFrame]["position"]
+                        var keyRotation = "*" //json[self.keyFrame]["rotation"]
+                        
+                        // compute embedding of keyframe and write it to metadata
+                        // load image that we are going to compute the embedding of
+                        let keyframepath = getFilePath(fileFolder: self.recordKey, fileName: self.keyFrame)
+                        if let keyframeimage = UIImage(contentsOfFile: keyframepath) {
                             
-                            // compute embedding of keyframe and write it to metadata
-                            // load image that we are going to compute the embedding of
-                            let keyframepath = getFilePath(fileFolder: self.recordKey, fileName: self.keyFrame)
-                            print(keyframepath  )
-                            if let keyframeimage = UIImage(contentsOfFile: keyframepath) {
-                                self.vision.processFrame(keyframeimage, self.receiveEmbedding)
-                            }
+                            self.vision.processFrame(keyframeimage, self.receiveEmbedding)
                             
-                            let datum: JSON = [
-                                "starttime": self.recordStartTime!,
-                                "endtime": endtime,
-                                "filename": self.recordKey,
-                                "dataname": jsonFileName,
-                                "displayname": "Untitled",
-                                "uploaded": "false",
-                                "displayimage": self.displayimage,
-                                "embedding": ""
-                            ]
+                            let p = json[self.keyFrame]["position"]
+                            keyPosition = "[\(p["x"]),\(p["y"]),\(p["z"])]"
                             
-                            self.metadata![self.recordKey] = datum
-                            updateMetadata(self.metadata!)
+                            let r = json[self.keyFrame]["rotation"]
+                            keyRotation = "[\(r["x"]),\(r["y"]),\(r["z"])]"
+                            
                         }
-                    }catch {
+                        
+                        let datum: JSON = [
+                            "starttime": self.recordStartTime!,
+                            "endtime": endtime,
+                            "filename": self.recordKey,
+                            "dataname": jsonFileName,
+                            "displayname": "Untitled",
+                            "uploaded": "false",
+                            "displayimage": self.displayimage,
+                            "embedding": "",
+                            "keyPosition": keyPosition,
+                            "keyRotation": keyRotation
+                        ]
+                        
+                        self.metadata![self.recordKey] = datum
+                        updateMetadata(self.metadata!)
+                        
+                        self.cleanup()
                     }
+                } catch {
+                    self.cleanup()
                 }
-                
-                DispatchQueue.main.async {
-                    self.jsonObject.removeAll()
-                    self.recordStartTime = nil
-                    self.sceneRecordCompletionButton.isEnabled = true
-                }
+            } else {
+                self.cleanup()
             }
         }
     }
@@ -162,9 +189,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 self.starpathbutton.isHidden = false
             }
             
+            // if the user has turned on recording
             if self.isRecording {
-                
-                self.trackingON = true
                 
                 if self.recordStartTime == nil {
                     self.recordStartTime = getCurrentTime()
@@ -174,6 +200,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 DispatchQueue.global(qos: .userInteractive).async {
                     
                     if self.sessionframeCounter % self.computeFrequency == 0 {
+                        self.allowDataWrite = true
                         self.frameCounter += 1      // we're adding a frame to the stack
                         let jsonNode = currentFrameInfoToDic(currentFrame: frame)
                         let filename = jsonNode["imagename"] as! String
@@ -184,6 +211,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                             print("\(self.keyFrame) selected as keyframe")
                         }
                         
+                        // save the data for the current frame
                         self.jsonObject[filename] = jsonNode
                         
                         if self.displayimage == "" {
@@ -197,19 +225,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                         try? image.write(to: URL(fileURLWithPath: filePath))
                         
                         self.frameCounter -= 1  // removing a frame from the stack
-//                        self.writeData()
                     }
                     
                 }
                 
-            } else if self.trackingON {
-                self.trackingON = false
-                print("trackingON: \(self.trackingON)")
-                
-                self.writeData()
             }
         }
         
+        if self.allowDataWrite && !self.isRecording && self.frameCounter == 0 {
+            self.allowDataWrite = false
+            self.writeData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

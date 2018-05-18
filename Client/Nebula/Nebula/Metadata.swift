@@ -13,13 +13,15 @@ import FirebaseDatabase
 
 let metadatafilename: String = "metadata.json"
 func initMetadata() -> JSON {
+
+//    return retrieveMetadata()
     
     var _metadata = JSON()
-    
+
     // get path
     let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
     let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
-    
+
     // read
     do {
         let data = try Data(contentsOf: metadataPath)
@@ -27,12 +29,38 @@ func initMetadata() -> JSON {
         _metadata = response
     } catch {
     }
+
+    if _metadata.count > 0 {}
+
+    return _metadata
+}
+
+func retrieveMetadata() -> JSON  {
+    let userID = Auth.auth().currentUser?.uid
+    let ref: DatabaseReference = Database.database().reference()
+    var _metadata = JSON()
+    ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        let value = snapshot.value as? NSDictionary
+        
+        _metadata = JSON(value)
+        
+        print("METADATA")
+        print(_metadata)
+        
+    }) { (error) in
+        print(error.localizedDescription)
+    }
+    
+    print("============================== RETURNING ==============================")
     
     return _metadata
 }
 
 func updateMetadata(_ _metadata: JSON) {
     // get path
+    
+    print("updating metadata")
+    
     let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
     let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
     
@@ -45,7 +73,8 @@ func updateMetadata(_ _metadata: JSON) {
         let uid: String = _metadata["metauser"]["uid"].stringValue
         
         let metaDict = metadataToDictionary(_metadata)
-        ref.child("users").child(uid).child("metadata").setValue(metaDict)
+//        ref.child("users").child(uid).child("metadata").setValue(metaDict)
+        ref.child("users").child(uid).child("metadata").updateChildValues(metaDict)
         
     } catch {
     }
@@ -59,9 +88,11 @@ func saveData(_ _data: JSON, _ _uid: String, _ _sceneKey: String) {
 }
 
 func dataToDictionary(_ _data: JSON) -> String {
-    var outputString = "{ \"data\": ["
+//    var outputString = "var jsondata = { \"data\": [{"
+//    var outputString = "var jsondata = { \"data\": {"
+    var outputString = "{ \"data\": {"
     let terminalString = "]}"
-    
+
     var key_array = [String]()
     
     var count = 0
@@ -97,7 +128,8 @@ func dataToDictionary(_ _data: JSON) -> String {
             "m22": value["intrinsics"][2][2].doubleValue
         ]
         
-        outputString += "{"
+//        outputString += "{"
+        outputString += "\"\(key)\":{"
         outputString += "\"position\":" + position.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
         outputString += "\"rotation\":" + rotation.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
         outputString += "\"intrinsics\":" + intrinsics.description.replacingOccurrences(of: "[", with: "{").replacingOccurrences(of: "]", with: "}") + ","
@@ -115,7 +147,9 @@ func dataToDictionary(_ _data: JSON) -> String {
     }
     
     key_array.sort()
-    var key_list = "],\"keys\":["
+//    var key_list = "],\"keys\":["
+//    var key_list = "}, \"keyFrame\":\(_keyframe), \"keys\":["
+    var key_list = "}, \"keys\":["
     count = 0
     for var k in key_array {
         
