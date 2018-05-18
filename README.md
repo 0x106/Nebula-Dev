@@ -1,45 +1,93 @@
-## Synopsis
+# Spesar/Nebular
 
-At the top of the file there should be a short introduction and/ or overview
-that explains **what** the project is. This description should match
-descriptions added for package managers (Gemspec, package.json, etc.)
+SAAS to enable AR content delivery and creation, with persistence.
 
-## Code Example
+## Getting Started
 
-Show what the library does as concisely as possible, developers should be able
-to figure out **how** your project solves their problem by looking at the code
-example. Make sure the API you are showing off is obvious, and that your code
-is short and concise.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes. See deployment for notes on
+how to deploy the project on a live system.
 
-## Motivation
+### Prerequisites
 
-A short description of the motivation behind the creation and maintenance of
-the project. This should explain **why** the project exists.
+* Macbook
+* iOS device with iOS >= 11.3
+* Access to our herokuapp deployment
 
-## Installation
+``` Give examples ```
 
-* Clone
-* Client
-  * Run the Client folder for the iOS native app
-* Server
-  
+### Installing
 
-## API Reference
+A step by step series of examples that tell you have to get a development env
+running
 
-Depending on the size of the project, if it is small and simple enough the
-reference docs can be added to the README. For medium size to larger projects
-it is important to at least provide a link to where the API reference docs
-live.
+Say what the step will be
 
-## Tests
+``` Give the example ```
 
-Describe and show how to run the tests with code examples.
+And repeat
 
-## Contributors
+``` until finished ```
 
-Let people know how they can dive into the project, include important links to
-things like issue trackers, irc, twitter accounts if applicable.
+End with an example of getting some data out of the system or using it for a
+little demo
+
+## Running the tests
+
+More soon
+
+### Break down into end to end tests
+
+More soon
+
+``` Give an example ```
+
+## Coding and committing style
+
+### Coding
+
+#### Swift
+* 80 columns width
+* Use semicolons at the end of the statments
+
+#### Javascript
+
+More soon
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Contributing
+
+More soon
+
+## Versioning
+
+### Rules
+
+* The commit messages should be formatted [as explained here](https://chris.beams.io/posts/git-commit/)
+* We use [SemVer](http://semver.org/) for versioning releases.
+* Never commit directly on `master`
+
+
+The workflow is as such:
+
+* Create a feature branch with a sensible name
+* Commit work to the feature branch
+* When ready, open a merge request onto `master`
+* Ask someone to review your code, and once you are given a thumbs up, you can merge
+* **Make sure to squash your commits on the feature branch into one before to merge on master!**
+
+## Authors
+
+* **Jordan Campbell**
+* **Alberto Taiuti**
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+TBD
+
+## Acknowledgments
+
+More soon
