@@ -9,11 +9,14 @@
 //  to retrieve their copyright information
 //
 //
+//
+//  https://placenote.com/blog/
 
 import ARKit
 import SwiftyJSON
+import Placenote
 
-class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PNDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var sceneRecordCompletionButton: UIBarButtonItem!
@@ -46,6 +49,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var recordStartTime: String?
     var recordKey: String = ""
     
+    // TODO: check if this is necessary
+    private var camManager: CameraManager? = nil;
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
@@ -62,6 +68,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         tap.addTarget(self, action: #selector(screenTap) )
         self.view.addGestureRecognizer(tap)
     
+        LibPlacenote.instance.multiDelegate += self
+        
+        if let camera: SCNNode = sceneView?.pointOfView {
+            camManager = CameraManager(scene: sceneView.scene, cam: camera)
+        }
+        
         // do we capture the initial embedding in here or in ViewDidLoad
 //        if let buffer = self.sceneView.session.currentFrame?.capturedImage {
 //            let initialImage = pixelBufferToUIImage(pixelBuffer: buffer)
@@ -71,6 +83,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @objc func screenTap() {
         self.screenTapped = true
+    }
+    
+    //Receive a pose update when a new pose is calculated
+    func onPose(_ outputPose: matrix_float4x4, _ arkitPose: matrix_float4x4) -> Void {
+        
+    }
+    //Receive a status update when the status changes
+    func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
+        
     }
     
     func receiveEmbedding(_ _embedding: [Double]) {
