@@ -25,6 +25,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>PlacenoteSDK.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
 		<key>Pods-Nebula.xcscheme</key>
 		<dict>
 			<key>isShown</key>

@@ -25,6 +25,15 @@
 		DAEBC266204149660023F2F7 /* StarPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC265204149660023F2F7 /* StarPath.swift */; };
 		DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */; };
 		DAEBC26A20416E660023F2F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA44211A203BD56F00BDD103 /* Main.storyboard */; };
+		DAF048C120B0EA030064DE0C /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF048B820B0EA030064DE0C /* MulticastDelegate.swift */; };
+		DAF048C220B0EA030064DE0C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = DAF048B920B0EA030064DE0C /* LICENSE */; };
+		DAF048C320B0EA030064DE0C /* LibPlacenote.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF048BA20B0EA030064DE0C /* LibPlacenote.swift */; };
+		DAF048C420B0EA030064DE0C /* Placenote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAF048BD20B0EA030064DE0C /* Placenote.framework */; };
+		DAF048C520B0EA030064DE0C /* FeaturePointVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF048BE20B0EA030064DE0C /* FeaturePointVisualizer.swift */; };
+		DAF048C620B0EA030064DE0C /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF048BF20B0EA030064DE0C /* CameraManager.swift */; };
+		DAF048C720B0EA030064DE0C /* Data.bin in Resources */ = {isa = PBXBuildFile; fileRef = DAF048C020B0EA030064DE0C /* Data.bin */; };
+		DAF048C820B0EA250064DE0C /* Placenote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAF048BD20B0EA030064DE0C /* Placenote.framework */; };
+		DAF048C920B0EA250064DE0C /* Placenote.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DAF048BD20B0EA030064DE0C /* Placenote.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DAFF569A20AA9CF10023DD91 /* ImageRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF569920AA9CF10023DD91 /* ImageRecognition.swift */; };
 		DAFF569C20AA9E490023DD91 /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF569B20AA9E490023DD91 /* UI.swift */; };
 /* End PBXBuildFile section */
@@ -38,6 +47,20 @@
 			remoteInfo = Nebula;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DAF048CA20B0EA250064DE0C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DAF048C920B0EA250064DE0C /* Placenote.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		38297F3961B85CC465EF30E2 /* Pods_NebulaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NebulaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +90,14 @@
 		DAEBC263204145480023F2F7 /* StarPathTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewCell.swift; sourceTree = "<group>"; };
 		DAEBC265204149660023F2F7 /* StarPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPath.swift; sourceTree = "<group>"; };
 		DAEBC26720415B760023F2F7 /* StarPathTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarPathTableViewController.swift; sourceTree = "<group>"; };
+		DAF048B820B0EA030064DE0C /* MulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		DAF048B920B0EA030064DE0C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		DAF048BA20B0EA030064DE0C /* LibPlacenote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPlacenote.swift; sourceTree = "<group>"; };
+		DAF048BC20B0EA030064DE0C /* PlacenoteSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlacenoteSDK-Bridging-Header.h"; sourceTree = "<group>"; };
+		DAF048BD20B0EA030064DE0C /* Placenote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Placenote.framework; sourceTree = "<group>"; };
+		DAF048BE20B0EA030064DE0C /* FeaturePointVisualizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturePointVisualizer.swift; sourceTree = "<group>"; };
+		DAF048BF20B0EA030064DE0C /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		DAF048C020B0EA030064DE0C /* Data.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = Data.bin; sourceTree = "<group>"; };
 		DAFF569920AA9CF10023DD91 /* ImageRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRecognition.swift; sourceTree = "<group>"; };
 		DAFF569B20AA9E490023DD91 /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,7 +107,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAF048C420B0EA030064DE0C /* Placenote.framework in Frameworks */,
 				BD822D4B14FCC414EDF50976 /* Pods_Nebula.framework in Frameworks */,
+				DAF048C820B0EA250064DE0C /* Placenote.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +147,7 @@
 		DA442108203BD56F00BDD103 = {
 			isa = PBXGroup;
 			children = (
+				DAF048B720B0EA030064DE0C /* PlacenoteSDK */,
 				DA442113203BD56F00BDD103 /* Nebula */,
 				DA44212A203BD56F00BDD103 /* NebulaTests */,
 				DA442112203BD56F00BDD103 /* Products */,
@@ -166,6 +200,30 @@
 			path = NebulaTests;
 			sourceTree = "<group>";
 		};
+		DAF048B720B0EA030064DE0C /* PlacenoteSDK */ = {
+			isa = PBXGroup;
+			children = (
+				DAF048B820B0EA030064DE0C /* MulticastDelegate.swift */,
+				DAF048B920B0EA030064DE0C /* LICENSE */,
+				DAF048BA20B0EA030064DE0C /* LibPlacenote.swift */,
+				DAF048BB20B0EA030064DE0C /* include */,
+				DAF048BD20B0EA030064DE0C /* Placenote.framework */,
+				DAF048BE20B0EA030064DE0C /* FeaturePointVisualizer.swift */,
+				DAF048BF20B0EA030064DE0C /* CameraManager.swift */,
+				DAF048C020B0EA030064DE0C /* Data.bin */,
+			);
+			name = PlacenoteSDK;
+			path = Nebula/PlacenoteSDK;
+			sourceTree = "<group>";
+		};
+		DAF048BB20B0EA030064DE0C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				DAF048BC20B0EA030064DE0C /* PlacenoteSDK-Bridging-Header.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -179,6 +237,7 @@
 				DA44210F203BD56F00BDD103 /* Resources */,
 				86966465AAB60AAB6F998ECB /* [CP] Embed Pods Frameworks */,
 				CE300D2B622EBFEB2225820A /* [CP] Copy Pods Resources */,
+				DAF048CA20B0EA250064DE0C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -258,6 +317,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAF048C720B0EA030064DE0C /* Data.bin in Resources */,
+				DAF048C220B0EA030064DE0C /* LICENSE in Resources */,
 				DA442117203BD56F00BDD103 /* art.scnassets in Resources */,
 				DAEBC26A20416E660023F2F7 /* Main.storyboard in Resources */,
 				DA29725E204528210067C1F8 /* GoogleService-Info.plist in Resources */,
@@ -373,14 +434,18 @@
 			files = (
 				DAFF569A20AA9CF10023DD91 /* ImageRecognition.swift in Sources */,
 				DAEBC264204145480023F2F7 /* StarPathTableViewCell.swift in Sources */,
+				DAF048C620B0EA030064DE0C /* CameraManager.swift in Sources */,
 				DA998C992047BA8500DAB3EA /* predict.mlmodel in Sources */,
 				DAEBC266204149660023F2F7 /* StarPath.swift in Sources */,
 				DA442119203BD56F00BDD103 /* Main.swift in Sources */,
+				DAF048C520B0EA030064DE0C /* FeaturePointVisualizer.swift in Sources */,
 				DAFF569C20AA9E490023DD91 /* UI.swift in Sources */,
 				DACBADC7203BD61200FCA744 /* Util.swift in Sources */,
 				DAEBC26820415B760023F2F7 /* StarPathTableViewController.swift in Sources */,
+				DAF048C120B0EA030064DE0C /* MulticastDelegate.swift in Sources */,
 				DA442115203BD56F00BDD103 /* AppDelegate.swift in Sources */,
 				DA998C9B2047BAB800DAB3EA /* Vision.swift in Sources */,
+				DAF048C320B0EA030064DE0C /* LibPlacenote.swift in Sources */,
 				DA1C58F6204351A500CE302D /* Metadata.swift in Sources */,
 				DAAD37A82042413C00156B08 /* Login.swift in Sources */,
 			);
@@ -546,6 +611,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = X74VR9B6M2;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Nebula/PlacenoteSDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"$(PROJECT_DIR)/Nebula/PlacenoteSDK/Placenote.framework/Headers/",
+				);
 				INFOPLIST_FILE = Nebula/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -553,6 +630,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = atlas.nebula;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Nebula/PlacenoteSDK/include/PlacenoteSDK-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "";
@@ -570,6 +648,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = X74VR9B6M2;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Nebula/PlacenoteSDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"$(PROJECT_DIR)/Nebula/PlacenoteSDK/Placenote.framework/Headers/",
+				);
 				INFOPLIST_FILE = Nebula/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -577,6 +667,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = atlas.nebula;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Nebula/PlacenoteSDK/include/PlacenoteSDK-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "";

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import Placenote
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -20,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
+        
+        LibPlacenote.instance.initialize(apiKey: "0x13k5fuhlbog8uynzskuvd9h0mi1l9b0cg6cqgw5exd7v6raubbwvv5856ofr06pqzn29rhvm82x9o0ubl3baqzkbqk5ap3e8rk")
+        
         return true
     }
     
