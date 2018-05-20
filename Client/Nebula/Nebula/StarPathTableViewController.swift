@@ -104,7 +104,10 @@ class StarPathTableViewController: UITableViewController {
             cell.uploadButton.setImage(UIImage(named: "upload"), for: .normal)
         }
         
+        self.keys[indexPath.row] = starpath.key
+        
         cell.photoImageView?.image = starpath.image
+        cell.photoImageView?.tag = indexPath.row
         cell.uploadButton.tag = indexPath.row
         cell.uploadButton.key = starpath.key
         cell.uploadButton.uid = self.metadata!["metauser"]["uid"].stringValue
@@ -122,10 +125,13 @@ class StarPathTableViewController: UITableViewController {
     @objc func imageTapped(gesture: UIGestureRecognizer) {
         // if the tapped view is a UIImageView then set it to imageview
         if (gesture.view as? UIImageView) != nil {
-            print("Image Tapped: \(gesture.view?.tag)")
+            
+            let targetKey = self.keys[(gesture.view?.tag)!]!
+            
+            print("Image Tapped: \(gesture.view?.tag) -- \(targetKey)")
             
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Mapping") as! DetectionViewController
-            viewController.targetKey = "neuromancer"
+            viewController.targetKey = targetKey
             self.present(viewController, animated: false, completion: nil)
             
         }

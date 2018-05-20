@@ -55,7 +55,7 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
         // for each scene
         for (key, value) in self.metadata! {
             
-            if key != "metauser" {
+            if key == self.targetKey {
                 let mapKey = value["mapKey"].stringValue
                 
                 print(value)
