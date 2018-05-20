@@ -12,11 +12,9 @@ import Firebase
 import FirebaseDatabase
 
 let metadatafilename: String = "metadata.json"
-func initMetadata() -> JSON {
-
-//    return retrieveMetadata()
+func initMetadata(_ _callback: @escaping (JSON) -> ()) {
     
-    var _metadata = JSON()
+    var localMetadata = JSON()
 
     // get path
     let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -26,34 +24,29 @@ func initMetadata() -> JSON {
     do {
         let data = try Data(contentsOf: metadataPath)
         let response = try JSON(data: data)
-        _metadata = response
-    } catch {
-    }
-
-    if _metadata.count > 0 {}
-
-    return _metadata
-}
-
-func retrieveMetadata() -> JSON  {
+        localMetadata = response
+    } catch {}
+    
     let userID = Auth.auth().currentUser?.uid
     let ref: DatabaseReference = Database.database().reference()
-    var _metadata = JSON()
+    var cloudMetadata = JSON()
+    
     ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
-        let value = snapshot.value as? NSDictionary
-        
-        _metadata = JSON(value)
-        
-        print("METADATA")
-        print(_metadata)
-        
+        if let data = snapshot.value as? NSDictionary {
+            cloudMetadata = JSON(data)
+            for (key, value) in cloudMetadata["metadata"] {
+                if key != "metauser" {
+                    if let scenePoints = value["modelObjects"].arrayObject as? [String] {
+                        localMetadata[key]["modelObjects"].arrayObject = stringToMatrix(scenePoints)
+                    }
+                }
+            }
+            _callback(localMetadata)
+        }
     }) { (error) in
         print(error.localizedDescription)
     }
-    
-    print("============================== RETURNING ==============================")
-    
-    return _metadata
+
 }
 
 func updateMetadata(_ _metadata: JSON) {
@@ -64,6 +57,8 @@ func updateMetadata(_ _metadata: JSON) {
     let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
     let metadataPath = URL(fileURLWithPath: [documents, metadatafilename].joined(separator: "/"))
     
+    print(_metadata)
+    
     // write
     do {
         let data = try _metadata.rawData()
@@ -73,10 +68,11 @@ func updateMetadata(_ _metadata: JSON) {
         let uid: String = _metadata["metauser"]["uid"].stringValue
         
         let metaDict = metadataToDictionary(_metadata)
-//        ref.child("users").child(uid).child("metadata").setValue(metaDict)
-        ref.child("users").child(uid).child("metadata").updateChildValues(metaDict)
+        ref.child("users").child(uid).child("metadata").setValue(metaDict)
+//        ref.child("users").child(uid).child("metadata").updateChildValues(metaDict)
         
     } catch {
+        print("Error updating metadata")
     }
 }
 

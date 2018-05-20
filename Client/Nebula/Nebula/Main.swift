@@ -35,6 +35,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     var saveCurrentStarpath: Bool = true
     var isRecording: Bool = false
     var screenTapped: Bool = false
+    var metadataReady: Bool = false
     
     var frameCounter: Int = 0
     var sessionframeCounter: Int = 0
@@ -67,7 +68,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         self.addButton()
         
         self.sceneRecordCompletionButton.isEnabled = false
-        self.metadata = initMetadata()
+        initMetadata(metadataCallback(_:))
         
         tap.addTarget(self, action: #selector(screenTap) )
         self.view.addGestureRecognizer(tap)
@@ -76,30 +77,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         
         if let camera: SCNNode = sceneView?.pointOfView {
             camManager = CameraManager(scene: sceneView.scene, cam: camera)
-//            camManager?.
         }
-        
-        // do we capture the initial embedding in here or in ViewDidLoad
-//        if let buffer = self.sceneView.session.currentFrame?.capturedImage {
-//            let initialImage = pixelBufferToUIImage(pixelBuffer: buffer)
-//            self.vision.processFrame(initialImage, self.saveInitialEmbedding)
-//        }
     }
-    
+        
     @objc func screenTap() {
         self.screenTapped = true
     }
     
-    //Receive a pose update when a new pose is calculated
-    // PlacenoteSDK
-    func onPose(_ outputPose: matrix_float4x4, _ arkitPose: matrix_float4x4) -> Void {
-        
-    }
-    //Receive a status update when the status changes
-    // PlacenoteSDK
-    func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
-        
-    }
+    //Receive a pose update when a new pose is calculated --> PlacenoteSDK
+    func onPose(_ outputPose: matrix_float4x4, _ arkitPose: matrix_float4x4) -> Void {}
+    
+    //Receive a status update when the status changes --> PlacenoteSDK
+    func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {}
     
     func receiveEmbedding(_ _embedding: [Double]) {
         if var _ = self.metadata {
@@ -188,6 +177,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         }
     }
     
+    func metadataCallback(_ _metadata: JSON) {
+        self.metadata = _metadata
+        self.metadataReady = true
+    }
+    
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if let state = self.sceneView.session.currentFrame?.camera.trackingState {
             switch(state) {
@@ -220,9 +214,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
             }
         }
         
-        if self.trackingReady {
-            
-            
+        if self.trackingReady && self.metadataReady {
             if self.mappingIsActive {
                 
                 let image: CVPixelBuffer = frame.capturedImage
@@ -237,7 +229,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
                 print("======================================")
                 
             }
-            
             
             self.sessionframeCounter += 1
             if self.sessionframeCounter % self.markerFrequency == 0 {

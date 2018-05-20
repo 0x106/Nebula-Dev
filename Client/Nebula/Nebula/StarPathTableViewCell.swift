@@ -34,10 +34,12 @@ class StarPathTableViewCell: UITableViewCell {
     }
 
     @IBAction func uploadButtonTapped(_ sender: Any) {
-        
-        self.metadata = initMetadata()
-        
+        initMetadata(metadataCallback(_:))
+    }
+    
+    func metadataCallback(_ _metadata: JSON) {
         // get the path to the data
+        self.metadata = _metadata
         let dirPath = getDocumentsDirectory()
         let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(self.uploadButton.key)?.path
         var zipPath: URL!

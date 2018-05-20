@@ -18,17 +18,16 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
     var handle: AuthStateDidChangeListenerHandle?
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        self.metadata = initMetadata()
-//        self.metadata = retrieveMetadata()
-        
+        initMetadata(metadataCallback)
+    }
+    
+    func metadataCallback(_ _metadata: JSON) {
+        self.metadata = _metadata
         GIDSignIn.sharedInstance().uiDelegate = self
-//        GIDSignIn.sharedInstance().signIn()
         
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             
             if user != nil {
-            
                 if var _ = self.metadata {
                     if self.metadata!["metauser"]["uid"].stringValue == "" {
                         let metauser: JSON = [
@@ -38,20 +37,22 @@ class LoginController: UIViewController, GIDSignInUIDelegate {
                         updateMetadata(self.metadata!)
                     } else {
                         if let userID = user?.uid {
+                            
+                            print("User logged in: \(userID)")
+                            
                             if self.metadata!["metauser"]["uid"].stringValue != userID {
                                 fatalError("User ID doesn't match recorded value.")
                             }
                         }
                     }
                 }
-            
+                
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "login_tableViewSegue", sender: self)
                 }
             }
         }
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         Auth.auth().removeStateDidChangeListener(handle!)

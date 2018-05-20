@@ -49,11 +49,15 @@ class StarPathTableViewController: UITableViewController {
     @objc func refresh() {
         if !self.inRefresh {
             self.inRefresh = true
-            self.metadata = initMetadata()
-            self.loadStarpaths()
-            self.inRefresh = false
-            self.refreshControl?.endRefreshing()
+            initMetadata(metadataCallback(_:))
         }
+    }
+    
+    func metadataCallback(_ _metadata: JSON) {
+        self.metadata = _metadata
+        self.loadStarpaths()
+        self.inRefresh = false
+        self.refreshControl?.endRefreshing()
     }
     
     @objc func dismissKeyboard(gesture: UITapGestureRecognizer) {
@@ -168,11 +172,7 @@ class StarPathTableViewController: UITableViewController {
         guard let _ = self.metadata else { return }
                 
         var index = 0
-        for datum in self.metadata! {
-            
-            let key = datum.0
-            let value = datum.1
-            
+        for (key, value) in self.metadata! {
             if key != "metauser" {
                 
                 let imagePath = getFilePath(fileFolder: key, fileName: value["displayimage"].stringValue)
@@ -184,6 +184,9 @@ class StarPathTableViewController: UITableViewController {
                 index += 1
             }
         }
+        
+        print("Initialised \(self.data.count) starpaths")
+        
         self.tableView.reloadData()
         
     }

@@ -195,8 +195,6 @@ func pixelBufferToUIImage(pixelBuffer: CVPixelBuffer) -> UIImage {
     return uiImage
 }
 
-
-
 //extension code starts
 // https://stackoverflow.com/a/42941966/7098234
 func normalizeVector(_ iv: SCNVector3) -> SCNVector3 {
@@ -359,6 +357,14 @@ func stringToArray(_ _input: String) -> [Double] {
     }
  
     return []
+}
+
+func stringToMatrix(_ _input: [String]) -> [[Double]] {
+    var output = [[Double]]()
+    for element in _input {
+        output.append( stringToArray(element) )
+    }
+    return output
 }
 
 // end
