@@ -336,7 +336,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
 extension ViewController {
     func addButton() {
         
-        let recordbuttonimg = UIImage(named: "buttonopen")
+        let recordbuttonimg = UIImage(named: "buttonopen-1")
         
         let size: Int = 48
         let bx1 = CGFloat((self.sceneView.bounds.maxX/2) - 24)
@@ -351,22 +351,22 @@ extension ViewController {
         let bx2 = CGFloat((self.sceneView.bounds.midX/2) - 24)
         let by2 = CGFloat(self.sceneView.bounds.maxY - 80)
         
-        let starpathbuttonimg = UIImage(named: "starpathopen")
-        starpathbutton.frame = CGRect(x: bx2, y: by2, width: CGFloat(size), height: CGFloat(size))
-        starpathbutton.backgroundColor = .clear
-        starpathbutton.setImage(starpathbuttonimg, for: .normal)
-        starpathbutton.addTarget(self, action: #selector(starpathButtonPressed), for: .touchUpInside)
-        self.sceneView.addSubview(starpathbutton)
-        self.starpathbutton.isHidden = true
+//        let starpathbuttonimg = UIImage(named: "starpathopen")
+//        starpathbutton.frame = CGRect(x: bx2, y: by2, width: CGFloat(size), height: CGFloat(size))
+//        starpathbutton.backgroundColor = .clear
+//        starpathbutton.setImage(starpathbuttonimg, for: .normal)
+//        starpathbutton.addTarget(self, action: #selector(starpathButtonPressed), for: .touchUpInside)
+//        self.sceneView.addSubview(starpathbutton)
+//        self.starpathbutton.isHidden = true
     }
     
     @objc func recordButtonPressed() {
         if self.isRecording {
             self.isRecording = false
-            self.recordbutton.setImage(UIImage(named: "buttonopen"), for: .normal)
+            self.recordbutton.setImage(UIImage(named: "buttonopen-1"), for: .normal)
         } else {
             self.isRecording = true
-            self.recordbutton.setImage(UIImage(named: "buttonclosed"), for: .normal)
+            self.recordbutton.setImage(UIImage(named: "buttonclosed-1"), for: .normal)
         }
     }
     
