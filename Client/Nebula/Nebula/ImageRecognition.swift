@@ -9,18 +9,15 @@
 import ARKit
 import SwiftyJSON
 
-class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PNDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
     
     var embeddingComputeFrequency = 10
     var frameCounter = 0
-    var vision = Vision()
     var metadata: JSON?
-    var referenceEmbedding = [Double]()
-    var embedList = [[Double]]()
+    var maps = [String]()
     var sphere = SCNSphere()
-    let distanceThreshold: Double = 4.0//7.5
     
     override func viewDidLoad() {
         
@@ -34,22 +31,38 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
         let scene = SCNScene()
         sceneView.scene = scene
         
-        retrieveMetadata()
-                
+//        retrieveMetadata()
+        
+        LibPlacenote.instance.multiDelegate += self
+        
         self.metadata = initMetadata()
-        for item in self.metadata! {
+        
+        // for each scene
+        for (key, value) in self.metadata! {
             
-            let _embedding = stringToArray(item.1["embedding"].stringValue)
-            
-            if _embedding.count > 0 {
-                self.referenceEmbedding = _embedding
-                self.embedList.append(_embedding)
-                let _position = stringToArray(item.1["keyPosition"].stringValue)
-                let _rotation = stringToArray(item.1["keyRotation"].stringValue)
+            if key != "metauser" {
+                let mapKey = value["mapKey"].stringValue
+                if mapKey.count > 0 {
+                    self.maps.append( mapKey )
+                }
             }
         }
         
-        print(self.embedList.count)
+        if self.maps.count > 0 {
+            
+            print("Attempting to retrieve map: \(self.maps[0])")
+            
+            LibPlacenote.instance.loadMap(mapId: self.maps[0],
+                downloadProgressCb: {(completed: Bool, faulted: Bool, percentage: Float) -> Void in
+                    if (completed) {
+                        LibPlacenote.instance.startSession()
+                        print("Map downloaded and initialised.")
+                    }
+                }
+            )
+        } else {
+            print("No local maps available")
+        }
         
         self.sphere = SCNSphere(radius: CGFloat(0.02))
         sphere.firstMaterial?.diffuse.contents = UIColor.magenta.withAlphaComponent(CGFloat(0.5))
@@ -57,33 +70,19 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.frameCounter += 1
-        if self.frameCounter % self.embeddingComputeFrequency == 0 {
-            let image = pixelBufferToUIImage(pixelBuffer: frame.capturedImage)
-            self.vision.processFrame(image, self.receiveEmbedding)
-        }
     }
     
-    func receiveEmbedding(_ _embedding: [Double]) {
-        if self.referenceEmbedding.count == _embedding.count {
-            
-            for query_embedding in self.embedList {
-                
-                let distance = vision.euclideanDistance(_embedding, query_embedding)
-                print(distance)
-                if distance < self.distanceThreshold {
-                    let center = self.sceneView.center
-                    if let hit = self.sceneView.hitTest(center, types: ARHitTestResult.ResultType.featurePoint).first {
-                        let node = SCNNode(geometry: self.sphere)
-                        node.position = SCNVector3Make(hit.worldTransform.columns.3.x,
-                                                       hit.worldTransform.columns.3.y,
-                                                       hit.worldTransform.columns.3.z)
-                        self.sceneView.scene.rootNode.addChildNode(node)
-                    }
-                }
-            }
-        }
+    //Receive a pose update when a new pose is calculated
+    // PlacenoteSDK
+    func onPose(_ outputPose: matrix_float4x4, _ arkitPose: matrix_float4x4) -> Void {
+        
     }
-    
+    //Receive a status update when the status changes
+    // PlacenoteSDK
+    func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
+        
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let configuration = ARWorldTrackingConfiguration()

@@ -54,6 +54,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     
     var mappingIsActive: Bool = false
     var mappingUploadComplete: Bool = false
+    var mapKey: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         
         if let camera: SCNNode = sceneView?.pointOfView {
             camManager = CameraManager(scene: sceneView.scene, cam: camera)
+//            camManager?.
         }
         
         // do we capture the initial embedding in here or in ViewDidLoad
@@ -168,7 +170,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
                             "displayimage": self.displayimage,
                             "embedding": "",
                             "keyPosition": keyPosition,
-                            "keyRotation": keyRotation
+                            "keyRotation": keyRotation,
+                            "mapKey": self.mapKey
                         ]
                         
                         self.metadata![self.recordKey] = datum
@@ -219,6 +222,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         
         if self.trackingReady {
             
+            
+            if self.mappingIsActive {
+                
+                let image: CVPixelBuffer = frame.capturedImage
+                let pose: matrix_float4x4 = frame.camera.transform
+                LibPlacenote.instance.setFrame(image: image, pose: pose)
+                
+                let mappedLandmarks = LibPlacenote.instance.getAllLandmarks()
+                let mappingStatus = LibPlacenote.instance.getMappingStatus()
+                
+                print("Mapping status: \(mappingStatus)")
+                print("Mapping has found \(mappedLandmarks.count) landmarks.")
+                print("======================================")
+                
+            }
+            
+            
             self.sessionframeCounter += 1
             if self.sessionframeCounter % self.markerFrequency == 0 {
                 
@@ -245,6 +265,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
                     self.mappingIsActive = false
                     
                     LibPlacenote.instance.saveMap(savedCb: { (mapID: String?) -> Void in
+                        self.mapKey = mapID!
                         print ("Mapping completed with id: \(mapID!)")
                         LibPlacenote.instance.stopSession()
                     }, uploadProgressCb: {(completed: Bool, faulted: Bool, percentage: Float) -> Void in
