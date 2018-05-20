@@ -19,8 +19,10 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
     var maps = [String]()
     var sphere = SCNSphere()
     private var camManager: CameraManager? = nil;
-    var scenePoints: [[Double]] = [[Double]]()
+    var scenePoints: [[Double]]?
     let rootNode = SCNNode()
+    
+    var targetKey: String = ""
     
     override func viewDidLoad() {
         
@@ -60,7 +62,7 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
                 
                 if mapKey.count > 0 {
                     self.maps.append( mapKey )
-                    self.scenePoints = value["modelObjects"].arrayObject as! [[Double]]
+                    self.scenePoints = value["modelObjects"].arrayObject as? [[Double]]
                     print(self.scenePoints)
                     
 //                    if let scenePoints = value["modelObjects"].arrayObject as? [String] {
@@ -112,17 +114,16 @@ class DetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDel
                 node.removeFromParentNode()
             }
             
-            print(self.scenePoints)
+            // if they don't exist then we can return
+            guard let points = self.scenePoints else {return}
             
-            for point in self.scenePoints {
-                print(point)
+            for pt in points {
+                print(pt)
                 let geometry = SCNSphere(radius: CGFloat(0.02))
                 geometry.firstMaterial?.diffuse.contents = UIColor.magenta
                 let node = SCNNode(geometry: geometry)
             
-                node.position = SCNVector3Make(Float(point[0]), Float(point[1]), Float(point[2]))
-                
-//                self.rootNode.addChildNode(node)
+                node.position = SCNVector3Make(Float(pt[0]), Float(pt[1]), Float(pt[2]))
                 self.sceneView.scene.rootNode.addChildNode(node)
             }
         }

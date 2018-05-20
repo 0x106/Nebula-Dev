@@ -23,6 +23,8 @@ class StarPathTableViewController: UITableViewController {
     
     var inRefresh: Bool = false
     
+    var keys: Dictionary<Int, String> = Dictionary<Int, String>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -106,15 +108,34 @@ class StarPathTableViewController: UITableViewController {
         cell.uploadButton.tag = indexPath.row
         cell.uploadButton.key = starpath.key
         cell.uploadButton.uid = self.metadata!["metauser"]["uid"].stringValue
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped ))
+        
+        // add it to the image view;
+        cell.photoImageView?.addGestureRecognizer(tapGesture)
+        // make sure imageView can be interacted with by user
+        cell.photoImageView?.isUserInteractionEnabled = true
 
         return cell
+    }
+    
+    @objc func imageTapped(gesture: UIGestureRecognizer) {
+        // if the tapped view is a UIImageView then set it to imageview
+        if (gesture.view as? UIImageView) != nil {
+            print("Image Tapped: \(gesture.view?.tag)")
+            
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Mapping") as! DetectionViewController
+            viewController.targetKey = "neuromancer"
+            self.present(viewController, animated: false, completion: nil)
+            
+        }
     }
 
     @objc func textFieldDidChange(_ textField: UITextField) {
         self.data[self.labelToEdit!.row].updateDisplayname(textField.text!)
         self.tableView.reloadRows(at: [self.labelToEdit], with: UITableViewRowAnimation.none)
     }
-
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
