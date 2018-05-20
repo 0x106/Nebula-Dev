@@ -52,6 +52,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     // TODO: check if this is necessary
     private var camManager: CameraManager? = nil;
     
+    var mappingIsActive: Bool = false
+    var mappingUploadComplete: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
@@ -86,10 +89,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     }
     
     //Receive a pose update when a new pose is calculated
+    // PlacenoteSDK
     func onPose(_ outputPose: matrix_float4x4, _ arkitPose: matrix_float4x4) -> Void {
         
     }
     //Receive a status update when the status changes
+    // PlacenoteSDK
     func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
         
     }
@@ -184,8 +189,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         if let state = self.sceneView.session.currentFrame?.camera.trackingState {
             switch(state) {
             case .normal:
-                self.trackingReady = true
-                sceneView.scene.rootNode.addChildNode(grid.origin.rootNode)
+                
+                if !self.trackingReady {
+                    self.trackingReady = true
+                    sceneView.scene.rootNode.addChildNode(grid.origin.rootNode)
+                    
+                    if !self.mappingIsActive {
+                        self.mappingIsActive = true
+                        
+                        // As soon as tracking is initialised we can start building a map
+                        // Perform mapping for a certain amount of time, then allow the user
+                        //    to start recording the scene.
+                        // LibPlacenote.instance.stopSession()
+                        LibPlacenote.instance.startSession()
+                        print("Mapping initialised.")
+                        // In the example this is only used when rendering shapes. I'll
+                        // leave it for now and remove if it's only for rendering content.
+                        // let image: CVPixelBuffer = frame.capturedImage
+                        // let pose: matrix_float4x4 = frame.camera.transform
+                        // LibPlacenote.instance.setFrame(image: image, pose: pose)
+                    }
+                }
             case .notAvailable:
                 break
             case .limited:
@@ -213,47 +237,77 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
             // if the user has turned on recording
             if self.isRecording {
                 
-                if self.recordStartTime == nil {
-                    self.recordStartTime = getCurrentTime()
-                    self.recordKey = uniqueKey()
+                // We were previously running mapping but are now ready to record the scene.
+                // Save the map and stop any further mapping.
+                if self.mappingIsActive {
+                    
+                    // we only want to do this once!
+                    self.mappingIsActive = false
+                    
+                    LibPlacenote.instance.saveMap(savedCb: { (mapID: String?) -> Void in
+                        print ("Mapping completed with id: \(mapID!)")
+                        LibPlacenote.instance.stopSession()
+                    }, uploadProgressCb: {(completed: Bool, faulted: Bool, percentage: Float) -> Void in
+                        //Nothing to do here
+                        if !percentage.isNaN && percentage == 1.0 {
+                            print("Finished uploading map.")
+                            self.mappingUploadComplete = true
+                        }
+                    })
                 }
                 
-                DispatchQueue.global(qos: .userInteractive).async {
-                    
-                    if self.sessionframeCounter % self.computeFrequency == 0 {
-                        self.allowDataWrite = true
-                        self.frameCounter += 1      // we're adding a frame to the stack
-                        let jsonNode = currentFrameInfoToDic(currentFrame: frame)
-                        let filename = jsonNode["imagename"] as! String
-                        
-                        if self.screenTapped {
-                            self.screenTapped = false
-                            self.keyFrame = filename
-                            print("\(self.keyFrame) selected as keyframe")
-                        }
-                        
-                        // save the data for the current frame
-                        self.jsonObject[filename] = jsonNode
-                        
-                        if self.displayimage == "" {
-                            self.displayimage = filename
-                        }
-                        
-                        let uiImage = pixelBufferToUIImage(pixelBuffer: frame.capturedImage)
-                        let image = UIImageJPEGRepresentation( uiImage , 0.25)!
-                        
-                        let filePath = getFilePath(fileFolder: self.recordKey, fileName: filename)
-                        try? image.write(to: URL(fileURLWithPath: filePath))
-                        
-                        self.frameCounter -= 1  // removing a frame from the stack
+                // Wait for the map to finish uploading before we try and do another compute intensive
+                // task.
+                if self.mappingUploadComplete {
+                
+                    if self.recordStartTime == nil {
+                        self.recordStartTime = getCurrentTime()
+                        self.recordKey = uniqueKey()
                     }
                     
+                    DispatchQueue.global(qos: .userInteractive).async {
+                        
+                        if self.sessionframeCounter % self.computeFrequency == 0 {
+                            self.allowDataWrite = true
+                            self.frameCounter += 1      // we're adding a frame to the stack
+                            let jsonNode = currentFrameInfoToDic(currentFrame: frame)
+                            let filename = jsonNode["imagename"] as! String
+                            
+                            if self.screenTapped {
+                                self.screenTapped = false
+                                self.keyFrame = filename
+                                print("\(self.keyFrame) selected as keyframe")
+                            }
+                            
+                            // save the data for the current frame
+                            self.jsonObject[filename] = jsonNode
+                            
+                            if self.displayimage == "" {
+                                self.displayimage = filename
+                            }
+                            
+                            let uiImage = pixelBufferToUIImage(pixelBuffer: frame.capturedImage)
+                            let image = UIImageJPEGRepresentation( uiImage , 0.25)!
+                            
+                            let filePath = getFilePath(fileFolder: self.recordKey, fileName: filename)
+                            try? image.write(to: URL(fileURLWithPath: filePath))
+                            
+                            self.frameCounter -= 1  // removing a frame from the stack
+                        }
+                    }
                 }
-                
             }
         }
         
+        // If we have previously been recording but aren't any longer, and if all the frames
+        // have been written.
+        // HACK: This is a hack to simulate the use of a queue, without having to actually implement
+        //       any data structure. We just increment a counter when we add a frame and ensure that
+        //       the counter has gone back to zero when we are ready to save everything.
         if self.allowDataWrite && !self.isRecording && self.frameCounter == 0 {
+            
+            // Need to add this so that we don't try and write the data twice (which would cause the
+            // app to crash).
             self.allowDataWrite = false
             self.writeData()
         }
